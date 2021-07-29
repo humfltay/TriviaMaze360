@@ -1,5 +1,5 @@
 /*TCSS 360 Maze Project*/
-package Model;
+package model;
 
 /**
  * @author Taylor Humfleet
@@ -8,9 +8,9 @@ package Model;
  * 
  *
  */
-public class Maze {
+public class TaylorMaze {
     //blank constructor
-    private Maze() {
+    private TaylorMaze() {
         
     }
     

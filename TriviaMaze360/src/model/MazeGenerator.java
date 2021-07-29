@@ -1,5 +1,5 @@
 /*TCSS 360 Maze Project*/
-package Model;
+package model;
 
 import java.awt.Point;
 
