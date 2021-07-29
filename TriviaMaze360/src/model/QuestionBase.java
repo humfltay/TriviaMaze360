@@ -18,11 +18,13 @@ public class QuestionBase {
           //iq.insert(1, "Geography", "What is the capitol of Washington,Olympia,Tacoma,Westchester,Miami,Seattle,Everett,Portland");
           //iq.insert(3, "Geography", "What is the capitol of Washington,Olympia,Tacoma,Westchester,Miami,Seattle,Everett,Portland");
           SelectQuestions sq = new SelectQuestions();
-          sq.selectAll();
-          System.out.println();
-          sq.getQuestionsHarderThan(1);
-          System.out.println();
-          sq.getQuestionsOfDifficulty(2);
+          Question q = new Question();
+          System.out.println(q);
+          //sq.selectAll();
+          //System.out.println();
+          //sq.getQuestionsHarderThan(1);
+         // System.out.println();
+          //sq.getQuestionsOfDifficulty(2);
     }
     public static void createTable() {
         String url = "jdbc:sqlite:QuestionDB.db";
