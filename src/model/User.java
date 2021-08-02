@@ -1,48 +1,61 @@
 package model;
 
-import java.awt.Point;
 import java.io.Serializable;
+
+import model.RealDoor.DoorStatus;
 
 public class User {
     private int myRow;
     private int myCol;
     private Maze myMaze;
-    public enum Direction {NORTH, EAST, SOUTH, WEST}
     
     public User() {
         myMaze = new Maze();
         myRow = myMaze.getMyEntrance().getMyRow();
         myCol = myMaze.getMyEntrance().getMyCol();
-        
     }
     
-    public getMyRow() {
+    public int getMyRow() {
         return myRow;
     }
-    public getMyCol() {
+    public int getMyCol() {
         return myCol;
     }
-    public void move(RealDoor theDoor) {
-        switch (theDoor.getMyDoorStatus()):
-            case NORTH:
+    public Room move(RealDoor theDoor) {
+        //theDoor should be one of the room's doors.
+        //Not going to check since I plan to make it impossible to have other room's doors.
+        if (!theDoor.getMyDoorStatus().equals(DoorStatus.LOCKED)) {
+            int newRow = myRow;
+            int newCol = myCol;
+            switch (theDoor.getMyDoorDirection()) {
+                case NORTH:
+                    newCol--;
+                    break;
+                case SOUTH:
+                    newCol++;
+                    break;
+                case EAST:
+                    newRow++;
+                    break;
+                case WEST:
+                    newRow--;
+                    break;
+            }
+            if (myMaze.isValidPosition(newRow, newCol)) {
+                if (theDoor.askQuestion(Answer.C)) { //Implement questions here.
+                    myRow = newRow;
+                    myCol = newCol;
+                    theDoor.setMyDoorStatus(DoorStatus.OPEN);
+                } else {
+                    theDoor.setMyDoorStatus(DoorStatus.LOCKED);
+                }
                 
-                break;
-            case SOUTH:
-                
-                break;
-            case EAST:
-                
-                break;
-            case WEST:
-                
-                break;
-        if (myMaze.isValid(theRow, theCol)) {
-            myMaze.getRoom(theRow, theCol)
-        } else {
+            } else {
+                //Do something if the room isn't valid?
+                //Better to design it to be impossible to give invalid rooms.
+            }
             
         }
-    }
-    private Room getRoom(theRow, theCol) {
-        if (myMaze.isValid(theRow))
+        return myMaze.getRoom(myRow, myCol);
     }
 }
