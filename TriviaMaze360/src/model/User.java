@@ -54,5 +54,6 @@ public class User {
                 //Better to design it to be impossible to give invalid rooms.
             }
         }
+        public 
     }
 }

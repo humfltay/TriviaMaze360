@@ -12,6 +12,7 @@ public class Room {
     //public RealDoor[] myDoors;
     private int myRow;
     private int myCol;
+    private boolean myAccessable;
     
     public Room(final int theRow, final int theCol) {
         myRow = theRow;
@@ -20,8 +21,12 @@ public class Room {
         myEastDoor = new RealDoor(DoorDirection.EAST);
         mySouthDoor = new RealDoor(DoorDirection.SOUTH);
         myWestDoor = new RealDoor(DoorDirection.WEST);
+        myAccessable = true;
     }
-    //public Room(final int theRow, final int theCol, )
+    public Room(final int theRow, final int theCol, boolean theAccess) {
+        this(theRow, theCol);
+        myAccessable = theAccess;
+    }
     public RealDoor getMyNorthDoor() {
         return myNorthDoor;
     }
@@ -39,5 +44,12 @@ public class Room {
     }
     public int getMyCol() {
         return myCol;
+    }
+    public boolean isAccessable {
+        boolean check = true;
+        if (!myAccessable || getMyNorthDoor().getMyDoorStatus()) {
+            check = false;
+        }
+        return check;
     }
 }
