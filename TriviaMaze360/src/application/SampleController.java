@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import model.Question;
 
 public class SampleController {
 	
@@ -38,8 +39,8 @@ public class SampleController {
 		 mainScreen.setImage(land);
 		 labelQ.setText("Choose a direction to answer\n a question!");
 	 }
-	 
-	 String question1 = "whose that pokemon?\nA: pikachu\nB: charzard\nC: jigglypuff\nD: squirtle";
+	 Question q = new Question();
+	 String question1 = q.myQuestion;
 	 
 	 @FXML
 	 void choice(ActionEvent event) {
