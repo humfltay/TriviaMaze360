@@ -1,43 +1,52 @@
 package model;
 
-import java.awt.Point;
 
-import model.RealDoor.DoorStatus;
+import java.io.Serializable;
 
-public class Room {
+import model.RealDoor.DoorDirection;
+
+public class Room implements Serializable{
     //public enum RoomDoors implements Door {NORTH, EAST, SOUTH, WEST}
-    private RealDoor North;
-    private RealDoor East;
-    private RealDoor South;
-    private RealDoor West;
+    private RealDoor myNorthDoor;
+    private RealDoor myEastDoor;
+    private RealDoor mySouthDoor;
+    private RealDoor myWestDoor;
+    //public RealDoor[] myDoors;
     private int myRow;
     private int myCol;
+    
+    public Room() {
+        
+    }
     
     public Room(final int theRow, final int theCol) {
         myRow = theRow;
         myCol = theCol;
-        North = new RealDoor(DoorDirection.NORTH);
-        East = new RealDoor(DoorDirection.EAST);
-        South = new RealDoor(DoorDirection.SOUTH);
-        West = new RealDoor(DoorDirection.WEST);
+        myNorthDoor = new RealDoor(DoorDirection.NORTH);
+        myEastDoor = new RealDoor(DoorDirection.EAST);
+        mySouthDoor = new RealDoor(DoorDirection.SOUTH);
+        myWestDoor = new RealDoor(DoorDirection.WEST);
     }
-    
-    public RealDoor getNorth() {
-        return North;
+    //public Room(final int theRow, final int theCol, )
+    public RealDoor getMyNorthDoor() {
+        return myNorthDoor;
     }
-    public RealDoor getEast() {
-        return East;
+    public RealDoor getMyEastDoor() {
+        return myEastDoor;
     }
-    public RealDoor getSouth() {
-        return South;
+    public RealDoor getMySouthDoor() {
+        return mySouthDoor;
     }
-    public RealDoor getWest() {
-        return West;
+    public RealDoor getMyWestDoor() {
+        return myWestDoor;
     }
-    public int getRow() {
+    public int getMyRow() {
         return myRow;
     }
-    public int getCol() {
+    public int getMyCol() {
         return myCol;
+    }
+    public String toString(){
+        return myRow + ", " +  myCol;
     }
 }
