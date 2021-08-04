@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
+import model.RealDoor.DoorDirection;
 import model.RealDoor.DoorStatus;
 
 /**
@@ -15,7 +16,10 @@ import model.RealDoor.DoorStatus;
  * @author Cordell Hampshire
  */
 public class MazeGenerator {
-  int
+  /** current size of maze */
+  private int mySize;
+  /** instance of maze we are building */
+  private Maze myMaze;
   // default
   public MazeGenerator() {
     //default values may likely change
@@ -27,6 +31,7 @@ public class MazeGenerator {
     Random ran = new Random();
     int paths = theMinPaths;
     paths += ran.nextInt(theMaxPaths - theMinPaths);
+    mySize = theSize;
     // go straight 40%
     // go left 30%
     // go right 30%
@@ -39,37 +44,62 @@ public class MazeGenerator {
   }
 
   private void createEntranceAndExit() {
-    double ran = Math.random();
-    //25% chance of each
-    if (ran > 0.75) {
-      createEntrance(0);
-    } if (ran > 0.5 && ran <= 0.75) {
-      createEntrance(1);
-    } if (ran > 0.25 && ran <= 0.5) {
-      createEntrance(2);
-    } else {
-      createEntrance(3);
-    }
-    ran = Math.random();
-    //25% chance of each
-    if (ran > 0.75) {
-      createExit(0);
-    } if (ran > 0.5 && ran <= 0.75) {
-      createExit(1);
-    } if (ran > 0.25 && ran <= 0.5) {
-      createExit(2);
-    } else {
-      createExit(3);
-    }
-  }
-
-  private void createEntrance(int theSide) {
     // TODO Auto-generated method stub
+    Random ran = new Random();
+    int side = ran.nextInt(5);
+    int i = ran.nextInt(mySize + 2);
+    int j = ran.nextInt(mySize + 2);
+    Room entrance = null;
+    switch(side) {
+    case 1:
+      //top i j = 0
+      entrance = myMaze.getMyRooms()[i][0];
+      myMaze.setEntrance(i, 1);
+      break;
+    case 2:
+      //left
+      
+      entrance = myMaze.getMyRooms()[0][j];
+      myMaze.setEntrance(1, j);
+      break;
+    case 3:
+      //right
+      myMaze.setEntrance(mySize + 1, j);
+      break;
+    case 4:
+      //bottom
+      entrance = myMaze.getMyRooms()[i][mySize];
+      myMaze.setEntrance(i, mySize + 1);
+    }
+    createExit(side);
   }
 
   private void createExit(int theSide) {
     // TODO Auto-generated method stub
-    
+    Random ran = new Random();
+    int i = ran.nextInt(mySize + 2);
+    int j = ran.nextInt(mySize + 2);
+    int newSide = theSide;
+    while(theSide == newSide ) {
+      newSide = ran.nextInt(5);
+    }
+    switch(theSide) {
+    case 1:
+      //top i j = 0
+      myMaze.setExit(i, 1);
+      break;
+    case 2:
+      //left
+      myMaze.setExit(1, j);
+      break;
+    case 3:
+      //right
+      myMaze.setExit(mySize + 1, j);
+      break;
+    case 4:
+      //bottom
+      myMaze.setExit(i, mySize + 1);
+    }
   }
 
   private void createPath(Maze theMaze, int theRow, int theColumn) {
@@ -108,19 +138,27 @@ public class MazeGenerator {
   }
 
   private Room getPath (Room theRoom) {
-      //WHAT IS STRAIGHT :/
-      //go straight 40%
-      //go left 30%
-      //go right 30%
-      boolean pathNotFound = true;
-      Set<RealDoor> rooms = theRoom.getDoors(DoorStatus.LOCKED);
-      double ran = Math.random();
-      while (pathNotFound) {
-        for (RealDoor door: rooms) {
-          if()
+    //WHAT IS STRAIGHT :/
+    //go straight 40%
+    //go left 30%
+    //go right 30%
+    
+    boolean pathNotFound = true;
+    Set<RealDoor> rooms = theRoom.getDoors(DoorStatus.LOCKED);
+    double ran = Math.random();
+    while (pathNotFound) {
+      for (RealDoor door: rooms) {
+        if (ran / rooms.size() > ran) {
+              
         }
       }
-      
     }
+      
+  }
+  private DoorDirection getDirect() {
+    boolean bigX = 
+    return null;
+    
+  }
 
 }

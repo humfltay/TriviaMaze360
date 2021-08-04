@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.Random;
@@ -15,6 +16,8 @@ public class Maze {
     private Room myExit;
     private boolean myWinnable;
     private int myTheme;
+    private Point myEntrancePoint;
+    private Point myExitPoint;
     
     public Maze() {
         myRooms = new Room[myMazeSize+2][myMazeSize+2];
@@ -26,6 +29,8 @@ public class Maze {
         myRooms = new Room[theSize + 2][myMazeSize + 2];
         myTheme = theTheme;
         buildMaze(theSize);
+        myEntrancePoint = new Point(1,1);
+        myExitPoint = new Point(myMazeSize + 1, myMazeSize + 1);
     }
     public Maze(int theSize) {
         myRooms = new Room[theSize + 2][myMazeSize + 2];
@@ -105,6 +110,13 @@ public class Maze {
     }
     public void goNorth() {
         //getRoom();
-        
+    }
+    public void setEntrance(int theI, int theJ) {
+      Point entrance = new Point(theI, theJ);
+      myEntrancePoint = entrance;
+    }
+    public void setExit(int theI, int theJ) {
+      Point exit = new Point(theI, theJ);
+      myExitPoint = exit;
     }
 }
