@@ -1,7 +1,7 @@
 package model;
 
 public class RealDoor {
-    public enum DoorStatus {OPEN, CLOSED, LOCKED}
+    public enum DoorStatus {OPEN, CLOSED, LOCKED, FAKE, INACTIVE}
     public enum DoorDirection {NORTH, SOUTH, EAST, WEST}
     private DoorDirection myDoorDirection;
     private DoorStatus myDoorStatus;
