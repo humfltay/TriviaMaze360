@@ -2,20 +2,39 @@ package application;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.fxml.FXMLLoader;
 
 
-public class Main extends Application {
+public class Main extends Application { 
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("Maze.fxml"));
-			Scene scene = new Scene(root,700,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			
+			
+			
+			Parent root = FXMLLoader.load(getClass().getResource("play.fxml"));
+			Scene scene = new Scene(root);
+			
+			//might want to create a new default style sheet
+			scene.getStylesheets().add(getClass().getResource("menu.css").toExternalForm());
+			
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("Gui Demo");
+			primaryStage.setTitle("Gui Demo 2");
+			
+			Image image = new Image("file:questionIcon.png");
+			primaryStage.getIcons().add(image);
+			primaryStage.setResizable(false);
+			
+			
+			//removes the boarder- might want to implement a custom one with full screen option
+			//primaryStage.initStyle(StageStyle.UNDECORATED);
+			
+			
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();

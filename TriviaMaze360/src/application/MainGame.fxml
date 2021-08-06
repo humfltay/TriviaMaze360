@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ActionController">
+   <children>
+      <AnchorPane fx:id="anchor" layoutX="151.0" prefHeight="600.0" prefWidth="750.0" style="-fx-background-color: #6ca2d9;">
+         <children>
+            <TextArea layoutX="100.0" layoutY="38.0" prefHeight="221.0" prefWidth="520.0" text="Maze VIew:&#10;&#10;Ight so Im thinking for testing purposes that we can run the game right here in textbased&#10;mode to test functionaliy with th gui" />
+            <ImageView fitHeight="171.0" fitWidth="174.0" layoutX="65.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../dPad.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="dPadRight" layoutX="174.0" layoutY="393.0" mnemonicParsing="false" onAction="#right" opacity="0.0" prefHeight="49.0" prefWidth="46.0" text="right">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button fx:id="dPadUp" layoutX="124.0" layoutY="344.0" mnemonicParsing="false" onAction="#up" opacity="0.0" prefHeight="49.0" prefWidth="50.0" text="up">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button fx:id="dPadLeft" layoutX="75.0" layoutY="393.0" mnemonicParsing="false" onAction="#left" opacity="0.0" prefHeight="49.0" prefWidth="50.0" text="left">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button fx:id="dPadDown" layoutX="123.0" layoutY="442.0" mnemonicParsing="false" onAction="#down" opacity="0.0" prefHeight="49.0" prefWidth="52.0" text="down">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Label fx:id="lastPressedLabel" layoutX="59.0" layoutY="287.0" prefHeight="26.0" prefWidth="603.0" text="Last Pressed: Gives a default action for each button handler by setting this text" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="65.0" layoutY="547.0" prefHeight="26.0" prefWidth="403.0" text="This label is planned to appear to notifiy the player that a door is locked" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="221.0" layoutX="247.0" layoutY="319.0" stroke="BLACK" strokeType="INSIDE" width="437.0" />
+            <RadioButton layoutX="288.0" layoutY="336.0" mnemonicParsing="false" text="Sample answer for A" />
+            <RadioButton layoutX="288.0" layoutY="369.0" mnemonicParsing="false" text="Sample answer for B" />
+            <RadioButton layoutX="288.0" layoutY="409.0" mnemonicParsing="false" text="Sample answer for C" />
+            <RadioButton layoutX="288.0" layoutY="450.0" mnemonicParsing="false" text="Sample answer for D" />
+            <TextField layoutX="261.0" layoutY="492.0" prefHeight="25.0" prefWidth="324.0" text="textField can appear for certain questions" />
+            <Label layoutX="261.0" layoutY="336.0" text="A)" />
+            <Label layoutX="261.0" layoutY="369.0" text="B)" />
+            <Label layoutX="261.0" layoutY="409.0" text="C)" />
+            <Label layoutX="261.0" layoutY="450.0" text="D)" />
+            <Button layoutX="594.0" layoutY="492.0" mnemonicParsing="false" text="submit" />
+         </children></AnchorPane>
+      <VBox prefHeight="600.0" prefWidth="151.0" style="-fx-background-color: f0b411;">
+         <children>
+            <Button fx:id="playBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#switchToPlay" prefHeight="49.0" prefWidth="154.0" stylesheets="@menu.css" text="Play">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../gamePad.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="SetttingsBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#switchToSettings" prefHeight="51.0" prefWidth="174.0" stylesheets="@menu.css" text="Settings">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../gear.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <AnchorPane prefHeight="500.0" prefWidth="154.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="211.0" prefHeight="39.0" prefWidth="124.0" text="Maze 1">
+                     <font>
+                        <Font name="Copperplate Gothic Light" size="22.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="playerNameLabel" layoutX="14.0" layoutY="263.0" prefHeight="19.0" prefWidth="132.0" text="Player Name:" underline="true">
+                     <font>
+                        <Font name="Copperplate Gothic Light" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="playerScoreLabel" layoutX="14.0" layoutY="298.0" prefHeight="19.0" prefWidth="124.0" text="Score: 0">
+                     <font>
+                        <Font name="Copperplate Gothic Light" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
