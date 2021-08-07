@@ -52,18 +52,18 @@ public class Maze {
                 
             }
         }
-        for (int i = 0; i <= myMazeSize + 1; i++) {
-          myRooms[i][0] = new Room(i, 0, false);
-          myRooms[i][0].setDoors(DoorStatus.FAKE);
+        for (int i = 1; i <= myMazeSize; i++) {
+          //myRooms[i][0] = new Room(i, 0, false);
+          myRooms[i][1].getMyNorthDoor().setMyDoorStatus(DoorStatus.FAKE);
         }
-        for (int i = 0; i <= myMazeSize + 1; i++) {
-          myRooms[i][myMazeSize + 1] = new Room(i, myMazeSize + 1, false);
+        for (int i = 1; i <= myMazeSize; i++) {
+          myRooms[i][myMazeSize].getMySouthDoor().setMyDoorStatus(DoorStatus.FAKE);
         }
-        for (int j = 0; j <= myMazeSize + 1; j++) {
-          myRooms[0][j] = new Room(0, j, false);
+        for (int j = 1; j <= myMazeSize; j++) {
+          myRooms[1][j].getMyWestDoor().setMyDoorStatus(DoorStatus.FAKE);
         }
-        for (int j = 0; j <= myMazeSize + 1; j++) {
-          myRooms[myMazeSize + 1][j] = new Room(myMazeSize + 1, j, false);
+        for (int j = 1; j <= myMazeSize; j++) {
+          myRooms[myMazeSize][j].getMyEastDoor().setMyDoorStatus(DoorStatus.FAKE);;
         }
         myEntrance = myRooms[1][1];
         myRooms[1][1] = myEntrance;
