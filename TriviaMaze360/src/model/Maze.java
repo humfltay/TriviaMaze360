@@ -65,10 +65,12 @@ public class Maze {
         for (int j = 1; j <= myMazeSize; j++) {
           myRooms[myMazeSize][j].getMyEastDoor().setMyDoorStatus(DoorStatus.FAKE);;
         }
+        //EYES ON THIS CODE
         myEntrance = myRooms[1][1];
         myRooms[1][1] = myEntrance;
         //myExit = new Room(4, 4);
         myExit = myRooms[myMazeSize][myMazeSize];
+        myRooms[myMazeSize][myMazeSize] = myExit;
     }
     private void createRandomMaze() {
         for (int i = 1; i <= myMazeSize; i++) {
@@ -112,7 +114,7 @@ public class Maze {
         }
     }
     public boolean isValid(final int theRow, final int theCol) {
-        return (theRow >= 0 && theRow <= myMazeSize + 1) && (theCol >= 0 && theCol <= myMazeSize + 1);
+        return (theRow >= 1 && theRow <= myMazeSize) && (theCol >= 1 && theCol <= myMazeSize);
     }
     
     public static void main(final String[] theArgs) {
@@ -147,9 +149,12 @@ public class Maze {
       for (int i = 0; i <= myMazeSize + 1; i++) {
         for (int j = 0; j <= myMazeSize + 1; j++) {
             //int rand = new Random().nextInt(4);
-          Room current = getRoom(i, j);
+          Room current = null;
+          if (isValid(i,j)) {
+             current = getRoom(i, j);
+          }
             //not accessible
-            if (!current.isAccessable()) {
+            if (current == null) {
               maze.append(".");
             } else if (current.getMyRow() == getMyEntrance().getMyRow() &&
                 current.getMyCol() == getMyEntrance().getMyCol()) {

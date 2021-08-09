@@ -91,21 +91,21 @@ public class Room {
         return myCol;
     }
     /**
-     * Returns any door that is not marked FAKE. Fake doors will never
+     * Returns any door that is not marked FAKE or LOCKED. Fake doors will never
      * be accessed meaning we do not want to interact with them.
      * 
      * @return Set of Doors that are not FAKE.
      */
     public Set<RealDoor> getDoors() {
       Set<RealDoor> doors = new HashSet<RealDoor>();
-      if (myNorthDoor.getMyDoorStatus() != DoorStatus.FAKE)
+      if (myNorthDoor.getMyDoorStatus() != DoorStatus.FAKE && myNorthDoor.getMyDoorStatus() != DoorStatus.LOCKED)
           doors.add(myNorthDoor);
-      if (myEastDoor.getMyDoorStatus() != DoorStatus.FAKE)
+      if (myEastDoor.getMyDoorStatus() != DoorStatus.FAKE && myEastDoor.getMyDoorStatus() != DoorStatus.LOCKED)
           doors.add(myEastDoor);
       // west before south because going backwards should be last in priority
-      if (myWestDoor.getMyDoorStatus() != DoorStatus.FAKE)
+      if (myWestDoor.getMyDoorStatus() != DoorStatus.FAKE && myWestDoor.getMyDoorStatus() != DoorStatus.LOCKED)
           doors.add(myWestDoor);
-      if (mySouthDoor.getMyDoorStatus() != DoorStatus.FAKE)
+      if (mySouthDoor.getMyDoorStatus() != DoorStatus.FAKE && mySouthDoor.getMyDoorStatus() != DoorStatus.LOCKED)
           doors.add(mySouthDoor);
         return doors;
     }
@@ -159,5 +159,18 @@ public class Room {
             check = false;
         }
         return check;
+    }
+    @Override
+    public String toString() {
+      StringBuilder s = new StringBuilder();
+      s.append(getMyNorthDoor().getMyDoorStatus());
+      s.append("\n");
+      s.append(getMyEastDoor().getMyDoorStatus());
+      s.append("\n");
+      s.append(getMySouthDoor().getMyDoorStatus());
+      s.append("\n");
+      s.append(getMyWestDoor().getMyDoorStatus());
+      s.append("\n");
+      return s.toString();
     }
 }

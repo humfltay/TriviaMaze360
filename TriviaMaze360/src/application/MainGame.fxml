@@ -7,6 +7,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,7 +19,10 @@
    <children>
       <AnchorPane fx:id="anchor" layoutX="151.0" prefHeight="600.0" prefWidth="750.0" style="-fx-background-color: #6ca2d9;">
          <children>
-            <TextArea layoutX="100.0" layoutY="38.0" prefHeight="221.0" prefWidth="520.0" text="Maze VIew:&#10;&#10;Ight so Im thinking for testing purposes that we can run the game right here in textbased&#10;mode to test functionaliy with th gui" />
+            <TextArea layoutX="100.0" layoutY="38.0" prefHeight="221.0" prefWidth="520.0" text="Maze VIew:&#10;&#10;Ight so Im thinking for testing purposes that we can run the game right here in textbased&#10;mode to test functionaliy with th gui">
+               <font>
+                  <Font size="11.0" />
+               </font></TextArea>
             <ImageView fitHeight="171.0" fitWidth="174.0" layoutX="65.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../dPad.png" />
@@ -47,10 +51,13 @@
             </Label>
             <Label layoutX="65.0" layoutY="547.0" prefHeight="26.0" prefWidth="403.0" text="This label is planned to appear to notifiy the player that a door is locked" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="221.0" layoutX="247.0" layoutY="319.0" stroke="BLACK" strokeType="INSIDE" width="437.0" />
-            <RadioButton layoutX="288.0" layoutY="336.0" mnemonicParsing="false" text="Sample answer for A" />
-            <RadioButton layoutX="288.0" layoutY="369.0" mnemonicParsing="false" text="Sample answer for B" />
-            <RadioButton layoutX="288.0" layoutY="409.0" mnemonicParsing="false" text="Sample answer for C" />
-            <RadioButton layoutX="288.0" layoutY="450.0" mnemonicParsing="false" text="Sample answer for D" />
+            <RadioButton fx:id="questionA" layoutX="288.0" layoutY="336.0" mnemonicParsing="false" text="Sample answer for A">
+               <toggleGroup>
+                  <ToggleGroup fx:id="responses" />
+               </toggleGroup></RadioButton>
+            <RadioButton fx:id="questionB" layoutX="288.0" layoutY="369.0" mnemonicParsing="false" text="Sample answer for B" toggleGroup="$responses" />
+            <RadioButton fx:id="questionC" layoutX="288.0" layoutY="409.0" mnemonicParsing="false" text="Sample answer for C" toggleGroup="$responses" />
+            <RadioButton fx:id="questionD" layoutX="288.0" layoutY="450.0" mnemonicParsing="false" onAction="#clickResponseD" text="Sample answer for D" toggleGroup="$responses" />
             <TextField layoutX="261.0" layoutY="492.0" prefHeight="25.0" prefWidth="324.0" text="textField can appear for certain questions" />
             <Label layoutX="261.0" layoutY="336.0" text="A)" />
             <Label layoutX="261.0" layoutY="369.0" text="B)" />

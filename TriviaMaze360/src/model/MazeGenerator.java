@@ -23,7 +23,7 @@ public class MazeGenerator {
   // default
   public MazeGenerator() {
     //default values may likely change
-    this(3, 8, 12); //new Point(0, 0), new Point (4,4));
+    this(3, 8, 15); //new Point(0, 0), new Point (4,4));
   }
 
   public MazeGenerator(int theMinPaths, int theMaxPaths, int theSize) {
@@ -40,16 +40,24 @@ public class MazeGenerator {
     myMaze = builder;
     createEntranceAndExit();
     Point start = myMaze.getMyEntrancePoint();
-    
-//    for (int i = 0; i < paths; i++) {
-//      createPath(builder, start.x, start.y);
-//    }
+    Point exit = myMaze.getMyExitPoint();
+    System.out.print("Start: ");
+    System.out.print(start.x);
+    System.out.print("\t");
+    System.out.print(start.y + "\n");
+    System.out.print("Exit: ");
+    System.out.print(exit.x);
+    System.out.print("\t");
+    System.out.print(exit.y + "\n");
+    for (int i = 0; i < paths; i++) {
+      createPath(builder, start.x, start.y);
+    }
   }
 
   private void createEntranceAndExit() {
     // TODO Auto-generated method stub
     Random ran = new Random();
-    int side = ran.nextInt(5);
+    int side = ran.nextInt(4) + 1;
     int i = ran.nextInt(mySize) + 1;
     int j = ran.nextInt(mySize) + 1;
     Room entrance = null;
@@ -78,11 +86,11 @@ public class MazeGenerator {
   private void createExit(int theSide) {
     // TODO Auto-generated method stub
     Random ran = new Random();
-    int i = ran.nextInt(mySize + 1) + 1;
-    int j = ran.nextInt(mySize + 1) + 1;
+    int i = ran.nextInt(mySize) + 1;
+    int j = ran.nextInt(mySize) + 1;
     int newSide = theSide;
     while(theSide == newSide ) {
-      newSide = ran.nextInt(5);
+      newSide = ran.nextInt(4) + 1;
     }
     switch(newSide) {
     case 1:
@@ -112,6 +120,11 @@ public class MazeGenerator {
     Random ran = new Random();
     int pick = ran.nextInt(4);
     while (hasPath(current) && !theMaze.isGoal(current)) {
+      //the thing to debug
+      System.out.print(current.getMyCol());
+      System.out.print("\t");
+      System.out.println(current.getMyRow());
+      System.out.println(current);
       current = getPath(current);
     }
         
@@ -129,9 +142,11 @@ public class MazeGenerator {
     // TODO Auto-generated method stub
     boolean check = false;
     Set<RealDoor> rooms = theRoom.getDoors();
+    
     for (RealDoor room : rooms) {
-      if (room.getMyDoorStatus() == DoorStatus.INACTIVE || room.getMyDoorStatus() == DoorStatus.CLOSED || 
-          room.getMyDoorStatus() == DoorStatus.LOCKED) {
+      //System.out.print("DOOR STATUS BEING CHECKED::::");
+      //System.out.print(room.getMyDoorStatus());
+      if (room.getMyDoorStatus() == DoorStatus.INACTIVE || room.getMyDoorStatus() == DoorStatus.CLOSED) {
         check = true;
       }
     }
@@ -153,34 +168,41 @@ public class MazeGenerator {
     int loopCnt = 0;
     while (pathNotFound) {
       for (RealDoor door: doors) {
+        DoorDirection left = goLeft(direction);
+        DoorDirection right = goRight(direction);
         if (door.getMyDoorDirection() == direction && ran > 0.6) {
+          System.out.println("straight");
           //go that direction right???
           pathNotFound = false;
-          door.setMyDoorStatus(DoorStatus.LOCKED);
+          //closed for asking questions???
+          door.setMyDoorStatus(DoorStatus.CLOSED);
           pathTo = myMaze.openDoor(direction, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(direction).getMyDoorStatus());
 
         } 
-        ran = Math.random();
-        DoorDirection left = goLeft(direction);
-        if (door.getMyDoorDirection() == left && ran < 0.3) {
+        
+        else if (door.getMyDoorDirection() == left && (ran = Math.random()) < 0.3) {
+          
+          System.out.println("left");
           //go that direction 
           pathNotFound = false;
-          door.setMyDoorStatus(DoorStatus.LOCKED);
+          door.setMyDoorStatus(DoorStatus.CLOSED);
           pathTo = myMaze.openDoor(left, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(left).getMyDoorStatus());
 
         }
-        ran = Math.random();
-        DoorDirection right = goRight(direction);
-        if (door.getMyDoorDirection() == right && ran > 0.7) {
+        else if (door.getMyDoorDirection() == right && (ran = Math.random()) > 0.7 ) {
+          System.out.println("right");
           pathNotFound = false;
-          door.setMyDoorStatus(DoorStatus.LOCKED);
+          door.setMyDoorStatus(DoorStatus.CLOSED);
           pathTo = myMaze.openDoor(right, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(right).getMyDoorStatus());
           //go that direction 
         }
-        if (loopCnt > 10) {
-          pathNotFound = false;
+        //CHECK THIS
+        else if (loopCnt > 10) {
           DoorDirection back = goRight(goRight(direction));
-          pathTo = myMaze.openDoor(back, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(back).getMyDoorStatus()); 
+          if (door.getMyDoorDirection() == back)
+            System.out.println("back");
+            pathNotFound = false;
+            pathTo = myMaze.openDoor(back, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(back).getMyDoorStatus()); 
         }
         loopCnt++;
       }
