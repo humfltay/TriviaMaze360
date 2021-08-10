@@ -59,7 +59,7 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <Slider layoutX="334.0" layoutY="300.0" prefHeight="14.0" prefWidth="325.0" />
+      <Slider fx:id="vSlider" layoutX="334.0" layoutY="300.0" prefHeight="14.0" prefWidth="325.0" />
       <Label layoutX="323.0" layoutY="298.0" prefHeight="19.0" prefWidth="11.0" text="0" />
       <Label layoutX="659.0" layoutY="299.0" text="100" />
       <Button fx:id="resetBtn" layoutX="403.0" layoutY="447.0" mnemonicParsing="false" onAction="#switchToPlay" prefHeight="39.0" prefWidth="79.0" text="Reset">

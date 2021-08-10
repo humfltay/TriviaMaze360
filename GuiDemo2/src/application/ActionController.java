@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,6 +15,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 public class ActionController {
@@ -22,6 +25,15 @@ public class ActionController {
 	private Scene scene;
 	private Parent root;
 	
+	String path = "03 - Track  3.mp3";
+	Media media = new Media(new File(path).toURI().toString());
+	MediaPlayer mp = new MediaPlayer(media);
+	
+	/*
+	public static MediaPlayer getMp() {
+		return mp;
+	}
+	*/
 	@FXML
     private AnchorPane anchor;
 
@@ -91,6 +103,9 @@ public class ActionController {
 	public void initialize() {
 		//sets player name label
 		playerNameLabel.setText(SceneController.getPlayerName() + ":");
+		
+		
+		mp.play();
 	}
 	
 }

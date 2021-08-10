@@ -7,6 +7,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,7 +19,7 @@
    <children>
       <AnchorPane fx:id="anchor" layoutX="151.0" prefHeight="600.0" prefWidth="750.0" style="-fx-background-color: #6ca2d9;">
          <children>
-            <TextArea layoutX="100.0" layoutY="38.0" prefHeight="221.0" prefWidth="520.0" text="Maze VIew:&#10;&#10;Ight so Im thinking for testing purposes that we can run the game right here in textbased&#10;mode to test functionaliy with th gui" />
+            <TextArea layoutX="100.0" layoutY="38.0" prefHeight="221.0" prefWidth="520.0" text="Maze VIew:&#10;&#10;Ight so Im thinking for testing purposes that we can run the game right here in textbased&#10;mode to test functionaliy with the gui" />
             <ImageView fitHeight="171.0" fitWidth="174.0" layoutX="65.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../dPad.png" />
@@ -57,6 +58,18 @@
             <Label layoutX="261.0" layoutY="409.0" text="C)" />
             <Label layoutX="261.0" layoutY="450.0" text="D)" />
             <Button layoutX="594.0" layoutY="492.0" mnemonicParsing="false" text="submit" />
+            <Button layoutX="33.0" layoutY="71.0" mnemonicParsing="false" stylesheets="@playScreen.css">
+               <graphic>
+                  <ImageView fx:id="saveBtn" fitHeight="29.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../saveIcon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Save Your Game" />
+               </tooltip>
+            </Button>
          </children></AnchorPane>
       <VBox prefHeight="600.0" prefWidth="151.0" style="-fx-background-color: f0b411;">
          <children>

@@ -14,15 +14,35 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SceneController">
    <children>
-      <AnchorPane fx:id="anchor" layoutX="151.0" prefHeight="600.0" prefWidth="750.0" style="-fx-background-color: #6ca2d9;">
+      <AnchorPane fx:id="anchor" layoutX="151.0" prefHeight="600.0" prefWidth="750.0" styleClass="anchor" stylesheets="@menu.css">
          <children>
-            <ImageView fitHeight="600.0" fitWidth="750.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../pokemonBackground.png" />
-               </image>
-            </ImageView>
-            <Label layoutY="541.0" prefHeight="37.0" prefWidth="735.0" text="I was thinking we could have a collage of images here on the title screen for each of the maze themes we include" textFill="WHITE" />
-            <Label layoutX="8.0" layoutY="570.0" text="this is here as a place holder bc I assume we are doing pokemon first" textFill="WHITE" />
+            <VBox layoutX="267.0" layoutY="217.0" prefHeight="324.0" prefWidth="182.0" spacing="20.0">
+               <children>
+                  <Button fx:id="newGameBtn" mnemonicParsing="false" onAction="#newGame" prefHeight="49.0" prefWidth="189.0" stylesheets="@playScreen.css" text="New Game" />
+                  <Button fx:id="LoadGameBtn" mnemonicParsing="false" onAction="#LoadGame" prefHeight="49.0" prefWidth="187.0" stylesheets="@playScreen.css" text="Load Game" />
+               </children>
+            </VBox>
+            <Label layoutX="214.0" layoutY="28.0" prefHeight="97.0" prefWidth="308.0" text="Trivia Maze">
+               <font>
+                  <Font name="Gabriola" size="73.0" />
+               </font>
+               <textFill>
+                  <RadialGradient centerX="0.48333333333333334" centerY="0.5380952380952382" radius="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.8599632978439331" green="0.8799999952316284" blue="0.5807999968528748" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </RadialGradient>
+               </textFill>
+            </Label>
          </children></AnchorPane>
       <VBox prefHeight="600.0" prefWidth="151.0" style="-fx-background-color: f0b411;">
          <children>
@@ -51,33 +71,6 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-         </children>
-      </VBox>
-      <Label layoutX="343.0" layoutY="46.0" prefHeight="97.0" prefWidth="308.0" text="Trivia Maze">
-         <font>
-            <Font name="Gabriola" size="73.0" />
-         </font>
-         <textFill>
-            <RadialGradient centerX="0.48333333333333334" centerY="0.5380952380952382" radius="1.0">
-               <stops>
-                  <Stop>
-                     <color>
-                        <Color red="0.8599632978439331" green="0.8799999952316284" blue="0.5807999968528748" />
-                     </color>
-                  </Stop>
-                  <Stop offset="1.0">
-                     <color>
-                        <Color red="1.0" green="1.0" blue="1.0" />
-                     </color>
-                  </Stop>
-               </stops>
-            </RadialGradient>
-         </textFill>
-      </Label>
-      <VBox layoutX="394.0" layoutY="143.0" prefHeight="324.0" prefWidth="182.0" spacing="20.0">
-         <children>
-            <Button fx:id="newGameBtn" mnemonicParsing="false" onAction="#newGame" prefHeight="49.0" prefWidth="189.0" stylesheets="@playScreen.css" text="New Game" />
-            <Button fx:id="LoadGameBtn" mnemonicParsing="false" onAction="#LoadGame" prefHeight="49.0" prefWidth="187.0" stylesheets="@playScreen.css" text="Load Game" />
          </children>
       </VBox>
    </children>

@@ -12,13 +12,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SceneController">
    <children>
-      <AnchorPane fx:id="anchor" layoutX="151.0" prefHeight="600.0" prefWidth="750.0" style="-fx-background-color: #6ca2d9;">
+      <AnchorPane fx:id="anchor" layoutX="151.0" prefHeight="600.0" prefWidth="750.0" style="-fx-background-color: #6ca2d9;" styleClass="anchor" stylesheets="@menu.css">
          <children>
-            <ImageView fitHeight="600.0" fitWidth="750.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../pokemonBackground.png" />
-               </image>
-            </ImageView>
             <VBox layoutX="249.0" layoutY="208.0" prefHeight="317.0" prefWidth="253.0" spacing="20.0">
                <children>
                   <Label prefHeight="62.0" prefWidth="272.0" text="Enter Player Name:" textFill="#e4dddd">
