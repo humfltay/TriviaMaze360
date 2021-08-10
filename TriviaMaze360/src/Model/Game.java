@@ -1,5 +1,9 @@
 package model;
 
+import model.Maze;
+import model.Menu;
+import model.User;
+
 public class Game {
     Maze myMaze;
     User myUser;

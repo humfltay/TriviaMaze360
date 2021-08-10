@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SceneController">
+   <children>
+      <AnchorPane fx:id="anchor" layoutX="151.0" prefHeight="600.0" prefWidth="750.0" style="-fx-background-color: #6ca2d9;" styleClass="anchor" stylesheets="@menu.css">
+         <children>
+            <VBox layoutX="249.0" layoutY="208.0" prefHeight="317.0" prefWidth="253.0" spacing="20.0">
+               <children>
+                  <Label prefHeight="62.0" prefWidth="272.0" text="Enter Player Name:" textFill="#e4dddd">
+                     <font>
+                        <Font name="Blacksword" size="26.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="nameField" />
+                  <Button fx:id="confirmBtn" mnemonicParsing="false" onAction="#startGame" prefHeight="33.0" prefWidth="257.0" stylesheets="@playScreen.css" text="Confirm" />
+               </children>
+            </VBox>
+         </children></AnchorPane>
+      <VBox prefHeight="600.0" prefWidth="151.0" style="-fx-background-color: f0b411;">
+         <children>
+            <Button fx:id="playBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#switchToPlay" prefHeight="49.0" prefWidth="154.0" stylesheets="@menu.css" text="Play">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../gamePad.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="SettingsBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#switchToSettings" prefHeight="51.0" prefWidth="174.0" stylesheets="@menu.css" text="Settings">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../gear.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+         </children>
+      </VBox>
+      <Label layoutX="343.0" layoutY="46.0" prefHeight="97.0" prefWidth="308.0" text="Trivia Maze" textFill="#e1e1e1">
+         <font>
+            <Font name="Gabriola" size="73.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

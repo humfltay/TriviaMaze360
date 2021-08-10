@@ -1,0 +1,18 @@
+.anchor {
+	-fx-background-image:url('file:pokemonBackground.png');
+	-fx-background-size: cover;
+	-fx-background-repeat: stretch; 
+    -fx-background-position: center center;
+}
+
+
+.button {
+    -fx-background-color:  #f0b411;
+    -fx-text-fill: white;
+}
+.button:hover {
+    -fx-background-color: #e6ac10;
+}
+.button:pressed {
+    -fx-background-color: #dba209;
+}
