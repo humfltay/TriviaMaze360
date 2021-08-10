@@ -22,7 +22,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="nameField" />
-                  <Button fx:id="confirmBtn" mnemonicParsing="false" onAction="#startGame" prefHeight="33.0" prefWidth="257.0" stylesheets="@playScreen.css" text="Confirm" />
+                  <Button fx:id="confirmBtn" defaultButton="true" mnemonicParsing="false" onAction="#startGame" prefHeight="33.0" prefWidth="257.0" stylesheets="@playScreen.css" text="Confirm" />
                </children>
             </VBox>
          </children></AnchorPane>
