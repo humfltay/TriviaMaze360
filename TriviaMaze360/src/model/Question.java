@@ -13,6 +13,12 @@ public class Question {
     
     public Question(String theType) {
         //not yet implement
+        setQuestionOfType(theType);
+    }
+    private void setQuestionOfType(String theType) {
+      SelectQuestions sq = new SelectQuestions();
+      List<String> contents = sq.getQuestionOfType(theType);
+      setUpQuestion(contents);
     }
     public Question() {
         setRandomQuestion();

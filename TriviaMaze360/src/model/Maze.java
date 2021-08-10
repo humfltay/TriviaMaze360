@@ -3,6 +3,8 @@ package model;
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import model.RealDoor.DoorDirection;
@@ -100,11 +102,15 @@ public class Maze {
         return myExit;
     }
     public boolean isWinnable() {
+      boolean check = false;
+      if (getMyExit().isAccessable()) {
+        List<Room> visited = new ArrayList<Room>();
+        //recursively check each path from exit to find entrance
+        //loop ends if all rooms are in visited
+        //while ()
+      }
         return myWinnable;
-    }
-    
-    public void setWinnable() {
-         //Needs to be implemented still.
+        
     }
     public Room getRoom(final int theRow, final int theCol) throws IndexOutOfBoundsException {
         if (isValid(theRow, theCol)) {

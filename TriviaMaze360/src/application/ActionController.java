@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +17,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.RealDoor.DoorStatus;
 
 public class ActionController {
 	
@@ -55,7 +58,22 @@ public class ActionController {
     private Button dPadDown;
     
     @FXML
+    private AnchorPane bottom;
+
+    @FXML
+    private AnchorPane left;
+
+    @FXML
+    private AnchorPane right;
+
+    @FXML
+    private AnchorPane top;
+    
+    @FXML
     private Label lastPressedLabel;
+    
+    @FXML
+    private Button startGame;
     
     @FXML
     private RadioButton questionA;
@@ -92,6 +110,39 @@ public class ActionController {
     @FXML
     void right(ActionEvent event) {
     	lastPressedLabel.setText("Last Pressed: dPadRight");
+    }
+    //start button pressed
+    @FXML
+    void start(ActionEvent theEvent) {
+      
+      model.Room test = new model.Room(1,1);
+      startGame.setDisable(true);
+      startGame.setOpacity(0);
+      test.setDoors(DoorStatus.CLOSED);
+      bottom.setTranslateX(0);
+      bottom.setOpacity(1);
+      Node n = bottom.getChildren().get(1);
+      BorderPane border = (BorderPane) n ;
+      AnchorPane top = (AnchorPane) border.getChildren().get(1);
+      ObservableList<Node> elements = top.getChildren();
+      for (int i = 1; i < elements.size(); i++) {
+        elements.get(i).setOpacity(0);
+      }
+      n = bottom.getChildren().get(1);
+      border = (BorderPane) n ;
+      top = (AnchorPane) border.getChildren().get(2);
+      elements = top.getChildren();
+      for (int i = 1; i < elements.size(); i++) {
+        elements.get(i).setOpacity(0);
+      }
+      n = bottom.getChildren().get(1);
+      border = (BorderPane) n ;
+      top = (AnchorPane) border.getChildren().get(4);
+      elements = top.getChildren();
+      for (int i = 1; i < elements.size(); i++) {
+        elements.get(i).setOpacity(0);
+      }
+      //top left right bottom
     }
     
     @FXML
