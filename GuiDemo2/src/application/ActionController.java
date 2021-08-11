@@ -103,6 +103,9 @@ public class ActionController {
     @FXML
     private TextArea mainTextArea;
     
+    @FXML
+    private Button exitBtn;
+    
     /**
      * All dPad directions are invisible buttons overlaid on top of dPad.png.
      * 
@@ -235,17 +238,30 @@ public class ActionController {
     	choiceB.setText("False");
     }
     
+    @FXML
+    void switchToMain(ActionEvent event) throws IOException {
+    	root = FXMLLoader.load(getClass().getResource("MainGame.fxml"));
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+    }
+    
     /**
      * @param event when the "play" button is pressed.
      * @throws IOException 
      */
     @FXML
     void switchToPlay(ActionEvent event) throws IOException {
-    	root = FXMLLoader.load(getClass().getResource("MainGame.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
+    	
+    	//prompt user to make sure they wish to exit
+    	if(ConfirmBox.popUp("Are you sure you want to exit?", "All unsaved progress will be lost") == true) {
+    		root = FXMLLoader.load(getClass().getResource("play.fxml"));
+    		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+    		scene = new Scene(root);
+    		stage.setScene(scene);
+    		stage.show();
+    	}
     }
 
     /**

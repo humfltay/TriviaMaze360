@@ -227,4 +227,10 @@ public class SceneController {
     	//prints the file path of the selected item in the ListView which we can use to load the save
     	System.out.println(toLoad.getAbsolutePath());
     }
+    
+    @FXML
+    public void initialize() {
+    	//uncomment the line below to see how elements are null until after the initialize method is ran
+    	//listview.getItems().add("hello world");
+    }
 }

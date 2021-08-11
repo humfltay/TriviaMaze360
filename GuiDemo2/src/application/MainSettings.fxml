@@ -15,7 +15,7 @@
    <children>
       <VBox prefHeight="600.0" prefWidth="151.0" style="-fx-background-color: f0b411;">
          <children>
-            <Button fx:id="playBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#switchToPlay" prefHeight="49.0" prefWidth="154.0" stylesheets="@menu.css" text="Play">
+            <Button fx:id="playBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#switchToMain" prefHeight="49.0" prefWidth="154.0" stylesheets="@menu.css" text="Play">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
