@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class RealDoor {
-    public enum DoorStatus {OPEN, CLOSED, LOCKED, FAKE, INACTIVE}
+    public enum DoorStatus {OPEN, CLOSED, FAKE, INACTIVE}
     public enum DoorDirection {NORTH, SOUTH, EAST, WEST}
     private DoorDirection myDoorDirection;
     private DoorStatus myDoorStatus;
@@ -13,7 +13,7 @@ public class RealDoor {
     
     
     public RealDoor(DoorDirection theDoorDirection) {
-        myDoorStatus = DoorStatus.CLOSED;
+        myDoorStatus = DoorStatus.INACTIVE;
         myDoorDirection = theDoorDirection;
     }
     

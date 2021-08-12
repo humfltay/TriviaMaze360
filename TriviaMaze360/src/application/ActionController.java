@@ -119,29 +119,59 @@ public class ActionController {
       startGame.setDisable(true);
       startGame.setOpacity(0);
       test.setDoors(DoorStatus.CLOSED);
-      bottom.setTranslateX(0);
+      //bottom.setTranslateX(0);
       bottom.setOpacity(1);
       Node n = bottom.getChildren().get(1);
       BorderPane border = (BorderPane) n ;
-      AnchorPane top = (AnchorPane) border.getChildren().get(1);
-      ObservableList<Node> elements = top.getChildren();
+      AnchorPane anchor = (AnchorPane) border.getChildren().get(1);
+      ObservableList<Node> elements = anchor.getChildren();
       for (int i = 1; i < elements.size(); i++) {
         elements.get(i).setOpacity(0);
       }
-      n = bottom.getChildren().get(1);
+      anchor = (AnchorPane) border.getChildren().get(2);
+      elements = anchor.getChildren();
+      for (int i = 1; i < elements.size(); i++) {
+        elements.get(i).setOpacity(0);
+      }
+      anchor = (AnchorPane) border.getChildren().get(3);
+      elements = anchor.getChildren();
+      for (int i = 1; i < elements.size(); i++) {
+        elements.get(i).setOpacity(0);
+      }
+//      anchor = (AnchorPane) border.getChildren().get(4);
+//      elements = anchor.getChildren();
+//      for (int i = 1; i < elements.size(); i++) {
+//        elements.get(i).setOpacity(0);
+//      }
+      
+      
+      
+      
+      
+      left.setTranslateX(0);
+      left.setVisible(true);
+      n = left.getChildren().get(1);
       border = (BorderPane) n ;
-      top = (AnchorPane) border.getChildren().get(2);
-      elements = top.getChildren();
+      anchor = (AnchorPane) border.getChildren().get(1);
+      elements = anchor.getChildren();
       for (int i = 1; i < elements.size(); i++) {
         elements.get(i).setOpacity(0);
       }
-      n = bottom.getChildren().get(1);
-      border = (BorderPane) n ;
-      top = (AnchorPane) border.getChildren().get(4);
-      elements = top.getChildren();
+      anchor = (AnchorPane) border.getChildren().get(2);
+      elements = anchor.getChildren();
       for (int i = 1; i < elements.size(); i++) {
         elements.get(i).setOpacity(0);
       }
+      anchor = (AnchorPane) border.getChildren().get(3);
+      elements = anchor.getChildren();
+      for (int i = 1; i < elements.size(); i++) {
+        elements.get(i).setOpacity(0);
+      }
+//      anchor = (AnchorPane) border.getChildren().get(4);
+//      elements = anchor.getChildren();
+//      for (int i = 1; i < elements.size(); i++) {
+//        elements.get(i).setOpacity(0);
+//      }
       //top left right bottom
     }
     

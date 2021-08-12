@@ -55,7 +55,7 @@ public class TextController implements Serializable {
             myUser.move(myDoor);
             myDoor.setMyDoorStatus(DoorStatus.OPEN);
         } else {
-            myDoor.setMyDoorStatus(DoorStatus.LOCKED);
+            myDoor.setMyDoorStatus(DoorStatus.INACTIVE);
         }
         return myUser.getMyRoom();
     }

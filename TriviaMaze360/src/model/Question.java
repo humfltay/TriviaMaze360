@@ -12,7 +12,6 @@ public class Question {
     public int myDifficulty;
     
     public Question(String theType) {
-        //not yet implement
         setQuestionOfType(theType);
     }
     private void setQuestionOfType(String theType) {

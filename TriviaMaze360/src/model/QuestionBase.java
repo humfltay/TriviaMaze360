@@ -27,6 +27,10 @@ public class QuestionBase {
           //sq.getQuestionsHarderThan(1);
           // System.out.println();
           //sq.getQuestionsOfDifficulty(2);
+          Maze m = null;
+          MazeGenerator mazeGen = new MazeGenerator();
+          m = mazeGen.getMaze();
+          System.out.println(m);
           
        
     }

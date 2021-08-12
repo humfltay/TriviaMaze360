@@ -26,7 +26,7 @@ public class MazeGenerator {
     this(3, 8, 15); //new Point(0, 0), new Point (4,4));
   }
 
-  public MazeGenerator(int theMinPaths, int theMaxPaths, int theSize) {
+  public MazeGenerator(final int theMinPaths, final int theMaxPaths, final int theSize) {
     // avoid cycles
     Random ran = new Random();
     int paths = theMinPaths;
@@ -189,7 +189,7 @@ public class MazeGenerator {
           pathTo = myMaze.openDoor(left, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(left).getMyDoorStatus());
 
         }
-        else if (door.getMyDoorDirection() == right && (ran = Math.random()) > 0.7 ) {
+        else if (door.getMyDoorDirection() == right && (ran = Math.random()) > 0.4 ) {
           System.out.println("right");
           pathNotFound = false;
           door.setMyDoorStatus(DoorStatus.CLOSED);
@@ -259,18 +259,18 @@ public class MazeGenerator {
     Room peek = null;
     if (theDir == DoorDirection.NORTH) {
       peek = myMaze.getRoom(theRow, theCol - 1);
-      peek.getMySouthDoor().setMyDoorStatus(DoorStatus.LOCKED);
+      peek.getMySouthDoor().setMyDoorStatus(DoorStatus.CLOSED);
     } 
     else if (theDir == DoorDirection.EAST) {
       peek = myMaze.getRoom(theRow + 1, theCol);
-      peek.getMyWestDoor().setMyDoorStatus(DoorStatus.LOCKED);
+      peek.getMyWestDoor().setMyDoorStatus(DoorStatus.CLOSED);
     }
     else if (theDir == DoorDirection.SOUTH) {
       peek = myMaze.getRoom(theRow, theCol + 1);
-      peek.getMyNorthDoor().setMyDoorStatus(DoorStatus.LOCKED);
+      peek.getMyNorthDoor().setMyDoorStatus(DoorStatus.CLOSED);
     } else {
       peek = myMaze.getRoom(theRow - 1, theCol);
-      peek.getMyEastDoor().setMyDoorStatus(DoorStatus.LOCKED);
+      peek.getMyEastDoor().setMyDoorStatus(DoorStatus.CLOSED);
     }
     return peek;  
   }

@@ -98,14 +98,14 @@ public class Room {
      */
     public Set<RealDoor> getDoors() {
       Set<RealDoor> doors = new HashSet<RealDoor>();
-      if (myNorthDoor.getMyDoorStatus() != DoorStatus.FAKE && myNorthDoor.getMyDoorStatus() != DoorStatus.LOCKED)
+      if (myNorthDoor.getMyDoorStatus() != DoorStatus.FAKE)
           doors.add(myNorthDoor);
-      if (myEastDoor.getMyDoorStatus() != DoorStatus.FAKE && myEastDoor.getMyDoorStatus() != DoorStatus.LOCKED)
+      if (myEastDoor.getMyDoorStatus() != DoorStatus.FAKE)
           doors.add(myEastDoor);
       // west before south because going backwards should be last in priority
-      if (myWestDoor.getMyDoorStatus() != DoorStatus.FAKE && myWestDoor.getMyDoorStatus() != DoorStatus.LOCKED)
+      if (myWestDoor.getMyDoorStatus() != DoorStatus.FAKE)
           doors.add(myWestDoor);
-      if (mySouthDoor.getMyDoorStatus() != DoorStatus.FAKE && mySouthDoor.getMyDoorStatus() != DoorStatus.LOCKED)
+      if (mySouthDoor.getMyDoorStatus() != DoorStatus.FAKE)
           doors.add(mySouthDoor);
         return doors;
     }

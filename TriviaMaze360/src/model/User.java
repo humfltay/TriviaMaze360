@@ -76,7 +76,7 @@ public class User implements Serializable {
     }
     public boolean canMove(RealDoor theDoor) {
         boolean flag = false;
-        if (!theDoor.getMyDoorStatus().equals(DoorStatus.LOCKED)) {
+        if (!theDoor.getMyDoorStatus().equals(DoorStatus.INACTIVE)) {
             Room newRoom = moveHelper(theDoor);
             if (newRoom != null) {
                 flag = true;
@@ -91,7 +91,7 @@ public class User implements Serializable {
             myRoom = myMaze.getRoom(newRoom.getMyRow(), newRoom.getMyCol());
             theDoor.setMyDoorStatus(DoorStatus.OPEN);
         } else {
-            theDoor.setMyDoorStatus(DoorStatus.LOCKED);
+            theDoor.setMyDoorStatus(DoorStatus.INACTIVE);
         }
         return myRoom;
     }
