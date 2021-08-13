@@ -23,7 +23,7 @@ public class MazeGenerator {
   // default
   public MazeGenerator() {
     //default values may likely change
-    this(3, 8, 15); //new Point(0, 0), new Point (4,4));
+    this(3, 8, 20); //new Point(0, 0), new Point (4,4));
   }
 
   public MazeGenerator(final int theMinPaths, final int theMaxPaths, final int theSize) {

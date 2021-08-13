@@ -108,7 +108,9 @@ public class Maze {
       
       Queue<Room> currentRooms = new LinkedList<Room>();
       currentRooms.add(init);
-      
+      if (isGoal(init)) {
+        found = true;
+      }
       if (getMyExit().isAccessable()) {
         List<Room> visited = new ArrayList<Room>();
         
