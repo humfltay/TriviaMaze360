@@ -56,6 +56,8 @@ public class SelectQuestions {
         return questions.get(ran.nextInt(questions.size()));
     }
     public void getQuestionsHarderThan(int theDifficulty){
+        ArrayList<List<String>> questions = new ArrayList<List<String>>();
+        ArrayList<String> question = null;
         String sql = "SELECT questionIndex, difficulty, questionType, questions "
                    + "FROM questions WHERE difficulty > ?";
          try (Connection conn = this.connect();
@@ -69,10 +71,15 @@ public class SelectQuestions {
              // loop through the result set
              
              while (rs.next()) {
-                 System.out.println(rs.getInt("questionIndex") +  "\t" + 
-                                    rs.getInt("difficulty") +  "\t" +
-                                    rs.getString("questionType") + "\t" +
-                                    rs.getString("questions"));
+//                 System.out.println(rs.getInt("questionIndex") +  "\t" + 
+//                                    rs.getInt("difficulty") +  "\t" +
+//                                    rs.getString("questionType") + "\t" +
+//                                    rs.getString("questions"));
+                 question = new ArrayList<String>();
+                 question.add(rs.getInt("difficulty") + "");
+                 question.add(rs.getString("questionType"));
+                 question.add(rs.getString("questions") + "");
+                 questions.add(question);
                  //rs.getInt(theDifficulty);
                  //LATER
              }
@@ -81,6 +88,8 @@ public class SelectQuestions {
          }
     }
     public void getQuestionsOfDifficulty(int theDifficulty){
+        ArrayList<List<String>> questions = new ArrayList<List<String>>();
+        ArrayList<String> question = null;
         String sql = "SELECT questionIndex, difficulty, questionType, questions "
                    + "FROM questions WHERE difficulty = ?";
          try (Connection conn = this.connect();
@@ -93,10 +102,15 @@ public class SelectQuestions {
              
              // loop through the result set
              while (rs.next()) {
-                 System.out.println(rs.getInt("questionIndex") +  "\t" + 
-                                    rs.getInt("difficulty") +  "\t" +
-                                    rs.getString("questionType") + "\t" +
-                                    rs.getString("questions"));
+//                 System.out.println(rs.getInt("questionIndex") +  "\t" + 
+//                                    rs.getInt("difficulty") +  "\t" +
+//                                    rs.getString("questionType") + "\t" +
+//                                    rs.getString("questions"));
+                 question = new ArrayList<String>();
+                 question.add(rs.getInt("difficulty") + "");
+                 question.add(rs.getString("questionType"));
+                 question.add(rs.getString("questions") + "");
+                 questions.add(question);
              }
          } catch (SQLException e) {
              System.out.println(e.getMessage());

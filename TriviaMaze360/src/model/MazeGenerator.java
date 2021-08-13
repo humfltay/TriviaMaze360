@@ -161,7 +161,9 @@ public class MazeGenerator {
     //go right 30%
     Room pathTo = null;
     //FIX EQUAL PATH ISSUE
-    DoorDirection direction = getDirect();
+    
+    //CHANGE TO CHECK DIRECTION EVERY INSTANCE INSTEAD
+    DoorDirection direction = getDirect(theRoom);
     boolean pathNotFound = true;
     Set<RealDoor> doors = theRoom.getDoors();
     double ran = Math.random();
@@ -170,7 +172,7 @@ public class MazeGenerator {
       for (RealDoor door: doors) {
         DoorDirection left = goLeft(direction);
         DoorDirection right = goRight(direction);
-        if (door.getMyDoorDirection() == direction && ran > 0.6) {
+        if (door.getMyDoorDirection() == direction && ran > 0.3) {
           System.out.println("straight");
           //go that direction right???
           pathNotFound = false;
@@ -209,8 +211,8 @@ public class MazeGenerator {
     }
     return pathTo;
   }
-  private DoorDirection getDirect() {
-    Point entrPoint = myMaze.getMyEntrancePoint();
+  private DoorDirection getDirect(Room theRoom) {
+    Point entrPoint = new Point(theRoom.getMyRow(), theRoom.getMyCol());
     Point exitPoint = myMaze.getMyExitPoint();
   //positive = right, negative = left, equal ignore
     double diffInX = exitPoint.getX() - entrPoint.getX();

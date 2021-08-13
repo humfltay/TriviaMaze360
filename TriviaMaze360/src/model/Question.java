@@ -22,6 +22,7 @@ public class Question {
     public Question() {
         setRandomQuestion();
     }
+    
     //FORMAT OF LIST -> difficulty, questionType, questions
     private void setRandomQuestion() {
         //creating link to database helper method

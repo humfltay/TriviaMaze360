@@ -173,4 +173,23 @@ public class Room {
       s.append("\n");
       return s.toString();
     }
+    @Override
+    public boolean equals (Object theO) {
+      Room room = null;
+      if((theO == null) || (theO.getClass() != this.getClass())) {
+        return false;
+      } 
+      room = (Room) theO;
+      if (room.getMyRow() == getMyRow() && room.getMyCol() == getMyCol()){
+        return true;
+      }
+      return false;
+
+      
+    }
+    @Override
+    public int hashCode() {
+      return (int) myRow *  myCol * getMyNorthDoor().hashCode() * getMySouthDoor().hashCode() *
+          getMyEastDoor().hashCode() * getMyWestDoor().hashCode();
+  }
 }

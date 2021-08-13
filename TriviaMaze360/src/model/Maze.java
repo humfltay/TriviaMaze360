@@ -4,8 +4,11 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
+import java.util.Set;
 
 import model.RealDoor.DoorDirection;
 import model.RealDoor.DoorStatus;
@@ -24,8 +27,8 @@ public class Maze {
     private Point myExitPoint;
     
     public Maze() {
-        myRooms = new Room[myMazeSize+2][myMazeSize+2];
         myMazeSize = 4;
+        myRooms = new Room[myMazeSize+2][myMazeSize+2];
         createSimpleMaze();
         myWinnable = true;
     }
@@ -74,14 +77,6 @@ public class Maze {
         myExit = myRooms[myMazeSize][myMazeSize];
         myRooms[myMazeSize][myMazeSize] = myExit;
     }
-    private void createRandomMaze() {
-        for (int i = 1; i <= myMazeSize; i++) {
-            Random num = new Random();
-            for (int j = 1; j < myMazeSize; j++) {
-                myRooms[i][j] = new Room(i, j);
-            }
-        }
-    }
     
     public Room[][] getMyRooms() {
         return myRooms;
@@ -102,14 +97,41 @@ public class Maze {
         return myExit;
     }
     public boolean isWinnable() {
-      boolean check = false;
+      //makes use of breadth first search
+      //Taylor's favorite algorithm :)
+      
+      //start as negative
+      boolean found = false;
+      
+      Room init = getMyEntrance();
+      //add to queue
+      
+      Queue<Room> currentRooms = new LinkedList<Room>();
+      currentRooms.add(init);
+      
       if (getMyExit().isAccessable()) {
         List<Room> visited = new ArrayList<Room>();
+        
+        while (currentRooms.size() > 0 && !found) {
+          Room current = currentRooms.remove();
+          visited.add(current);
+          List<Room> neighbors = getValidNeighbors(current);
+          //add neighbors to queue
+          for (Room neigh : neighbors) {
+            if (!visited.contains(neigh))
+              currentRooms.add(neigh);
+              if (neigh == myEntrance) {
+                found = true;
+              }
+          }
+          
+        }
         //recursively check each path from exit to find entrance
         //loop ends if all rooms are in visited
         //while ()
+        //we start at users current point
       }
-        return myWinnable;
+        return found;
         
     }
     public Room getRoom(final int theRow, final int theCol) throws IndexOutOfBoundsException {
@@ -202,5 +224,21 @@ public class Maze {
           peek.getMyEastDoor().setMyDoorStatus(theStat);
         }
       return peek;  
+    }
+    public List<Room> getValidNeighbors(Room theRoom) {
+      List<Room> rooms = new ArrayList<Room>();
+      Set<RealDoor> doors = theRoom.getDoors();
+      for(RealDoor door: doors) {
+        if (door.isPassable()) {
+          //Look into changing this into just taking a room and a direction
+          Room neighbor = openDoor(door.getMyDoorDirection(), theRoom.getMyRow(), theRoom.getMyCol(), door.getMyDoorStatus());
+          rooms.add(neighbor);
+          
+        }
+      }
+
+      return rooms;
+      
+      
     }
 }

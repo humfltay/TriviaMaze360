@@ -23,6 +23,20 @@ public class RealDoor {
         //Implement Question stuff later.
     }
     
+    /**
+     * A check used by maze used to determine if door can 
+     * is already or could be opened in the future.
+     * 
+     * @return true if door can be passed through by user
+     */
+    public boolean isPassable() {
+      boolean check = false;
+      if (myDoorStatus == myDoorStatus.OPEN || myDoorStatus == myDoorStatus.CLOSED) {
+        check = true;
+      }
+      return check;
+    }
+    
     public Question askQuestion() {
         return myQuestion;
     }

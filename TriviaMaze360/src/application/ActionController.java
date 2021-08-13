@@ -2,6 +2,7 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 import javafx.collections.ObservableList;
@@ -119,59 +120,71 @@ public class ActionController {
       startGame.setDisable(true);
       startGame.setOpacity(0);
       test.setDoors(DoorStatus.CLOSED);
-      //bottom.setTranslateX(0);
+      bottom.setTranslateX(0);
       bottom.setOpacity(1);
+      
       Node n = bottom.getChildren().get(1);
+      
       BorderPane border = (BorderPane) n ;
+      //leftmost door
       AnchorPane anchor = (AnchorPane) border.getChildren().get(1);
       ObservableList<Node> elements = anchor.getChildren();
+      elements.sorted(new DoorElementComparator());
       for (int i = 1; i < elements.size(); i++) {
         elements.get(i).setOpacity(0);
       }
+      //right most door  NEW BOTTOM
       anchor = (AnchorPane) border.getChildren().get(2);
       elements = anchor.getChildren();
       for (int i = 1; i < elements.size(); i++) {
         elements.get(i).setOpacity(0);
       }
+      //bottommost door
       anchor = (AnchorPane) border.getChildren().get(3);
       elements = anchor.getChildren();
       for (int i = 1; i < elements.size(); i++) {
         elements.get(i).setOpacity(0);
       }
-//      anchor = (AnchorPane) border.getChildren().get(4);
-//      elements = anchor.getChildren();
-//      for (int i = 1; i < elements.size(); i++) {
-//        elements.get(i).setOpacity(0);
-//      }
+      
+      //topmost door
+      anchor = (AnchorPane) border.getChildren().get(4);
+      elements = anchor.getChildren();
+      for (int i = 1; i < elements.size(); i++) {
+        elements.get(i).setOpacity(0);
+      }
       
       
       
       
       
-      left.setTranslateX(0);
-      left.setVisible(true);
+      //left.setTranslateX(0);
+      //left.setVisible(true);
       n = left.getChildren().get(1);
       border = (BorderPane) n ;
       anchor = (AnchorPane) border.getChildren().get(1);
       elements = anchor.getChildren();
+      //leftmost door
       for (int i = 1; i < elements.size(); i++) {
         elements.get(i).setOpacity(0);
       }
+      //bottommost door
       anchor = (AnchorPane) border.getChildren().get(2);
       elements = anchor.getChildren();
       for (int i = 1; i < elements.size(); i++) {
         elements.get(i).setOpacity(0);
       }
+      //topmost door
       anchor = (AnchorPane) border.getChildren().get(3);
       elements = anchor.getChildren();
       for (int i = 1; i < elements.size(); i++) {
         elements.get(i).setOpacity(0);
       }
-//      anchor = (AnchorPane) border.getChildren().get(4);
-//      elements = anchor.getChildren();
-//      for (int i = 1; i < elements.size(); i++) {
-//        elements.get(i).setOpacity(0);
-//      }
+      //right most door
+      anchor = (AnchorPane) border.getChildren().get(4);
+      elements = anchor.getChildren();
+      for (int i = 1; i < elements.size(); i++) {
+       elements.get(i).setOpacity(0);
+      }
       //top left right bottom
     }
     

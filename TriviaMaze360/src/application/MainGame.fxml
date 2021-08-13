@@ -145,7 +145,7 @@
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2f4151" height="190.0" stroke="#ebdfdf" strokeType="INSIDE" translateY="-20.0" width="194.0" BorderPane.alignment="CENTER" />
                      </center>
                      <left>
-                        <AnchorPane prefHeight="97.0" prefWidth="34.0" BorderPane.alignment="CENTER">
+                        <AnchorPane id="left" prefHeight="97.0" prefWidth="34.0" BorderPane.alignment="CENTER">
                            <children>
                               <ImageView fitHeight="110.0" fitWidth="80.0" layoutX="1.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -163,7 +163,7 @@
                         </AnchorPane>
                      </left>
                      <right>
-                        <AnchorPane BorderPane.alignment="CENTER">
+                        <AnchorPane id="right" BorderPane.alignment="CENTER">
                            <children>
                               <ImageView fitHeight="110.0" fitWidth="80.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -183,7 +183,7 @@
                      <bottom>
                         <AnchorPane BorderPane.alignment="CENTER">
                            <children>
-                              <Ellipse fill="#b26d57" layoutX="157.0" layoutY="-10.0" radiusX="86.0" radiusY="27.0" stroke="BLACK" strokeType="INSIDE" />
+                              <Ellipse id="bottom" fill="#b26d57" layoutX="157.0" layoutY="-10.0" radiusX="86.0" radiusY="27.0" stroke="BLACK" strokeType="INSIDE" />
                            </children>
                         </AnchorPane>
                      </bottom>
@@ -191,7 +191,7 @@
                         <Cursor fx:constant="NONE" />
                      </cursor>
                      <top>
-                        <AnchorPane prefHeight="97.0" prefWidth="34.0" BorderPane.alignment="CENTER">
+                        <AnchorPane id="top" prefHeight="97.0" prefWidth="34.0" BorderPane.alignment="CENTER">
                            <children>
                               <ImageView fitHeight="110.0" fitWidth="80.0" layoutX="120.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -213,20 +213,20 @@
             </AnchorPane>
             <AnchorPane fx:id="left" layoutX="8.0" opacity="0.5" prefHeight="315.0" prefWidth="315.0" translateX="-300.0">
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#594c4c" height="318.0" stroke="BLACK" strokeType="INSIDE" width="315.0" />
+                  <Rectangle id="box" arcHeight="5.0" arcWidth="5.0" fill="#594c4c" height="318.0" stroke="BLACK" strokeType="INSIDE" width="315.0" />
                   <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="315.0" prefWidth="315.0" scaleShape="false">
                      <center>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2f4151" height="121.0" stroke="#ebdfdf" strokeType="INSIDE" translateX="7.0" translateY="-40.0" width="189.0" BorderPane.alignment="CENTER" />
                      </center>
                      <left>
-                        <AnchorPane prefHeight="97.0" prefWidth="34.0" BorderPane.alignment="CENTER">
+                        <AnchorPane id="left" prefHeight="97.0" prefWidth="34.0" BorderPane.alignment="CENTER">
                            <children>
                               <Ellipse fill="#b26d57" layoutX="27.0" layoutY="44.0" radiusX="27.0" radiusY="61.0" stroke="BLACK" strokeType="INSIDE" />
                            </children>
                         </AnchorPane>
                      </left>
                      <bottom>
-                        <AnchorPane BorderPane.alignment="CENTER">
+                        <AnchorPane id="bottom" BorderPane.alignment="CENTER">
                            <children>
                               <ImageView fitHeight="110.0" fitWidth="76.0" layoutX="118.0" layoutY="-92.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -247,7 +247,7 @@
                         <Cursor fx:constant="NONE" />
                      </cursor>
                      <top>
-                        <AnchorPane prefHeight="97.0" prefWidth="34.0" BorderPane.alignment="CENTER">
+                        <AnchorPane id="top" prefHeight="97.0" prefWidth="34.0" BorderPane.alignment="CENTER">
                            <children>
                               <ImageView fitHeight="110.0" fitWidth="80.0" layoutX="120.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -265,7 +265,7 @@
                         </AnchorPane>
                      </top>
                      <right>
-                        <AnchorPane BorderPane.alignment="CENTER">
+                        <AnchorPane id="right" BorderPane.alignment="CENTER">
                            <children>
                               <ImageView fitHeight="110.0" fitWidth="80.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" translateY="-25.0">
                                  <image>
@@ -285,86 +285,12 @@
                   </BorderPane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="right" layoutX="17.0" opacity="0.5" prefHeight="315.0" prefWidth="315.0" translateY="-300.0">
-               <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#594c4c" height="318.0" stroke="BLACK" strokeType="INSIDE" width="315.0" />
-                  <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="315.0" prefWidth="315.0" scaleShape="false">
-                     <center>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2f4151" height="97.0" stroke="#ebdfdf" strokeType="INSIDE" translateX="10.0" translateY="-30.0" width="186.0" BorderPane.alignment="CENTER" />
-                     </center>
-                     <left>
-                        <AnchorPane prefHeight="97.0" prefWidth="34.0" translateY="-28.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <ImageView fitHeight="110.0" fitWidth="80.0" layoutX="1.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../amazingDoor.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="77.0" fitWidth="51.0" layoutX="12.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true" rotate="-15.0" AnchorPane.bottomAnchor="61.36051559448242">
-                                 <image>
-                                    <Image url="@../../lock.png" />
-                                 </image>
-                              </ImageView>
-                              <Line endX="72.12622833251953" endY="4.0" layoutX="1.0" layoutY="12.0" startX="7.62939453125E-6" startY="113.33334350585938" stroke="RED" />
-                              <Line endX="-10.00001049041748" endY="-10.0" layoutX="11.0" layoutY="24.0" startX="64.9189224243164" startY="100.0" stroke="#e60e0e" />
-                           </children>
-                        </AnchorPane>
-                     </left>
-                     <right>
-                        <AnchorPane BorderPane.alignment="CENTER">
-                           <children>
-                              <Ellipse fill="#b26d57" layoutX="50.0" layoutY="40.0" radiusX="28.0" radiusY="51.0" stroke="BLACK" strokeType="INSIDE" />
-                           </children>
-                        </AnchorPane>
-                     </right>
-                     <cursor>
-                        <Cursor fx:constant="NONE" />
-                     </cursor>
-                     <top>
-                        <AnchorPane prefHeight="97.0" prefWidth="34.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <ImageView fitHeight="110.0" fitWidth="80.0" layoutX="120.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../amazingDoor.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="77.0" fitWidth="51.0" layoutX="132.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="-15.0" AnchorPane.bottomAnchor="44.69384892781575">
-                                 <image>
-                                    <Image url="@../../lock.png" />
-                                 </image>
-                              </ImageView>
-                              <Line endX="72.12622833251953" endY="4.0" layoutX="121.0" layoutY="12.0" startX="7.62939453125E-6" startY="113.33334350585938" stroke="RED" />
-                              <Line endX="-10.00001049041748" endY="-10.0" layoutX="130.0" layoutY="26.0" startX="64.9189224243164" startY="100.0" stroke="#e60e0e" />
-                           </children>
-                        </AnchorPane>
-                     </top>
-                     <bottom>
-                        <AnchorPane prefHeight="40.0" prefWidth="280.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <ImageView fitHeight="110.0" fitWidth="80.0" layoutX="106.0" layoutY="-64.0" pickOnBounds="true" preserveRatio="true" translateX="14.0">
-                                 <image>
-                                    <Image url="@../../amazingDoorLeft.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="77.0" fitWidth="51.0" layoutX="132.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true" rotate="-15.0">
-                                 <image>
-                                    <Image url="@../../lock.png" />
-                                 </image>
-                              </ImageView>
-                              <Line endX="-10.00001049041748" endY="-10.0" layoutX="130.0" layoutY="-54.0" startX="64.9189224243164" startY="100.0" stroke="#e60e0e" />
-                              <Line endX="72.12622833251953" endY="4.0" layoutX="121.0" layoutY="-68.0" startX="7.62939453125E-6" startY="113.33334350585938" stroke="RED" />
-                           </children>
-                        </AnchorPane>
-                     </bottom>
-                  </BorderPane>
-               </children>
-            </AnchorPane>
             <AnchorPane fx:id="top" layoutX="288.0" opacity="0.5" prefHeight="315.0" prefWidth="315.0" translateY="-300.0">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#594c4c" height="318.0" stroke="BLACK" strokeType="INSIDE" width="315.0" />
                   <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="315.0" prefWidth="315.0" scaleShape="false">
                      <top>
-                        <AnchorPane BorderPane.alignment="CENTER">
+                        <AnchorPane id="top" BorderPane.alignment="CENTER">
                            <children>
                               <AnchorPane>
                                  <children>
@@ -378,10 +304,10 @@
                         <Cursor fx:constant="NONE" />
                      </cursor>
                      <center>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2f4151" height="169.0" stroke="#ebdfdf" strokeType="INSIDE" translateX="-10.0" translateY="-30.0" width="203.0" BorderPane.alignment="CENTER" />
+                        <Rectangle id="box" arcHeight="5.0" arcWidth="5.0" fill="#2f4151" height="169.0" stroke="#ebdfdf" strokeType="INSIDE" translateX="-10.0" translateY="-30.0" width="203.0" BorderPane.alignment="CENTER" />
                      </center>
                      <right>
-                        <AnchorPane BorderPane.alignment="CENTER">
+                        <AnchorPane id="right" BorderPane.alignment="CENTER">
                            <children>
                               <ImageView fitHeight="100.0" fitWidth="80.0" layoutX="-9.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -399,7 +325,7 @@
                         </AnchorPane>
                      </right>
                      <left>
-                        <AnchorPane prefHeight="97.0" prefWidth="34.0" BorderPane.alignment="CENTER">
+                        <AnchorPane id="left" prefHeight="97.0" prefWidth="34.0" BorderPane.alignment="CENTER">
                            <children>
                               <ImageView fitHeight="110.0" fitWidth="80.0" layoutX="1.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -417,7 +343,7 @@
                         </AnchorPane>
                      </left>
                      <bottom>
-                        <AnchorPane prefHeight="40.0" prefWidth="280.0" BorderPane.alignment="CENTER">
+                        <AnchorPane id="bottom" prefHeight="40.0" prefWidth="280.0" BorderPane.alignment="CENTER">
                            <children>
                               <ImageView fitHeight="110.0" fitWidth="80.0" layoutX="106.0" layoutY="-64.0" pickOnBounds="true" preserveRatio="true" translateX="14.0">
                                  <image>
@@ -498,5 +424,79 @@
             </AnchorPane>
          </children>
       </VBox>
+      <AnchorPane fx:id="right" layoutX="28.0" layoutY="-296.0" opacity="0.5" prefHeight="315.0" prefWidth="315.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#594c4c" height="318.0" stroke="BLACK" strokeType="INSIDE" width="315.0" />
+            <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="315.0" prefWidth="315.0" scaleShape="false">
+               <center>
+                  <Rectangle id="box" arcHeight="5.0" arcWidth="5.0" fill="#2f4151" height="97.0" stroke="#ebdfdf" strokeType="INSIDE" translateX="10.0" translateY="-30.0" width="186.0" BorderPane.alignment="CENTER" />
+               </center>
+               <left>
+                  <AnchorPane id="left" prefHeight="97.0" prefWidth="34.0" translateY="-28.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <ImageView fitHeight="110.0" fitWidth="80.0" layoutX="1.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../amazingDoor.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="77.0" fitWidth="51.0" layoutX="12.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true" rotate="-15.0" AnchorPane.bottomAnchor="61.36051559448242">
+                           <image>
+                              <Image url="@../../lock.png" />
+                           </image>
+                        </ImageView>
+                        <Line endX="72.12622833251953" endY="4.0" layoutX="1.0" layoutY="12.0" startX="7.62939453125E-6" startY="113.33334350585938" stroke="RED" />
+                        <Line endX="-10.00001049041748" endY="-10.0" layoutX="11.0" layoutY="24.0" startX="64.9189224243164" startY="100.0" stroke="#e60e0e" />
+                     </children>
+                  </AnchorPane>
+               </left>
+               <right>
+                  <AnchorPane id="right" BorderPane.alignment="CENTER">
+                     <children>
+                        <Ellipse fill="#b26d57" layoutX="50.0" layoutY="40.0" radiusX="28.0" radiusY="51.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </AnchorPane>
+               </right>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+               <top>
+                  <AnchorPane id="top" prefHeight="97.0" prefWidth="34.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <ImageView fitHeight="110.0" fitWidth="80.0" layoutX="120.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../amazingDoor.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="77.0" fitWidth="51.0" layoutX="132.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="-15.0" AnchorPane.bottomAnchor="44.69384892781575">
+                           <image>
+                              <Image url="@../../lock.png" />
+                           </image>
+                        </ImageView>
+                        <Line endX="72.12622833251953" endY="4.0" layoutX="121.0" layoutY="12.0" startX="7.62939453125E-6" startY="113.33334350585938" stroke="RED" />
+                        <Line endX="-10.00001049041748" endY="-10.0" layoutX="130.0" layoutY="26.0" startX="64.9189224243164" startY="100.0" stroke="#e60e0e" />
+                     </children>
+                  </AnchorPane>
+               </top>
+               <bottom>
+                  <AnchorPane id="bottom" prefHeight="40.0" prefWidth="280.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <ImageView fitHeight="110.0" fitWidth="80.0" layoutX="106.0" layoutY="-64.0" pickOnBounds="true" preserveRatio="true" translateX="14.0">
+                           <image>
+                              <Image url="@../../amazingDoorLeft.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="77.0" fitWidth="51.0" layoutX="132.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true" rotate="-15.0">
+                           <image>
+                              <Image url="@../../lock.png" />
+                           </image>
+                        </ImageView>
+                        <Line endX="-10.00001049041748" endY="-10.0" layoutX="130.0" layoutY="-54.0" startX="64.9189224243164" startY="100.0" stroke="#e60e0e" />
+                        <Line endX="72.12622833251953" endY="4.0" layoutX="121.0" layoutY="-68.0" startX="7.62939453125E-6" startY="113.33334350585938" stroke="RED" />
+                     </children>
+                  </AnchorPane>
+               </bottom>
+            </BorderPane>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
