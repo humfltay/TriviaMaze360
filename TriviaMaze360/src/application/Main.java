@@ -28,14 +28,14 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("menu.css").toExternalForm());
 			
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("Trivia Maze Demo");
+			primaryStage.setTitle("Gui Demo 2");
 			
 			Image image = new Image("file:questionIcon.png");
 			primaryStage.getIcons().add(image);
 			primaryStage.setResizable(false);
 			
 			
-			//removes the border- might want to implement a custom one with full screen option
+			//removes the boarder- might want to implement a custom one with full screen option
 			//primaryStage.initStyle(StageStyle.UNDECORATED);
 			
 			

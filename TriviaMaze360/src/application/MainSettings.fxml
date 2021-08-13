@@ -11,11 +11,11 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="bodybg" stylesheets="@menu.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SceneController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="bodybg" stylesheets="@menu.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ActionController">
    <children>
       <VBox prefHeight="600.0" prefWidth="151.0" style="-fx-background-color: f0b411;">
          <children>
-            <Button fx:id="playBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#switchToPlay" prefHeight="49.0" prefWidth="154.0" stylesheets="@menu.css" text="Play">
+            <Button fx:id="playBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#switchToMain" prefHeight="49.0" prefWidth="154.0" stylesheets="@menu.css" text="Play">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -40,6 +40,25 @@
                      </image>
                   </ImageView>
                </graphic></Button>
+            <AnchorPane prefHeight="501.0" prefWidth="151.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="194.0" text="Maze 1">
+                     <font>
+                        <Font name="Copperplate Gothic Light" size="22.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="playerNameLabel" layoutX="16.0" layoutY="241.0" text="Player Name:" underline="true">
+                     <font>
+                        <Font name="Copperplate Gothic Light" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="playerScoreLabel" layoutX="17.0" layoutY="281.0" text="Score: 0">
+                     <font>
+                        <Font name="Copperplate Gothic Light" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
          </children>
       </VBox>
       <ImageView fitHeight="180.0" fitWidth="379.0" layoutX="288.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
@@ -49,7 +68,7 @@
       </ImageView>
       <Ellipse fill="#2197ff00" layoutX="509.0" layoutY="454.0" radiusX="288.0" radiusY="72.0" stroke="BLACK" strokeType="OUTSIDE" />
       <Ellipse fill="#2197ff00" layoutX="482.0" layoutY="293.0" radiusX="288.0" radiusY="72.0" stroke="BLACK" strokeType="OUTSIDE" />
-      <Label layoutX="288.0" layoutY="248.0" text="Volume controll... Note there is currently no audio">
+      <Label layoutX="288.0" layoutY="248.0" text="Volume control:">
          <font>
             <Font size="13.0" />
          </font>
@@ -59,7 +78,7 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <Slider fx:id="vSlider" layoutX="334.0" layoutY="300.0" prefHeight="14.0" prefWidth="325.0" />
+      <Slider fx:id="vSlider" layoutX="334.0" layoutY="300.0" onDragDetected="#testSlide" prefHeight="14.0" prefWidth="325.0" />
       <Label layoutX="323.0" layoutY="298.0" prefHeight="19.0" prefWidth="11.0" text="0" />
       <Label layoutX="659.0" layoutY="299.0" text="100" />
       <Button fx:id="resetBtn" layoutX="403.0" layoutY="447.0" mnemonicParsing="false" onAction="#switchToPlay" prefHeight="39.0" prefWidth="79.0" text="Reset">
