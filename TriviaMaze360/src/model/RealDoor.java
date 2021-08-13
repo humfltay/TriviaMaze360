@@ -5,7 +5,7 @@ import java.util.Collections;
 
 public class RealDoor {
     public enum DoorStatus {OPEN, CLOSED, FAKE, INACTIVE}
-    public enum DoorDirection {NORTH, SOUTH, EAST, WEST}
+    public enum DoorDirection {NORTH, EAST, SOUTH, WEST}
     private DoorDirection myDoorDirection;
     private DoorStatus myDoorStatus;
     private Question myQuestion;

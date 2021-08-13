@@ -30,7 +30,7 @@ public class MazeGenerator {
     // avoid cycles
     Random ran = new Random();
     int paths = theMinPaths;
-    paths += ran.nextInt(theMaxPaths - theMinPaths);
+    paths += ran.nextInt(theMaxPaths - theMinPaths + 1) + theMinPaths - 1;
     mySize = theSize;
     // go straight 40%
     // go left 30%
@@ -199,12 +199,13 @@ public class MazeGenerator {
           //go that direction 
         }
         //CHECK THIS
-        else if (loopCnt > 10) {
+        else if (loopCnt > 3) {
           DoorDirection back = goRight(goRight(direction));
-          if (door.getMyDoorDirection() == back)
+          if (door.getMyDoorDirection() == back) {
             System.out.println("back");
             pathNotFound = false;
             pathTo = myMaze.openDoor(back, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(back).getMyDoorStatus()); 
+          }
         }
         loopCnt++;
       }
@@ -239,7 +240,7 @@ public class MazeGenerator {
     return direct;
     
   }
-  private DoorDirection goLeft (DoorDirection theDir) {
+  public DoorDirection goLeft (DoorDirection theDir) {
     int directIndex = theDir.ordinal() - 1;
     if (directIndex >= 0) {
       theDir = DoorDirection.values()[theDir.ordinal() - 1];
@@ -249,7 +250,7 @@ public class MazeGenerator {
     
     return theDir;
   }
-  private DoorDirection goRight (DoorDirection theDir) {
+  public DoorDirection goRight (DoorDirection theDir) {
     int directIndex = theDir.ordinal() + 1;
     if (directIndex == 4) {
       directIndex = 0;

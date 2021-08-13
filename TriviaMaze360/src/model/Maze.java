@@ -219,7 +219,7 @@ public class Maze {
         else if (theDir == DoorDirection.SOUTH && isValid(theRow, theCol + 1)) {
           peek = getRoom(theRow, theCol + 1);
           peek.getMyNorthDoor().setMyDoorStatus(theStat);
-        } else if (isValid(theRow - 1, theCol)) {
+        } else if (theDir == DoorDirection.WEST && isValid(theRow - 1, theCol)) { //WEST
           peek = getRoom(theRow - 1, theCol);
           peek.getMyEastDoor().setMyDoorStatus(theStat);
         }

@@ -20,7 +20,10 @@ class MazeTests {
 
   @Test
   void testIsWinnable() {
-    for (int i = 1; i < 25; i++) {
+    
+    for (int i = 1; i < 100; i++) {
+      MazeGenerator m = new MazeGenerator();
+      genMaze = m.getMaze();
       boolean win = genMaze.isWinnable();
       assertTrue(win,"Checking to see if newly generated maze is winnable");
     }
