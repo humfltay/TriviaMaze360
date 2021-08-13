@@ -48,17 +48,6 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="SetttingsBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#switchToSettings" prefHeight="51.0" prefWidth="174.0" stylesheets="@menu.css" text="Settings">
-               <padding>
-                  <Insets left="40.0" />
-               </padding>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../gear.png" />
-                     </image>
-                  </ImageView>
-               </graphic></Button>
          </children>
       </VBox>
    </children>

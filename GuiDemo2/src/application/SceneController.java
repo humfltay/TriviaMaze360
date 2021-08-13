@@ -78,25 +78,6 @@ public class SceneController {
     @FXML
     private ListView<String> listview;
 	
-	/**present in settings.fxml
-	 * Allows the user to adjust the music volume.
-	 */
-	@FXML
-	private Slider vSlider;
-	
-	/*
-	@FXML
-	public void initialize() {
-		vSlider.setValue(ActionController.getMp().getVolume() *100);
-	}
-	*/
-	
-	/**present in settings.fxml
-	 * Resets the game by switching to play.fxml.
-	 */
-	@FXML
-    private Button resetBtn;
-	
 	/**
 	 * Switches the scene to play.fxml; the screen the program launches on.
 	 * 
@@ -105,20 +86,6 @@ public class SceneController {
 	 */
 	public void switchToPlay(ActionEvent event) throws IOException {
 		root = FXMLLoader.load(getClass().getResource("play.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-	}
-	
-	/**
-	 * Switches the scene to settings.fxml.
-	 * 
-	 * @param event when the "settings" button is pressed
-	 * @throws IOException
-	 */
-	public void switchToSettings(ActionEvent event) throws IOException {
-		root = FXMLLoader.load(getClass().getResource("settings.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);

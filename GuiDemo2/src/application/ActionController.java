@@ -30,11 +30,6 @@ import javafx.stage.Stage;
 public class ActionController {
 	
 	/**
-	 * Used to differentiate the first initialization for things that should only happen once.
-	 */
-	static boolean alreadyInitialized = false;
-	
-	/**
 	 * A Stage to contain a scene.
 	 */
 	private Stage stage;
@@ -50,19 +45,49 @@ public class ActionController {
 	private Parent root;
 	
 	/**
-	 * String to hold the path to a music file.
+	 * String to hold the path to the first music file.
 	 */
-	String path = "mario3.mp3";
+	String pathToMarioMusic = "mario3.mp3";
 	
 	/**
-	 * Media object to hold the music.
+	 * String to hold the path to the second music file.
 	 */
-	Media media = new Media(new File(path).toURI().toString());
+	String pathToMetroidMusic = "Brinstar.mp3";
 	
 	/**
-	 * MediaPlayer to be able to play the music.
+	 * String to hold the path the the third music file.
+	 */
+	String pathToZeldaMusic = "zelda.mp3";
+	
+	/**
+	 * Media object to hold the first music track.
+	 */
+	Media media = new Media(new File(pathToMarioMusic).toURI().toString());
+	
+	/**
+	 * Media object to hold the second music track.
+	 */
+	Media media2 = new Media(new File(pathToMetroidMusic).toURI().toString());
+	
+	/**
+	 * Media object to hold the third music track.
+	 */
+	Media media3 = new Media(new File(pathToZeldaMusic).toURI().toString());
+	
+	/**
+	 * MediaPlayer to play the first track.
 	 */
 	MediaPlayer mp = new MediaPlayer(media);
+	
+	/**
+	 * MediaPlayer to play the second track.
+	 */
+	MediaPlayer mp2 = new MediaPlayer(media2);
+	
+	/**
+	 * MediaPlayer to play the third track.
+	 */
+	MediaPlayer mp3 = new MediaPlayer(media3);
 	
 	/**
 	 * The pane that most of the elements in MainGame.fxml sit on top of.
@@ -100,9 +125,15 @@ public class ActionController {
     @FXML
     private Slider vSlider;
     
+    /**
+     * Text area that sits atop the main screen.
+     */
     @FXML
     private TextArea mainTextArea;
     
+    /**
+     * Allows the user to exit to the main menu.
+     */
     @FXML
     private Button exitBtn;
     
@@ -132,9 +163,15 @@ public class ActionController {
     @FXML
     private Button dPadDown;
     
+    /**
+     * present for short answer questions.
+     */
     @FXML
     private TextField shortAnswerField;
     
+    /**
+     * submits the answer the player has selected.
+     */
     @FXML
     private Button submitBtn;
     
@@ -145,12 +182,15 @@ public class ActionController {
     @FXML
     private Label lastPressedLabel;
     
-    @FXML
-    private RadioButton choiceA;
-
+    /**
+     * All radio buttons belong to the toggle group mc.
+     */
     @FXML
     private ToggleGroup mc;
-
+    
+    @FXML
+    private RadioButton choiceA;
+    
     @FXML
     private RadioButton choiceB;
 
@@ -160,6 +200,10 @@ public class ActionController {
     @FXML
     private RadioButton choiceD;
 
+    /**
+     * All label choices sit to the left of a radio button and denote which choice the payer is making.
+     * Note: for True/False questions labelChoiceA/B are changed to say "True" & "False".
+     */
     @FXML
     private Label labelChoiceA;
 
@@ -172,9 +216,78 @@ public class ActionController {
     @FXML
     private Label labelChoiceD;
     
+    /**
+     * Allows the user to save their current progress.
+     */
     @FXML
     private Button saveBtn;
+    
+    /**
+     * Pane that holds the instructions screen.
+     */
+    @FXML
+    private AnchorPane instructionsPane;
+    
+    /**
+     * Pane that holds the settings screen.
+     */
+    @FXML
+    private AnchorPane settingsPane;
+    
+    /**
+     * Pane that holds the credits screen.
+     */
+    @FXML
+    private AnchorPane creditsPane;
+    
+    /**
+     * Shows the instructions screen.
+     */
+    @FXML
+    private Button instructionsBtn;
+    
+    /**
+     * Shows the credits screen.
+     */
+    @FXML
+    private Button creditsBtn;
+    
+    /**
+     * Switches to the instructions screen.
+     * 
+     * @param event when the "instructions" button is pressed
+     */
+    @FXML
+    void switchToInstructions(ActionEvent event) {
+    	setInvisible();
+    	instructionsPane.setVisible(true);
+    }
+    
+    /**
+     * Switches to the credits screen.
+     * 
+     * @param event when the "credits" button is pressed
+     */
+    @FXML
+    void switchToCredits(ActionEvent event) {
+    	setInvisible();
+    	creditsPane.setVisible(true);
+    }
+    
+    /**
+     * Sets the visibility of all panes except main to 0.
+     */
+    void setInvisible() {
+    	instructionsPane.setVisible(false);
+    	settingsPane.setVisible(false);
+    	creditsPane.setVisible(false);
+    }
 
+    /**
+     * Sets the opacity for all multiple Choice Radio Buttons.
+     * 
+     * @param o opacity
+     */
     void setMCOpacity(int o) {
     	choiceA.setOpacity(o);
     	labelChoiceA.setOpacity(o);
@@ -195,11 +308,7 @@ public class ActionController {
     @FXML
     void up(ActionEvent event) {
     	lastPressedLabel.setText("Last Pressed: dPadUp");
-    	setMCOpacity(100);
-    	mainTextArea.setText("Sample multiple choice queston...");
-    	shortAnswerField.setOpacity(0);
-    	choiceA.setText("Sample answer for A");
-    	choiceB.setText("Sample answer for B");
+    	setMultipleChoiceInput();
     }
     
     /**
@@ -209,9 +318,7 @@ public class ActionController {
     void down(ActionEvent event) {
     	lastPressedLabel.setText("Last Pressed: dPadDown");
     	setMCOpacity(0);
-    	shortAnswerField.setOpacity(100);
-    	shortAnswerField.setText("");
-    	mainTextArea.setText("Sample short answer queston...");
+    	setShortAnswerInput();
     }
 
     /**
@@ -229,6 +336,24 @@ public class ActionController {
     @FXML
     void right(ActionEvent event) {
     	lastPressedLabel.setText("Last Pressed: dPadRight");
+    	setTrueFalseInput();
+    }
+    
+    /**
+     * Limits input choices to those needed for multiple choice questions.
+     */
+    void setMultipleChoiceInput() {
+    	setMCOpacity(100);
+    	mainTextArea.setText("Sample multiple choice queston...");
+    	shortAnswerField.setOpacity(0);
+    	choiceA.setText("Sample answer for A");
+    	choiceB.setText("Sample answer for B");
+    }
+    
+    /**
+     * Limits input choices to those needed for True/False questions.
+     */
+    void setTrueFalseInput() {
     	setMCOpacity(0);
     	mainTextArea.setText("Sample True/False question...");
     	shortAnswerField.setOpacity(0);
@@ -238,24 +363,43 @@ public class ActionController {
     	choiceB.setText("False");
     }
     
-    @FXML
-    void switchToMain(ActionEvent event) throws IOException {
-    	root = FXMLLoader.load(getClass().getResource("MainGame.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
+    /**
+     * Limits input choices to those needed for short answer questions.
+     */
+    void setShortAnswerInput() {
+    	shortAnswerField.setOpacity(100);
+    	shortAnswerField.setText("");
+    	mainTextArea.setText("Sample short answer queston...");
     }
     
     /**
-     * @param event when the "play" button is pressed.
+     * Shows the main screen of the game.
+     * 
+     * @param event when the "play" button is pressed
+     * @throws IOException
+     */
+    @FXML
+    void switchToMain(ActionEvent event) throws IOException {
+    	setInvisible();
+    }
+    
+    /**
+     * Returns the game to it's start up state.
+     * 
+     * @param event when the "reset" button is pressed.
      * @throws IOException 
      */
     @FXML
-    void switchToPlay(ActionEvent event) throws IOException {
+    void resetGame(ActionEvent event) throws IOException {
     	
     	//prompt user to make sure they wish to exit
     	if(ConfirmBox.popUp("Are you sure you want to exit?", "All unsaved progress will be lost") == true) {
+    		//stop all music play back
+    		mp.stop();
+    		mp2.stop();
+    		mp3.stop();
+    		
+    		//load the starting FXML file and return control to SceneController
     		root = FXMLLoader.load(getClass().getResource("play.fxml"));
     		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
     		scene = new Scene(root);
@@ -272,23 +416,33 @@ public class ActionController {
      */
     @FXML
     void switchToSettings(ActionEvent event) throws IOException {
-    	root = FXMLLoader.load(getClass().getResource("MainSettings.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-		
-		
+    	setInvisible();
+    	settingsPane.setVisible(true);
     }
 
-    /**
-     * currently not functional
-     * 
-     * @param event on slide detected for vSlider
-     */
-    @FXML
-    void testSlide(MouseEvent event) {
-    	vSlider.setValue(mp.getVolume()*100);
+	/**
+	 * In JavaFX the initialize method runs after all of the FXML elements have been loaded.
+	 * This method will always be called after the scene fully loads.
+	 */
+	@FXML
+	public void initialize() {
+		
+		//sets player name label
+		playerNameLabel.setText(SceneController.getPlayerName() + ":");
+		
+		//sets the initial volume to 100% and calls the music player method
+		vSlider.setValue(mp.getVolume()*100);
+		musicPlayer();
+		
+	}
+	
+	/**
+	 * Begins play back starting with the first track and resets after all tracks have
+	 * been played.
+	 */
+	void musicPlayer() {
+		mp.play();
+		mp.setVolume(vSlider.getValue()/100);
 		vSlider.valueProperty().addListener(new InvalidationListener() {
 
 			@Override
@@ -298,23 +452,38 @@ public class ActionController {
 			}
 			
 		});
-    }
-    
-	/**
-	 * In javafx the initialize method runs after all of the fxml elements have been loaded.
-	 * This method will always be called after the scene fully loads.
-	 */
-	@FXML
-	public void initialize() {
 		
-		//sets player name label
-		playerNameLabel.setText(SceneController.getPlayerName() + ":");
+		mp.setOnEndOfMedia(() ->{
+	    	mp.stop();
+			mp2.play();
+	    	mp2.setVolume(vSlider.getValue()/100);
+			vSlider.valueProperty().addListener(new InvalidationListener() {
+
+				@Override
+				public void invalidated(Observable arg0) {
+					mp2.setVolume(vSlider.getValue()/100);
+				}
+				
+			});
+	    });
 		
-		if (alreadyInitialized == false) {
-			//plays music
-			mp.play();
-			//makes sure music doesn't play twice and overlap
-			alreadyInitialized = true;
-		}
+		mp2.setOnEndOfMedia(() ->{
+			mp2.stop();
+			mp3.play();
+			mp3.setVolume(vSlider.getValue()/100);
+			vSlider.valueProperty().addListener(new InvalidationListener() {
+
+				@Override
+				public void invalidated(Observable arg0) {
+					mp3.setVolume(vSlider.getValue()/100);
+				}
+				
+			});
+		});
+		
+		mp3.setOnEndOfMedia(() ->{
+			mp3.stop();
+			musicPlayer();
+		});
 	}
 }
