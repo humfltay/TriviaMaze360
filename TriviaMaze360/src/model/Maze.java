@@ -195,7 +195,8 @@ public class Maze {
               maze.append("X");
             }
               else {
-              maze.append("*");
+                Set<RealDoor> doors = current.getAccessableDoors();
+                maze.append(doors.size());
             }
             
         }

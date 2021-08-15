@@ -109,6 +109,20 @@ public class Room {
           doors.add(mySouthDoor);
         return doors;
     }
+    
+    public Set<RealDoor> getAccessableDoors() {
+      Set<RealDoor> doors = new HashSet<RealDoor>();
+      if (myNorthDoor.isPassable())
+          doors.add(myNorthDoor);
+      if (myEastDoor.isPassable())
+          doors.add(myEastDoor);
+      // west before south because going backwards should be last in priority
+      if (myWestDoor.isPassable())
+          doors.add(myWestDoor);
+      if (mySouthDoor.isPassable())
+          doors.add(mySouthDoor);
+        return doors;
+    }
     /**
      * getDoors returns a set of doors matching status sent
      * in as parameter.
