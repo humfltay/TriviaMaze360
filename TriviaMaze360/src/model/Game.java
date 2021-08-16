@@ -1,15 +1,12 @@
 package model;
 
 import model.Maze;
-import model.Menu;
 import model.User;
 
 public class Game {
-    Maze myMaze;
-    User myUser;
-    Menu myMenu;
+    private Maze myMaze;
+    private User myUser;
     //Theme theme;
-    enum GameStatus {START, ACTIVE, DEFEAT, VICTORY}
     
     
 }

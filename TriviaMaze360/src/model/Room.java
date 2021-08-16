@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
 import model.RealDoor.DoorDirection;
@@ -13,7 +14,6 @@ public class Room implements Serializable {
      * 
      */
     private static final long serialVersionUID = 1071698517189955219L;
-    // public enum RoomDoors implements Door {NORTH, EAST, SOUTH, WEST}
     private RealDoor myNorthDoor;
     private RealDoor myEastDoor;
     private RealDoor mySouthDoor;
@@ -34,7 +34,23 @@ public class Room implements Serializable {
         myAccessable = true;
         myVisited = false;
     }
-    //seems like theAccess should only ever be false, but it could be true.
+    //Added a constructor because the default uses the door's default status.
+    //He set the door's default status to INACTIVE
+    //This method should replace his other one for FAKE rooms.
+    public Room(final int theRow, final int theCol, DoorStatus theStatus) {
+        myRow = theRow;
+        myCol = theCol;
+        myNorthDoor = new RealDoor(DoorDirection.NORTH, theStatus);
+        myEastDoor = new RealDoor(DoorDirection.EAST, theStatus);
+        mySouthDoor = new RealDoor(DoorDirection.SOUTH, theStatus);
+        myWestDoor = new RealDoor(DoorDirection.WEST, theStatus);
+        myAccessable = true;
+        myVisited = false;
+        if (theStatus == DoorStatus.FAKE) {
+            myAccessable = false;
+        }
+    }
+    //seems like theAccess should only ever be false. This only creates fake rooms.
     public Room(final int theRow, final int theCol, boolean theAccess) {
       myRow = theRow;
       myCol = theCol;
@@ -103,16 +119,17 @@ public class Room implements Serializable {
      * 
      * @return Set of Doors that are not FAKE.
      */
+    //His code is strictly for getting not fake doors.
     public Set<RealDoor> getDoors() {
       Set<RealDoor> doors = new HashSet<RealDoor>();
-      if (myNorthDoor.getMyDoorStatus() != DoorStatus.FAKE && myNorthDoor.getMyDoorStatus() != DoorStatus.LOCKED)
+      if (myNorthDoor.getMyDoorStatus() != DoorStatus.FAKE )//&& myNorthDoor.getMyDoorStatus() != DoorStatus.INACTIVE)
           doors.add(myNorthDoor);
-      if (myEastDoor.getMyDoorStatus() != DoorStatus.FAKE && myEastDoor.getMyDoorStatus() != DoorStatus.LOCKED)
+      if (myEastDoor.getMyDoorStatus() != DoorStatus.FAKE )//&& myEastDoor.getMyDoorStatus() != DoorStatus.INACTIVE)
           doors.add(myEastDoor);
       // west before south because going backwards should be last in priority
-      if (myWestDoor.getMyDoorStatus() != DoorStatus.FAKE && myWestDoor.getMyDoorStatus() != DoorStatus.LOCKED)
+      if (myWestDoor.getMyDoorStatus() != DoorStatus.FAKE )//&& myWestDoor.getMyDoorStatus() != DoorStatus.INACTIVE)
           doors.add(myWestDoor);
-      if (mySouthDoor.getMyDoorStatus() != DoorStatus.FAKE && mySouthDoor.getMyDoorStatus() != DoorStatus.LOCKED)
+      if (mySouthDoor.getMyDoorStatus() != DoorStatus.FAKE )//&& mySouthDoor.getMyDoorStatus() != DoorStatus.INACTIVE)
           doors.add(mySouthDoor);
         return doors;
     }
@@ -149,16 +166,20 @@ public class Room implements Serializable {
      * @return True if room can be accessed. False if 
      * room cannot be accessed.
      */
+    //Why do I need a field if we're going to just calculate
+    //accessability?
     public boolean isAccessable() {
         boolean check = true;
         Iterator<RealDoor> itr = getDoors().iterator();
         int badDoorCnt = 0;
-        if (!myAccessable) {
+        if (!myAccessable) {//This shouldn't be necessary.
           check = false;
         }
         while (itr.hasNext()) {
             RealDoor door = itr.next();
-            if (door.getMyDoorStatus() == RealDoor.DoorStatus.INACTIVE || door.getMyDoorStatus() == RealDoor.DoorStatus.FAKE ){
+            //INACTIVE seems to mean LOCKED here.
+            if (door.getMyDoorStatus() == RealDoor.DoorStatus.INACTIVE 
+                    || door.getMyDoorStatus() == RealDoor.DoorStatus.FAKE ){
               badDoorCnt++;
             }
         }
@@ -167,12 +188,26 @@ public class Room implements Serializable {
         }
         return check;
     }
+    //These are my methods.
     public boolean getMyVisited() {
         return myVisited;
     }
     public void setMyVisited(boolean theVisited) {
         myVisited = theVisited;
     }
+    public Set<RealDoor> getAccessableDoors() {
+        Set<RealDoor> doors = new HashSet<RealDoor>();
+        if (myNorthDoor.isPassable())
+            doors.add(myNorthDoor);
+        if (myEastDoor.isPassable())
+            doors.add(myEastDoor);
+        // west before south because going backwards should be last in priority
+        if (myWestDoor.isPassable())
+            doors.add(myWestDoor);
+        if (mySouthDoor.isPassable())
+            doors.add(mySouthDoor);
+          return doors;
+      }
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -186,5 +221,22 @@ public class Room implements Serializable {
         s.append("West " + myWestDoor.getMyDoorStatus());
         s.append("\n");
         return s.toString();
+    }
+    // Implementation of equals and hashcode.
+    // I re-implemented equals and hashcode.
+    @Override
+    public boolean equals (Object theO) {
+        if (this == theO) return true; //reflexive
+        if((theO == null) || (theO.getClass() != this.getClass())) {
+            return false; //null and same class.
+        } 
+        final Room room = (Room) theO;
+        return room.getMyRow() == getMyRow() 
+                && room.getMyCol() == getMyCol();
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(myRow, myCol);// * getMyNorthDoor().hashCode() * getMySouthDoor().hashCode() *
+        //getMyEastDoor().hashCode() * getMyWestDoor().hashCode();
     }
 }

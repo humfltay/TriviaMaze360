@@ -1,5 +1,5 @@
 package model;
 
 public enum Answer {
-    A, B, C, D
+    A, B, C, D, SHORT
 }

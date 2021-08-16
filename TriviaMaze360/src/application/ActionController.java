@@ -16,7 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -27,6 +27,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import model.TextController;
+import model.Answer;
+import model.Question.QuestionNature;
 import model.RealDoor.DoorStatus;
 
 public class ActionController {
@@ -37,8 +39,7 @@ public class ActionController {
     /**
      * A field for whether the game needs a question.
      */
-    private boolean needsQuestion = false;
-    
+    private boolean needsQuestion;
     
 	/**
 	 * A Stage to contain a scene.
@@ -194,25 +195,25 @@ public class ActionController {
     private Label lastPressedLabel;
     
     /**
-     * All radio buttons belong to the toggle group mc.
+     * All toggle buttons belong to the toggle group mc.
      */
     @FXML
     private ToggleGroup mc;
     
     @FXML
-    private RadioButton choiceA;
+    private ToggleButton choiceA;
     
     @FXML
-    private RadioButton choiceB;
+    private ToggleButton choiceB;
 
     @FXML
-    private RadioButton choiceC;
+    private ToggleButton choiceC;
 
     @FXML
-    private RadioButton choiceD;
+    private ToggleButton choiceD;
 
     /**
-     * All label choices sit to the left of a radio button and denote which choice the payer is making.
+     * All label choices sit to the left of a toggle button and denote which choice the payer is making.
      * Note: for True/False questions labelChoiceA/B are changed to say "True" & "False".
      */
     @FXML
@@ -298,7 +299,7 @@ public class ActionController {
     }
 
     /**
-     * Sets the opacity for all multiple Choice Radio Buttons.
+     * Sets the opacity for all multiple Choice Toggle Buttons.
      * 
      * @param o opacity
      */
@@ -315,6 +316,10 @@ public class ActionController {
     	choiceD.setOpacity(o);
     	labelChoiceD.setOpacity(o);
     }
+    /**
+     * Submits the user's answers and displays results.
+     * @param event where "submit" button is pressed.
+     */
     @FXML
     void submit(ActionEvent event) {
         if (needsQuestion) {
@@ -337,7 +342,7 @@ public class ActionController {
                 }
                 needsQuestion = false;
             } else if (choiceC.isSelected()) {
-                if (myGame.choiceD()) {
+                if (myGame.choiceC()) {
                     bottomLabel.setText("Correct. The door opened.");
                     mainTextArea.appendText("You moved to " + myGame.getMyUser().getMyRoom() + "\n");
                 } else {
@@ -354,29 +359,59 @@ public class ActionController {
                     mainTextArea.appendText("You are still at " + myGame.getMyUser().getMyRoom() + "\n");
                 }
                 needsQuestion = false;
+            } else if (shortAnswerField.getText() != null && !shortAnswerField.getText().isEmpty()) {
+                if (myGame.answerQuestion(Answer.SHORT, shortAnswerField.getText())) {
+                    bottomLabel.setText("Correct. The door opened.");
+                    mainTextArea.appendText("You moved to " + myGame.getMyUser().getMyRoom() + "\n");
+                } else {
+                    bottomLabel.setText("Wrong. The door became locked.");
+                    mainTextArea.appendText("You are still at " + myGame.getMyUser().getMyRoom() + "\n");
+                }
+                needsQuestion = false;
             }
         }
         checkWin();
         mc.selectToggle(null);
     }
+    /**
+     * Helper method that checks if the game has been won.
+     */
     private void checkWin() {
         if (myGame.getMyUser().getMyMaze().isGoal(myGame.getMyUser().getMyRoom())) {
             mainTextArea.appendText("Congratulations! You win!");
             needsQuestion = true;
         }
     }
+    /**
+     * Helper method 
+     */
     private void moveHelper() {
         if (needsQuestion) {
-            bottomLabel.setText(myGame.getMyQuestion().myQuestion+ "\n");
-            RadioButton[] choiceButtons = {choiceA, choiceB, choiceC, choiceD};
+            mainTextArea.appendText(myGame.getMyQuestion().getMyQuestion()+ "\n");
+            bottomLabel.setText("You must answer a question to open the door.");
+            ToggleButton[] choiceButtons = {choiceA, choiceB, choiceC, choiceD};
 
-            for (int i = 0; i < choiceButtons.length; i++) {
-                if (i < myGame.getMyChoices().size()) {
-                    choiceButtons[i].setText(myGame.getMyChoices().get(i));
-                    choiceButtons[i].setDisable(false);
-                } else {
-                    choiceButtons[i].setDisable(true);
-                    choiceButtons[i].setText("");
+            if (myGame.getMyQuestion().getMyQuestionNature() == QuestionNature.TRUE) {
+                setTrueFalseInput();
+                //choiceButtons[2].setDisable(true);
+                //choiceButtons[2].setText("");
+                //choiceButtons[3].setDisable(true);
+                //choiceButtons[3].setText("");
+            } else if (myGame.getMyQuestion().getMyQuestionNature() == QuestionNature.SHORT) {
+                setShortAnswerInput();
+                //for (int i = 0; i < 3; i++) {
+                 //   choiceButtons[i].setDisable(true);
+               //    choiceButtons[i].setText("");
+               // }
+            } else {
+                setMultipleChoiceInput();
+                for (int i = 0; i < choiceButtons.length; i++) {
+                    if (i < myGame.getMyChoices().size()) {
+                        choiceButtons[i].setText(myGame.getMyChoices().get(i));
+                        choiceButtons[i].setOpacity(100);
+                    } else {
+                        choiceButtons[i].setOpacity(0);
+                    }
                 }
             }
         } else {
@@ -430,10 +465,10 @@ public class ActionController {
      */
     void setMultipleChoiceInput() {
     	setMCOpacity(100);
-    	mainTextArea.setText("Sample multiple choice queston...");
+    	//mainTextArea.setText("Sample multiple choice queston...");
     	shortAnswerField.setOpacity(0);
-    	choiceA.setText("Sample answer for A");
-    	choiceB.setText("Sample answer for B");
+    	//choiceA.setText("Sample answer for A");
+    	//choiceB.setText("Sample answer for B");
     }
     
     /**
@@ -441,7 +476,7 @@ public class ActionController {
      */
     void setTrueFalseInput() {
     	setMCOpacity(0);
-    	mainTextArea.setText("Sample True/False question...");
+    	//mainTextArea.setText("Sample True/False question...");
     	shortAnswerField.setOpacity(0);
     	choiceA.setOpacity(100);
     	choiceA.setText("True");
@@ -455,9 +490,13 @@ public class ActionController {
     void setShortAnswerInput() {
     	shortAnswerField.setOpacity(100);
     	shortAnswerField.setText("");
-    	mainTextArea.setText("Sample short answer queston...");
+    	setMCOpacity(0);
+    	//mainTextArea.setText("Sample short answer queston...");
     }
-    
+    /**
+     * Saves the game under the username.
+     * @param event when the "save" button is pressed.
+     */
     @FXML
     void saveGame(ActionEvent event) {
         mainTextArea.appendText("Game has been saved under " + SceneController.getPlayerName());
@@ -504,6 +543,8 @@ public class ActionController {
     }
     public void load(String theName) {
         myGame.load(theName);
+        mainTextArea.setText("Welcome back to the Trivia Maze, " + SceneController.getPlayerName() + "\n");
+        mainTextArea.appendText("You are here: " + myGame.getMyUser().getMyRoom() + "\n");
     }
     /**
      * Switches the scene to the settings screen.
@@ -527,6 +568,7 @@ public class ActionController {
 		//sets player name label
 		playerNameLabel.setText(SceneController.getPlayerName() + ":");
 		myGame = new TextController();
+		needsQuestion = false;
         mainTextArea.setText("Welcome to my Trivia Maze, " + SceneController.getPlayerName() + "\n");
         mainTextArea.appendText("You are here: " + myGame.getMyUser().getMyRoom() + "\n");
 		//sets the initial volume to 100% and calls the music player method

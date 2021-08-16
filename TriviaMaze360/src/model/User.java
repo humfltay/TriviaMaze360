@@ -54,7 +54,7 @@ public class User implements Serializable {
     }
     //can return null.
     public Room moveHelper(RealDoor theDoor) {
-      //theDoor should be one of the room's doors.
+        //theDoor should be one of the room's doors.
         //Not going to check since I plan to make it impossible to have other room's doors.
         int newRow = myRoom.getMyRow();
         int newCol = myRoom.getMyCol();
@@ -76,13 +76,16 @@ public class User implements Serializable {
     }
     public boolean canMove(RealDoor theDoor) {
         boolean flag = false;
+        //Does INACTIVE mean locked or closed?
+        //if (!theDoor.getMyDoorStatus().equals(DoorStatus.INACTIVE)) {
         if (theDoor.getMyDoorStatus().equals(DoorStatus.CLOSED)||theDoor.getMyDoorStatus().equals(DoorStatus.OPEN)) {
             Room newRoom = moveHelper(theDoor);
+            //Fake rooms won't be null.
             if (newRoom != null) {
                 flag = true;
             }
         }
-        if (theDoor.getMyDoorStatus().equals(DoorStatus.LOCKED)) flag = false;
+        if (theDoor.getMyDoorStatus().equals(DoorStatus.INACTIVE)) flag = false;
         return flag;
     }
     //only call if question has been answered.
@@ -93,7 +96,12 @@ public class User implements Serializable {
             myRoom.setMyVisited(true);
             theDoor.setMyDoorStatus(DoorStatus.OPEN);
         } else {
-            theDoor.setMyDoorStatus(DoorStatus.LOCKED);
+            //Should I remove this.
+            //It doesn't make sense to Lock a door that
+            //should already be locked if it's unmovable.
+            //The other thing is FAKE.
+            //I think this is here just in case.
+            theDoor.setMyDoorStatus(DoorStatus.INACTIVE);
         }
         return myRoom;
     }
@@ -104,21 +112,18 @@ public class User implements Serializable {
     @Override
     public String toString() {
       StringBuilder maze = new StringBuilder();
-      for (int i = 0; i <= myMaze.getMyMazeSize() + 1; i++) {
-        for (int j = 0; j <= myMaze.getMyMazeSize() + 1; j++) {
+      for (int i = 1; i <= myMaze.getMyMazeSize(); i++) {
+        for (int j = 1; j <= myMaze.getMyMazeSize(); j++) {
             //int rand = new Random().nextInt(4);
           Room current = myMaze.getRoom(i, j);
             //not accessible
             if (current == null) {
               maze.append(".");
-            } else if (current.getMyRow() == myRoom.getMyRow() &&
-                    current.getMyCol() == myRoom.getMyCol()) {
+            } else if (current.equals(myRoom)) {
                 maze.append("U");
-            } else if (current.getMyRow() == myMaze.getMyEntrance().getMyRow() &&
-                    current.getMyCol() == myMaze.getMyEntrance().getMyCol()) {
+            } else if (current.equals(myMaze.getMyEntrance())) {
                 maze.append("E");
-            } else if (current.getMyRow() == myMaze.getMyExit().getMyRow() &&
-                    current.getMyCol() == myMaze.getMyExit().getMyCol()) {
+            } else if (current.equals(myMaze.getMyExit())) {
                 maze.append("X");
             } else if (current.getMyVisited()) {
                 maze.append("*");

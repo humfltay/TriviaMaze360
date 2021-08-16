@@ -2,19 +2,15 @@ package model;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import application.ActionController;
-import javafx.scene.control.TextArea;
+import model.Question.QuestionNature;
 import model.RealDoor.DoorStatus;
 
 public class TextController implements Serializable {
@@ -28,14 +24,11 @@ public class TextController implements Serializable {
     private RealDoor myDoor;
     private Question myQuestion;
     private ArrayList<String> myChoices;
-    //private ActionController myAction;
     
     public TextController() {
+        //MazeGenerator MG = new MazeGenerator();
+        //myUser = new User(MG.getMaze());
         myUser = new User();
-        //myAction = action;
-        //PrintStream printStream = new PrintStream(new CustomOutputStream(myAction.mazeView));
-        //System.setOut(printStream);
-        //System.setErr(printStream);
     }
     
 
@@ -45,38 +38,34 @@ public class TextController implements Serializable {
         myQuestion = theState.getMyQuestion();
         myChoices = theState.getMyChoices();
     }
+
     //returns false if try to input invalid answer;
-    public Boolean answerQuestion(Answer theAnswer) {
+    public Boolean answerQuestion(Answer theAnswer, String theShortAnswer) {
         Boolean result = false;
+        int i = theAnswer.ordinal();
         if (myQuestion != null) {
-            int i = 0;
-            switch(theAnswer) {
-                case A:
-                    i = 0;
-                    break;
-                case B:
-                    i = 1;
-                    break;
-                case C:
-                    i = 2;
-                    break;
-                case D:
-                    i = 3;
-                    break;
+            if (myQuestion.getMyQuestionNature() == QuestionNature.TRUE) {
+                Boolean answer = Boolean.valueOf(myQuestion.getMyCorrectAnswer());
+                System.out.println(myQuestion.getMyCorrectAnswer() + answer);
+                if (theAnswer == Answer.A) result = answer.equals(true);
+                else result = answer.equals(false);
+            } else if (myQuestion.getMyQuestionNature() == QuestionNature.SHORT) {
+                result = theShortAnswer.toLowerCase().equals(myQuestion.getMyCorrectAnswer().toLowerCase());
+            } else if (i < myChoices.size()) {
+                result = (myChoices.get(i).equals(myQuestion.getMyCorrectAnswer()));
             }
-            if (i < myChoices.size()) {
-                if (myChoices.get(i).equals(myQuestion.myCorrectAnswer)) {
-                    myUser.move(myDoor);
-                    myDoor.setMyDoorStatus(DoorStatus.OPEN);
-                    myUser.getMyRoom().getDoor(myDoor.getOppositeDirection()).setMyDoorStatus(DoorStatus.OPEN);
-                    result = true;
-                } else {
-                    myDoor.setMyDoorStatus(DoorStatus.LOCKED);
-                    myUser.getMyRoom().getDoor(myDoor.getOppositeDirection()).setMyDoorStatus(DoorStatus.LOCKED);
-                    result = false;
-                }
+            if (result) {
+                myUser.move(myDoor);
+                myDoor.setMyDoorStatus(DoorStatus.OPEN);
+                myUser.getMyRoom().getDoor(myDoor.getOppositeDirection()).setMyDoorStatus(DoorStatus.OPEN);
+            } else {
+                myDoor.setMyDoorStatus(DoorStatus.INACTIVE);
+                myUser.moveHelper(myDoor).getDoor(myDoor.getOppositeDirection()).setMyDoorStatus(DoorStatus.INACTIVE);
             }
             //Probably not a good idea.
+            //This parses the same as false to my program.
+            //It won't lock the door, but the text will say it did.
+            //Shouldn't matter to my gui though.
             myQuestion = null;
         }
         return result;
@@ -84,13 +73,16 @@ public class TextController implements Serializable {
     //Maybe this should be part of the door class.
     public boolean askQuestion(RealDoor theDoor) {
         boolean asked = false;
-        //This asks question even if door is open.
+        //This won't ask question if door is open.
         if (getMyUser().canMove(theDoor)) {
             if (theDoor.getMyDoorStatus().equals(DoorStatus.CLOSED)) {
                 myQuestion = myDoor.getMyQuestion();
                 myChoices = myDoor.getMyChoices();
-                System.out.println(getMyQuestion().myQuestion);
-                System.out.println(getMyChoices());
+                System.out.println(getMyQuestion().getMyQuestion());
+                if (myQuestion.getMyQuestionNature() == QuestionNature.MULTIPLE) 
+                    System.out.println(getMyChoices());
+                else if (myQuestion.getMyQuestionNature() == QuestionNature.TRUE)
+                    System.out.println("[True, False]");
                 asked = true;
             } else {
                 getMyUser().move(myDoor);
@@ -118,17 +110,21 @@ public class TextController implements Serializable {
         return askQuestion(myDoor);
     }
     public Boolean choiceA() {
-        return answerQuestion(Answer.A);
+        return answerQuestion(Answer.A, "");
     }
     public Boolean choiceB() {
-        return answerQuestion(Answer.B);
+        return answerQuestion(Answer.B, "");
     }
     public Boolean choiceC() {
-        return answerQuestion(Answer.C);
+        return answerQuestion(Answer.C, "");
     }
     public Boolean choiceD() {
-        return answerQuestion(Answer.D);
+        return answerQuestion(Answer.D, "");
     }
+    //Maybe the text just won't support short answers.
+    //public Boolean choiceShort() {
+    //    return answerQuestion(Answer.SHORT, answer);
+    //}
     //Copied from the example serializable.
     public void save(String theName) {
         String filename = "SavedGames" + File.separator + theName + ".sav"; 
@@ -171,18 +167,18 @@ public class TextController implements Serializable {
         System.out.println("Welcome to the Trivia Maze.");
         loop:
         while(flag) {
-            //text.myRoom isn't getting changed. still 1,1.
-            //a wrong answer locks off that direction forever.
-            //Meaning I'm calling the same 4 doors each time.
-            //Position changes without the room changing.
-            //The only thing that changes is myRow and myCol.
             Room theRoom = text.getMyUser().getMyRoom();
             System.out.println("You are here: " + theRoom);
-            System.out.println(text.getMyUser());
+            //This is where I would have printed myUser.
+            System.out.println(text.getMyUser().getMyMaze());
             if (text.getMyUser().getMyMaze().isGoal(theRoom)) {
                 System.out.println("Congratulations! You win!");
                 break;
             }
+            if (!text.getMyUser().getMyMaze().isWinnable(theRoom)) {
+                System.out.println("You Lose! Game Over!");
+                break;
+            }/*
             System.out.print("Your doors are: ");
             if (text.getMyUser().canMove(theRoom.getMyNorthDoor())) {
                 System.out.print("The north door. ");
@@ -195,8 +191,8 @@ public class TextController implements Serializable {
             }
             if (text.getMyUser().canMove(theRoom.getMyWestDoor())) {
                 System.out.print("The west door. ");
-            }
-            System.out.println();
+            }*/
+            //System.out.println(text.getMyUser().getMyMaze().getValidNeighbors(theRoom));
             String action = input.nextLine();
             //ask a question for the door.
             Room newRoom = text.getMyUser().getMyRoom();
@@ -282,7 +278,15 @@ public class TextController implements Serializable {
                         input.close();
                         break loop;
                     default:
-                        System.out.println("Invalid input. Please try again.");
+                        //Allow short answer in here.
+                        if (text.answerQuestion(Answer.SHORT, answer)) {
+                            System.out.println("Correct. The door opened and you moved.");
+                        } else {
+                            System.out.println("Wrong. The door locked and you failed to move.");
+                        }
+                        needAnswer = false;
+                        
+                        //System.out.println("Invalid input. Please try again.");
                         break;
                 }
             }

@@ -2,6 +2,7 @@ package model;
 import java.sql.*;
 
 import model.RealDoor.DoorDirection;
+import modelTay.Question;
 
 /**
  * QuestionBase acts as a local database using SQLite in order to hold questions for a Trivia Maze
@@ -33,13 +34,16 @@ public class QuestionBase {
           SelectQuestions sq = new SelectQuestions();
           Question q = new Question();
           System.out.println(q);
+          //He set it up to ask by type.
+          Question query = new Question("Comedy");
+          System.out.println(query);
           //sq.selectAll();
           //System.out.println();
           //sq.getQuestionsHarderThan(1);
           // System.out.println();
           //sq.getQuestionsOfDifficulty(2);
-          RealDoor d = new RealDoor(DoorDirection.EAST);
-          System.out.println(DoorDirection.EAST == d.getMyDoorDirection());
+          RealDoor d = new RealDoor(DoorDirection.EAST);//Pretty sure this is useless.
+          System.out.println(DoorDirection.EAST == d.getMyDoorDirection());//Did I write them?
           Maze m = null;
           MazeGenerator mazeGen = new MazeGenerator();
           m = mazeGen.getMaze();
