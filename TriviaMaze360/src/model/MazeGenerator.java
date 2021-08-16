@@ -1,6 +1,7 @@
 /*TCSS 360 Maze Project*/
 package model;
 
+
 import java.util.List;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class MazeGenerator {
   // default
   public MazeGenerator() {
     //default values may likely change
-    this(3, 8, 20); //new Point(0, 0), new Point (4,4));
+    this(3, 8, 10); //new Point(0, 0), new Point (4,4));
   }
 
   public MazeGenerator(final int theMinPaths, final int theMaxPaths, final int theSize) {
@@ -112,13 +113,7 @@ public class MazeGenerator {
   }
 
   private void createPath(Maze theMaze, int theRow, int theColumn) {
-    // TODO Auto-generated method stub
     Room current = theMaze.getMyRooms()[theRow][theColumn];
-    Room end = theMaze.getMyExit();
-    int row = theRow;
-    int col = theColumn;
-    Random ran = new Random();
-    int pick = ran.nextInt(4);
     while (hasPath(current) && !theMaze.isGoal(current)) {
       //the thing to debug
       System.out.print(current.getMyCol());
@@ -139,7 +134,6 @@ public class MazeGenerator {
    * @return True if path exists, false otherwise.
    */
   private boolean hasPath(Room theRoom) {
-    // TODO Auto-generated method stub
     boolean check = false;
     Set<RealDoor> rooms = theRoom.getDoors();
     
@@ -172,13 +166,14 @@ public class MazeGenerator {
       for (RealDoor door: doors) {
         DoorDirection left = goLeft(direction);
         DoorDirection right = goRight(direction);
-        if (door.getMyDoorDirection() == direction && ran > 0.3) {
+        if (door.getMyDoorDirection() == direction && ran > 0.7) {
           System.out.println("straight");
           //go that direction right???
           pathNotFound = false;
           //closed for asking questions???
           door.setMyDoorStatus(DoorStatus.CLOSED);
           pathTo = myMaze.openDoor(direction, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(direction).getMyDoorStatus());
+          break;
 
         } 
         
@@ -189,13 +184,14 @@ public class MazeGenerator {
           pathNotFound = false;
           door.setMyDoorStatus(DoorStatus.CLOSED);
           pathTo = myMaze.openDoor(left, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(left).getMyDoorStatus());
-
+          break;
         }
         else if (door.getMyDoorDirection() == right && (ran = Math.random()) > 0.4 ) {
           System.out.println("right");
           pathNotFound = false;
           door.setMyDoorStatus(DoorStatus.CLOSED);
           pathTo = myMaze.openDoor(right, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(right).getMyDoorStatus());
+          break;
           //go that direction 
         }
         //CHECK THIS
@@ -204,15 +200,20 @@ public class MazeGenerator {
           if (door.getMyDoorDirection() == back) {
             System.out.println("back");
             pathNotFound = false;
+            door.setMyDoorStatus(DoorStatus.CLOSED);
             pathTo = myMaze.openDoor(back, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(back).getMyDoorStatus()); 
+            break;
           }
         }
         loopCnt++;
       }
     }
+    if (pathTo == null) {
+      System.out.println("Should not be here1");
+    }
     return pathTo;
   }
-  private DoorDirection getDirect(Room theRoom) {
+  public DoorDirection getDirect(Room theRoom) {
     Point entrPoint = new Point(theRoom.getMyRow(), theRoom.getMyCol());
     Point exitPoint = myMaze.getMyExitPoint();
   //positive = right, negative = left, equal ignore
@@ -225,16 +226,16 @@ public class MazeGenerator {
     if (Math.abs(diffInX) > Math.abs(diffInY)) {
       //focus on X
       if (diffInX >= 0) {
-        direct = DoorDirection.EAST;
+        direct = DoorDirection.SOUTH;
       } else {
-        direct = DoorDirection.WEST;
+        direct = DoorDirection.NORTH;
       }
     } else if (Math.abs(diffInX) <= Math.abs(diffInY)){
       //focus on y
       if (diffInY >= 0) {
-        direct = DoorDirection.SOUTH;
+        direct = DoorDirection.EAST;
       } else {
-        direct = DoorDirection.NORTH;
+        direct = DoorDirection.WEST;
       }
     }
     return direct;
@@ -261,18 +262,18 @@ public class MazeGenerator {
   public Room lookInDirection(DoorDirection theDir, int theRow, int theCol) {
     Room peek = null;
     if (theDir == DoorDirection.NORTH) {
-      peek = myMaze.getRoom(theRow, theCol - 1);
+      peek = myMaze.getRoom(theRow -1, theCol);
       peek.getMySouthDoor().setMyDoorStatus(DoorStatus.CLOSED);
     } 
     else if (theDir == DoorDirection.EAST) {
-      peek = myMaze.getRoom(theRow + 1, theCol);
+      peek = myMaze.getRoom(theRow, theCol + 1);
       peek.getMyWestDoor().setMyDoorStatus(DoorStatus.CLOSED);
     }
     else if (theDir == DoorDirection.SOUTH) {
-      peek = myMaze.getRoom(theRow, theCol + 1);
+      peek = myMaze.getRoom(theRow + 1, theCol);
       peek.getMyNorthDoor().setMyDoorStatus(DoorStatus.CLOSED);
     } else {
-      peek = myMaze.getRoom(theRow - 1, theCol);
+      peek = myMaze.getRoom(theRow, theCol - 1);
       peek.getMyEastDoor().setMyDoorStatus(DoorStatus.CLOSED);
     }
     return peek;  

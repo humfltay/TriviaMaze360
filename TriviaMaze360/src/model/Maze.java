@@ -59,16 +59,16 @@ public class Maze {
         }
         for (int i = 1; i <= myMazeSize; i++) {
           //myRooms[i][0] = new Room(i, 0, false);
-          myRooms[i][1].getMyNorthDoor().setMyDoorStatus(DoorStatus.FAKE);
+          myRooms[i][1].getMyWestDoor().setMyDoorStatus(DoorStatus.FAKE);
         }
         for (int i = 1; i <= myMazeSize; i++) {
-          myRooms[i][myMazeSize].getMySouthDoor().setMyDoorStatus(DoorStatus.FAKE);
+          myRooms[i][myMazeSize].getMyEastDoor().setMyDoorStatus(DoorStatus.FAKE);
         }
         for (int j = 1; j <= myMazeSize; j++) {
-          myRooms[1][j].getMyWestDoor().setMyDoorStatus(DoorStatus.FAKE);
+          myRooms[1][j].getMyNorthDoor().setMyDoorStatus(DoorStatus.FAKE);
         }
         for (int j = 1; j <= myMazeSize; j++) {
-          myRooms[myMazeSize][j].getMyEastDoor().setMyDoorStatus(DoorStatus.FAKE);;
+          myRooms[myMazeSize][j].getMySouthDoor().setMyDoorStatus(DoorStatus.FAKE);;
         }
         //EYES ON THIS CODE
         myEntrance = myRooms[1][1];
@@ -211,19 +211,20 @@ public class Maze {
     }
     public Room openDoor(DoorDirection theDir, int theRow, int theCol, DoorStatus theStat) {
       Room peek = null;
-        if (theDir == DoorDirection.NORTH && isValid(theRow, theCol - 1)) {
-          peek = getRoom(theRow, theCol - 1);
+        if (theDir == DoorDirection.NORTH && isValid(theRow - 1, theCol)) {
+          peek = getRoom(theRow - 1, theCol);
+          //this
           peek.getMySouthDoor().setMyDoorStatus(theStat);
         } 
-        else if (theDir == DoorDirection.EAST && isValid(theRow + 1, theCol)) {
-          peek = getRoom(theRow + 1, theCol);
+        else if (theDir == DoorDirection.EAST && isValid(theRow , theCol + 1)) {
+          peek = getRoom(theRow, theCol + 1);
           peek.getMyWestDoor().setMyDoorStatus(theStat);
         }
-        else if (theDir == DoorDirection.SOUTH && isValid(theRow, theCol + 1)) {
-          peek = getRoom(theRow, theCol + 1);
+        else if (theDir == DoorDirection.SOUTH && isValid(theRow + 1, theCol)) {
+          peek = getRoom(theRow + 1, theCol);
           peek.getMyNorthDoor().setMyDoorStatus(theStat);
-        } else if (theDir == DoorDirection.WEST && isValid(theRow - 1, theCol)) { //WEST
-          peek = getRoom(theRow - 1, theCol);
+        } else if (theDir == DoorDirection.WEST && isValid(theRow, theCol - 1)) { //WEST
+          peek = getRoom(theRow, theCol - 1);
           peek.getMyEastDoor().setMyDoorStatus(theStat);
         }
       return peek;  

@@ -2,6 +2,7 @@ package model;
 import java.sql.*;
 
 import model.RealDoor.DoorDirection;
+import model.RealDoor.DoorStatus;
 
 /**
  * QuestionBase acts as a local database using SQLite in order to hold questions for a Trivia Maze
@@ -45,6 +46,9 @@ public class QuestionBase {
           MazeGenerator mazeGen = new MazeGenerator();
           m = mazeGen.getMaze();
           System.out.println(m);
+          System.out.println("isWinnable: " + m.isWinnable());
+          m.getMyExit().setDoors(DoorStatus.FAKE);
+          System.out.println("isWinnable after : " + m.isWinnable());
           
        
     }
