@@ -27,6 +27,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -150,18 +151,34 @@ public class ActionController {
     @FXML
     private Button exitBtn;
     
+    /**
+     * Rectangle that spans the roomView pane.
+     * Used to change the color of the roomView pane.
+     */
     @FXML
     private Rectangle roomViewBackground;
     
+    /**
+     * ImageView to hold the door type of the north door.
+     */
     @FXML
     private ImageView northDoor;
     
+    /**
+     * ImageView to hold the door type of the south door.
+     */
     @FXML
     private ImageView southDoor;
     
+    /**
+     * ImageView to hold the door type of the east door.
+     */
     @FXML
     private ImageView eastDoor;
     
+    /**
+     * ImageView to hold the door type of the west door.
+     */
     @FXML
     private ImageView westDoor;
     
@@ -184,10 +201,25 @@ public class ActionController {
     
     Image leftAnimation = new Image("file:GuyFacingLeft.gif");
     
+    /**
+     * keeps track of the last direction traveled by the sprite.
+     */
     String spriteCurrentDirection;
     
+    /**
+     * reports the opposite direction of the last direction traveled by the sprite.
+     */
     String spriteOppositeDirection;
     
+    /**
+     * Rectangle that surrounds the input options.
+     */
+    @FXML
+    private Rectangle answerRectangle;
+    
+    /**
+     * holds the roomView and all of its assets
+     */
     @FXML
     private AnchorPane roomView;
     
@@ -235,6 +267,9 @@ public class ActionController {
      */
     @FXML
     private Label lastPressedLabel;
+    
+    @FXML
+    private Label lockedDoorLabel;
     
     /**
      * All radio buttons belong to the toggle group mc.
@@ -342,17 +377,21 @@ public class ActionController {
      * 
      * @param o opacity
      */
-    void setMCOpacity(int o) {
+    void setMCOpacity(int o, boolean disable) {
     	choiceA.setOpacity(o);
+    	choiceA.setDisable(disable);
     	labelChoiceA.setOpacity(o);
     	
     	choiceB.setOpacity(o);
+    	choiceB.setDisable(disable);
     	labelChoiceB.setOpacity(o);
     	
     	choiceC.setOpacity(o);
+    	choiceC.setDisable(disable);
     	labelChoiceC.setOpacity(o);
     	
     	choiceD.setOpacity(o);
+    	choiceD.setDisable(disable);
     	labelChoiceD.setOpacity(o);
     }
     
@@ -363,13 +402,12 @@ public class ActionController {
     @FXML
     boolean submit(ActionEvent event) {
     	if(mc.getSelectedToggle() == choiceB) {
-    		lastPressedLabel.setText("Correct! +10");
+    		lastPressedLabel.setText("Current Room: (1,0)");
     		mainTextArea.setVisible(false);
-    		buildRoom("closedDoor", "locked", "locked", "locked");
+    		buildRoom("locked", "closedDoor", "closedDoor", "openDoor");
     		animateSprite2(-250,0,1,spriteCurrentDirection,false,false);
     		return true;
     	} else {
-    		lastPressedLabel.setText("Wow Your Stupid! -10");
     		animateSprite2(250,0,-1,spriteOppositeDirection,false,false);
     		return false;
     	}
@@ -381,7 +419,7 @@ public class ActionController {
     @FXML
     void up(ActionEvent event) {
     	lastPressedLabel.setText("Last Pressed: dPadUp");
-    	setMultipleChoiceInput();
+    	setTrueFalseInput();
     	animateSprite2(0,0,80,"north",false,true);
     }
     
@@ -391,7 +429,6 @@ public class ActionController {
     @FXML
     void down(ActionEvent event) {
     	lastPressedLabel.setText("Last Pressed: dPadDown");
-    	setMCOpacity(0);
     	setShortAnswerInput();
     	animateSprite2(0,0,80,"south",false,true);
     }
@@ -402,9 +439,9 @@ public class ActionController {
     @FXML
     void left(ActionEvent event) {
     	//sample locked door scenario
+    	showLockedDoorLabel();
     	lastPressedLabel.setText("The door is locked you cannot enter");
     	animateSprite2(0,0,250,"west",true,false);
-    	
     }
 
     /**
@@ -413,8 +450,22 @@ public class ActionController {
     @FXML
     void right(ActionEvent event) {
     	animateSprite2(0,0,250,"east",false,true);
+    	setMultipleChoiceInput();
     }
     
+    //don't know how to get this working where it only displays for a couple seconds
+    void showLockedDoorLabel() {
+    	
+    }
+    
+    /**
+     * Updates the roomView with a new randomized background color and sets the door types.
+     * 
+     * @param northDoorImg door type for the north door
+     * @param southDoorImg door type for the south door
+     * @param eastDoorImg door type for the east door
+     * @param westDoorImg door type for the west door
+     */
     void buildRoom(String northDoorImg, String southDoorImg, String eastDoorImg, String westDoorImg) {
     	// create object of Random class
     	Random obj = new Random();
@@ -423,6 +474,7 @@ public class ActionController {
     	String colorCode = String.format("#%06x", rand_num);
     	roomViewBackground.setFill(Color.web(colorCode));
     	
+    	//set north door
     	if (northDoorImg.equals("openDoor")) {
     		northDoor.setImage(openDoor);
     	} else if (northDoorImg.equals("locked")) {
@@ -430,8 +482,41 @@ public class ActionController {
     	} else if (northDoorImg.equals("closedDoor")) {
     		northDoor.setImage(closedDoor);
     	}
+    	
+    	//set south door
+    	if (southDoorImg.equals("openDoor")) {
+    		southDoor.setImage(openDoor);
+    	} else if (southDoorImg.equals("locked")) {
+    		southDoor.setImage(lockedDoor);
+    	} else if (southDoorImg.equals("closedDoor")) {
+    		southDoor.setImage(closedDoor);
+    	}
+    	
+    	//set east door
+    	if (eastDoorImg.equals("openDoor")) {
+    		eastDoor.setImage(openDoor);
+    	} else if (eastDoorImg.equals("locked")) {
+    		eastDoor.setImage(lockedDoor);
+    	} else if (eastDoorImg.equals("closedDoor")) {
+    		eastDoor.setImage(closedDoor);
+    	}
+    	
+    	//set west door
+    	if (westDoorImg.equals("openDoor")) {
+    		westDoor.setImage(openDoor);
+    	} else if (westDoorImg.equals("locked")) {
+    		westDoor.setImage(lockedDoor);
+    	} else if (westDoorImg.equals("closedDoor")) {
+    		westDoor.setImage(closedDoor);
+    	}
     }
     
+    /**
+     * used to update spriteCurrentDirection and spriteOppositeDirection.
+     * useful for automating animation directions
+     * 
+     * @param direction the most recent movement direction of the sprite
+     */
     void setSpriteDirection(String direction) {
     	spriteCurrentDirection = direction;
     	if (direction.equals("north")) {
@@ -447,6 +532,16 @@ public class ActionController {
     	}
     }
     
+    /**
+     * Animates sprite movement.
+     * 
+     * @param startPositionX the x position the sprite should start at
+     * @param startPositionY the y position the sprite should start at
+     * @param distance the distance the sprite should travel
+     * @param direction the direction the sprite should travel
+     * @param reverse whether or not you want the animation to play in reverse upon completion
+     * @param textAreaTransition whether or not you wish to transition to the textArea view
+     */
     void animateSprite2(int startPositionX, int startPositionY, int distance, String direction, boolean reverse, boolean textAreaTransition) {
     	
     	//set sprite direction
@@ -547,13 +642,25 @@ public class ActionController {
     }
     
     
-    
+    void removeInputOptions() {
+    	setMCOpacity(0, true);
+    	shortAnswerField.setOpacity(0);
+    	shortAnswerField.setDisable(true);
+    	submitBtn.setOpacity(0);
+    	submitBtn.setDisable(true);
+    	//answerRectangle.setEffect(new GaussianBlur(40));
+    }
     /**
      * Limits input choices to those needed for multiple choice questions.
      */
     void setMultipleChoiceInput() {
-    	setMCOpacity(100);
-    	mainTextArea.setText("Sample multiple choice queston...");
+    	
+    	submitBtn.setOpacity(100);
+    	submitBtn.setDisable(false);
+    	
+    	setMCOpacity(100, false);
+    	mainTextArea.setText("Sample multiple choice question");
+    	shortAnswerField.setDisable(true);
     	shortAnswerField.setOpacity(0);
     	choiceA.setText("Sample answer for A");
     	choiceB.setText("Sample answer for B");
@@ -563,12 +670,19 @@ public class ActionController {
      * Limits input choices to those needed for True/False questions.
      */
     void setTrueFalseInput() {
-    	setMCOpacity(0);
-    	mainTextArea.setText("Sample True/False question...");
+    	
+    	submitBtn.setOpacity(100);
+    	submitBtn.setDisable(false);
+    	
+    	setMCOpacity(0, true);
+    	mainTextArea.setText("Sample True/False question");
     	shortAnswerField.setOpacity(0);
+    	shortAnswerField.setDisable(true);
     	choiceA.setOpacity(100);
+    	choiceA.setDisable(false);
     	choiceA.setText("True");
     	choiceB.setOpacity(100);
+    	choiceB.setDisable(false);
     	choiceB.setText("False");
     }
     
@@ -576,7 +690,13 @@ public class ActionController {
      * Limits input choices to those needed for short answer questions.
      */
     void setShortAnswerInput() {
+    	
+    	submitBtn.setOpacity(100);
+    	submitBtn.setDisable(false);
+    	
+    	setMCOpacity(0, true);
     	shortAnswerField.setOpacity(100);
+    	shortAnswerField.setDisable(false);
     	shortAnswerField.setText("");
     	mainTextArea.setText("Sample short answer queston...");
     }
@@ -636,10 +756,14 @@ public class ActionController {
 	@FXML
 	public void initialize() {
 		
+		//set the properties of the main text area
 		mainTextArea.setEditable(false);
 		mainTextArea.setStyle("-fx-text-fill: #ffffff");
     	mainTextArea.setWrapText(true);
 		
+    	//remove input option until a question is asked
+    	removeInputOptions();
+    	
 		//sets player name label
 		playerNameLabel.setText(SceneController.getPlayerName() + ":");
 		

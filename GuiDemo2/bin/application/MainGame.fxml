@@ -76,13 +76,16 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Label fx:id="lastPressedLabel" layoutX="59.0" layoutY="287.0" prefHeight="26.0" prefWidth="603.0" text="It might be good to display the room position here" textFill="WHITE">
+            <Label fx:id="lastPressedLabel" layoutX="59.0" layoutY="287.0" prefHeight="26.0" prefWidth="603.0" text="Current Room: (0,0)" textFill="WHITE">
                <font>
                   <Font size="17.0" />
                </font>
             </Label>
-            <Label layoutX="65.0" layoutY="547.0" prefHeight="26.0" prefWidth="403.0" text="This label is planned to appear to notifiy the player that a door is locked" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="221.0" layoutX="247.0" layoutY="319.0" stroke="BLACK" strokeType="INSIDE" width="437.0" />
+            <Label fx:id="lockedDoorLabel" layoutX="65.0" layoutY="547.0" opacity="0.0" prefHeight="26.0" prefWidth="403.0" text="That Door is Locked! You Cannot Enter" textFill="RED">
+               <font>
+                  <Font name="Copperplate Gothic Light" size="18.0" />
+               </font></Label>
+            <Rectangle fx:id="answerRectangle" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="221.0" layoutX="247.0" layoutY="319.0" stroke="BLACK" strokeType="INSIDE" width="437.0" />
             <RadioButton fx:id="choiceA" layoutX="288.0" layoutY="336.0" mnemonicParsing="false" text="Sample answer for A">
                <toggleGroup>
                   <ToggleGroup fx:id="mc" />
