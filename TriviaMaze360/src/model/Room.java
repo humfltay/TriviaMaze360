@@ -18,10 +18,8 @@ public class Room implements Serializable {
     private RealDoor myEastDoor;
     private RealDoor mySouthDoor;
     private RealDoor myWestDoor;
-    // public RealDoor[] myDoors;
     private int myRow;
     private int myCol;
-    private boolean myAccessable;
     private boolean myVisited;
     private int myDifficulty;
 
@@ -32,12 +30,10 @@ public class Room implements Serializable {
         myEastDoor = new RealDoor(DoorDirection.EAST);
         mySouthDoor = new RealDoor(DoorDirection.SOUTH);
         myWestDoor = new RealDoor(DoorDirection.WEST);
-        myAccessable = true;
         myVisited = false;
     }
     //Added a constructor because the default uses the door's default status.
     //He set the door's default status to INACTIVE
-    //This method should replace his other one for FAKE rooms.
     public Room(final int theRow, final int theCol, DoorStatus theStatus, final int theDifficulty) {
         myRow = theRow;
         myCol = theCol;
@@ -46,21 +42,8 @@ public class Room implements Serializable {
         myEastDoor = new RealDoor(DoorDirection.EAST, theStatus, myDifficulty);
         mySouthDoor = new RealDoor(DoorDirection.SOUTH, theStatus, myDifficulty);
         myWestDoor = new RealDoor(DoorDirection.WEST, theStatus, myDifficulty);
-        myAccessable = true;
         myVisited = false;
-        if (theStatus == DoorStatus.FAKE) {
-            myAccessable = false;
-        }
-    }
-    //seems like theAccess should only ever be false. This only creates fake rooms.
-    public Room(final int theRow, final int theCol, boolean theAccess) {
-      myRow = theRow;
-      myCol = theCol;
-      myNorthDoor = new RealDoor(DoorDirection.NORTH, DoorStatus.FAKE, myDifficulty);
-      myEastDoor = new RealDoor(DoorDirection.EAST, DoorStatus.FAKE, myDifficulty);
-      mySouthDoor = new RealDoor(DoorDirection.SOUTH, DoorStatus.FAKE, myDifficulty);
-      myWestDoor = new RealDoor(DoorDirection.WEST, DoorStatus.FAKE, myDifficulty);
-      myAccessable = theAccess;
+
     }
 
     public RealDoor getMyNorthDoor() {
@@ -115,7 +98,20 @@ public class Room implements Serializable {
     public int getMyCol() {
         return myCol;
     }
-    /**
+    public Set<RealDoor> getAccessableDoors() {
+        Set<RealDoor> doors = new HashSet<RealDoor>();
+        if (myNorthDoor.isPassable())
+            doors.add(myNorthDoor);
+        if (myEastDoor.isPassable())
+            doors.add(myEastDoor);
+        // west before south because going backwards should be last in priority
+        if (myWestDoor.isPassable())
+            doors.add(myWestDoor);
+        if (mySouthDoor.isPassable())
+            doors.add(mySouthDoor);
+          return doors;
+      }
+     /**
      * Returns any door that is not marked FAKE. Fake doors will never
      * be accessed meaning we do not want to interact with them.
      * 
@@ -174,9 +170,6 @@ public class Room implements Serializable {
         boolean check = true;
         Iterator<RealDoor> itr = getDoors().iterator();
         int badDoorCnt = 0;
-        if (!myAccessable) {//This shouldn't be necessary.
-          check = false;
-        }
         while (itr.hasNext()) {
             RealDoor door = itr.next();
             //INACTIVE seems to mean LOCKED here.
@@ -197,19 +190,7 @@ public class Room implements Serializable {
     public void setMyVisited(boolean theVisited) {
         myVisited = theVisited;
     }
-    public Set<RealDoor> getAccessableDoors() {
-        Set<RealDoor> doors = new HashSet<RealDoor>();
-        if (myNorthDoor.isPassable())
-            doors.add(myNorthDoor);
-        if (myEastDoor.isPassable())
-            doors.add(myEastDoor);
-        // west before south because going backwards should be last in priority
-        if (myWestDoor.isPassable())
-            doors.add(myWestDoor);
-        if (mySouthDoor.isPassable())
-            doors.add(mySouthDoor);
-          return doors;
-      }
+   
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();

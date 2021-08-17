@@ -31,7 +31,7 @@ public class TextController implements Serializable {
         //MazeGenerator MG = new MazeGenerator();
         //myUser = new User(MG.getMaze());
         myDifficulty = theDifficulty;
-        myUser = new User(new Maze(myDifficulty + 3, myDifficulty));
+        myUser = new User(new Maze(myDifficulty + 3, myDifficulty, DoorStatus.CLOSED));
         myScore = theScore;
         
     }

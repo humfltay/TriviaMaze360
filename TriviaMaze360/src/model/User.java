@@ -5,55 +5,44 @@ import java.io.Serializable;
 import model.RealDoor.DoorStatus;
 
 public class User implements Serializable {
-    /**
-     * 
-     */
+    /** Automatically generated serial id. */
     private static final long serialVersionUID = -3981547179783758126L;
+    /** The room the user is in. */
     private Room myRoom;
+    /** The maze the user is in. */
     private Maze myMaze;
-    
+    /**
+     * Constructor for the User.
+     * @param theMaze the maze the user is in.
+     */
     public User(Maze theMaze) {
         myMaze = theMaze;
         myRoom = myMaze.getMyEntrance();
     }
-    
+    /** Default constructor for the User */
     public User() {
         myMaze = new Maze();
         myRoom = myMaze.getMyEntrance();
     }
-    
+    /** @return the row index for the user's position.*/
     public int getMyRow() {
         return myRoom.getMyRow();
     }
+    /** @return the column index for the user's position. */
     public int getMyCol() {
         return myRoom.getMyCol();
     }
+    /** @return the maze the user is in. */
     public Maze getMyMaze() {
         return myMaze;
     }
+    /** @return the Room the user is in. */
     public Room getMyRoom() {
         return myRoom;
     }
     
-    public boolean answer(Answer theAnswer) {
-        switch (theAnswer) {
-        case A:
-            
-            break;
-        case B:
-            
-            break;
-        case C:
-            
-            break;
-        case D:
-            
-            break;
-        }
-        return true;
-    }
     //can return null.
-    public Room moveHelper(RealDoor theDoor) {
+    Room moveHelper(RealDoor theDoor) throws IndexOutOfBoundsException {
         //theDoor should be one of the room's doors.
         //Not going to check since I plan to make it impossible to have other room's doors.
         int newRow = myRoom.getMyRow();
@@ -74,7 +63,7 @@ public class User implements Serializable {
         }
         return myMaze.getRoom(newRow, newCol);
     }
-    public boolean canMove(RealDoor theDoor) {
+    boolean canMove(RealDoor theDoor) {
         boolean flag = false;
         //Does INACTIVE mean locked or closed?
         //if (!theDoor.getMyDoorStatus().equals(DoorStatus.INACTIVE)) {
@@ -85,11 +74,11 @@ public class User implements Serializable {
                 flag = true;
             }
         }
-        if (theDoor.getMyDoorStatus().equals(DoorStatus.INACTIVE)) flag = false;
+       // if (theDoor.getMyDoorStatus().equals(DoorStatus.INACTIVE)) flag = false;
         return flag;
     }
     //only call if question has been answered.
-    public Room move(RealDoor theDoor) {
+    Room move(RealDoor theDoor) {
         Room newRoom = moveHelper(theDoor);
         if (canMove(theDoor)) {
             myRoom = myMaze.getRoom(newRoom.getMyRow(), newRoom.getMyCol());
@@ -108,12 +97,13 @@ public class User implements Serializable {
     
     /**
      * Displays Maze in text for testing as well as future console gameplay potential.
+     * @return the String representation of the object.
      */
     @Override
     public String toString() {
       StringBuilder maze = new StringBuilder();
-      for (int i = 1; i <= myMaze.getMyMazeSize(); i++) {
-        for (int j = 1; j <= myMaze.getMyMazeSize(); j++) {
+      for (int i = 0; i <= myMaze.getMyMazeSize() + 1; i++) {
+        for (int j = 0; j <= myMaze.getMyMazeSize() + 1; j++) {
             //int rand = new Random().nextInt(4);
           Room current = myMaze.getRoom(i, j);
             //not accessible
@@ -130,7 +120,6 @@ public class User implements Serializable {
             } else {
               maze.append("?");
             }
-            
         }
         maze.append("\n");
     }

@@ -13,170 +13,213 @@ import java.util.Set;
 import model.RealDoor.DoorDirection;
 import model.RealDoor.DoorStatus;
 import model.Room;
-
+/**
+ * Maze class for modelling the maze.
+ * @author Cordel, Mason, Taylor
+ *
+ */
 public class Maze implements Serializable {
-    /**
-     * 
-     */
+    /** Automatically generated serial number. */
     private static final long serialVersionUID = 1352517377178546983L;
+    /**
+     * Themes were planned but not implemented.
+     * @author Cordel, Mason, Taylor
+     */
     private enum Themes {DEFAULT, POKEMON, SPOOKY, COMEDY, HISTORY};
-    
+    /** Backing arrays for the maze. */
     private Room[][] myRooms;
+    /** The size of the maze rows and columns. */
     private int myMazeSize;
+    /** Where the user enters the maze from. */
     private Room myEntrance;
+    /** Where the user exits the maze from. */
     private Room myExit;
-    //private int myTheme;
-    //Not sure what the Points are for.
+    /** Point to help handle the entrance. */
     private Point myEntrancePoint;
+    /** Point to help handle the exit. */
     private Point myExitPoint;
+    /** The level of the questions that will be asked. */
     private int myDifficulty;
     
-    public Maze() {
-        myMazeSize = 4; //myMazeSize needs to be initialized first.
-        myRooms = new Room[myMazeSize+2][myMazeSize+2];
-        createSimpleMaze();
-    }
-    public Maze(final int theSize, final int theDifficulty) {
-      myMazeSize = theSize;
-      myRooms = new Room[myMazeSize + 2][myMazeSize + 2];
-      myDifficulty = theDifficulty;
-      myEntrancePoint = new Point(1,1);
-      myExitPoint = new Point(myMazeSize + 1, myMazeSize + 1);
-      createSimpleMaze();
-    }
-    public Maze(final int theSize) {
+    public Maze(final int theSize, final int theDifficulty, final DoorStatus theStatus) {
         myMazeSize = theSize;
-        myRooms = new Room[theSize + 2][myMazeSize + 2];
-        //myTheme = Themes.valueOf("DEFAULT").ordinal();
+        myRooms = new Room[myMazeSize + 2][myMazeSize + 2];
+        myDifficulty = theDifficulty;
         myEntrancePoint = new Point(1,1);
         myExitPoint = new Point(myMazeSize + 1, myMazeSize + 1);
-        createSimpleMaze();
+        createSimpleMaze(theStatus);
     }
-    //implement Maze constructors and maze generator method.
-    private void createSimpleMaze() {
+    public Maze(final int theSize) {
+        this(theSize, 1, DoorStatus.CLOSED);
+    }
+    /**
+     * Default constructor for the maze.
+     * Default size is 4, difficulty is 1.
+     */
+    public Maze() {
+        this(4, 1, DoorStatus.CLOSED);
+    }
+    /**
+     * Creates a simple maze with all paths active.
+     */
+    private void createSimpleMaze(final DoorStatus theStatus) {
+        //Rooms at the border are null.
         for (int i = 1; i <= myMazeSize; i++) {
             for (int j = 1; j <= myMazeSize; j++) {
-                //I changed it to include CLOSED
-                //The default sets it to INACTIVE
-                myRooms[i][j] = new Room(i, j, DoorStatus.CLOSED, myDifficulty);
+                myRooms[i][j] = new Room(i, j, theStatus, myDifficulty);
                 
             }
         }
+        //Doors that lead to the border are FAKE.
         for (int i = 1; i <= myMazeSize; i++) {
-            //myRooms[i][0] = new Room(i, 0, false); //this doesn't seem to do anything.
-            //He sets his status to FAKE
             myRooms[i][1].getMyWestDoor().setMyDoorStatus(DoorStatus.FAKE);
         }
         for (int i = 1; i <= myMazeSize; i++) {
-            //myRooms[i][myMazeSize + 1] = new Room(i, myMazeSize + 1, false);
             myRooms[i][myMazeSize].getMyEastDoor().setMyDoorStatus(DoorStatus.FAKE);
         }
         for (int j = 1; j <= myMazeSize; j++) {
-            //myRooms[0][j] = new Room(0, j, false);
             myRooms[1][j].getMyNorthDoor().setMyDoorStatus(DoorStatus.FAKE);
         }
         for (int j = 1; j <= myMazeSize; j++) {
-            //myRooms[myMazeSize + 1][j] = new Room(myMazeSize + 1, j, false);
             myRooms[myMazeSize][j].getMySouthDoor().setMyDoorStatus(DoorStatus.FAKE);
         }
         myEntrance = myRooms[1][1];
         myRooms[1][1] = myEntrance;
-        //myExit = new Room(4, 4);
         myExit = myRooms[myMazeSize][myMazeSize];
         myRooms[myMazeSize][myMazeSize] = myExit;
     }
-    
-    public Room[][] getMyRooms() {
-        return myRooms;
-    }
+    //public Room[][] getMyRooms() {
+    //    return myRooms;
+    //}
+    /**
+     * getter for the maze's size.
+     * @return the maze's size.
+     */
     public int getMyMazeSize() {
         return myMazeSize;
     }
+    /**
+     * getter for the maze's entrance.
+     * @return the maze's entrance.
+     */
     public Room getMyEntrance() {
         return myEntrance;
     }
+    /**
+     * getter for the maze's entrance point.
+     * @return the maze's entrance point.
+     */
     public Point getMyEntrancePoint() {
       return myEntrancePoint;
     }
+    /**
+     * getter for the maze's exit point.
+     * @return the maze's exit point.
+     */
     public Point getMyExitPoint() {
       return myExitPoint;
     }
+    /**
+     * getter for the maze's exit.
+     * @return the maze's exit.
+     */
     public Room getMyExit() {
         return myExit;
     }
-    //He implemented isWinnable, but it doesn't work.
-    //Should go off a room.
-    public boolean isWinnable(Room theRoom) {
+    /**
+     * Checks if the maze can be won from a given position.
+     * @param theRoom the position being checked.
+     * @return whether it can be won or not.
+     */
+    public boolean isWinnable(final Room theRoom) {
         //makes use of breadth first search
         //Taylor's favorite algorithm :)
         
         //start as negative
         boolean found = false;
         
-        //Room init = getMyEntrance();
-        //add to queue
-        
         Queue<Room> currentRooms = new LinkedList<Room>();
         currentRooms.add(theRoom);
         if (isGoal(theRoom)) {
-          found = true;
+            found = true;
         }
         if (getMyExit().isAccessable()) {
-          List<Room> visited = new ArrayList<Room>();
-          
-          while (currentRooms.size() > 0 && !found) {
-            Room current = currentRooms.remove();
-            visited.add(current);
-            List<Room> neighbors = getValidNeighbors(current);
-            //add neighbors to queue
-            for (Room neigh : neighbors) {
-              if (!visited.contains(neigh))
-                currentRooms.add(neigh);
-                if (neigh == myExit) {
-                  found = true;
+            List<Room> visited = new ArrayList<Room>();
+            
+            while (currentRooms.size() > 0 && !found) {
+                Room current = currentRooms.remove();
+                visited.add(current);
+                List<Room> neighbors = getValidNeighbors(current);
+                //add neighbors to queue
+                for (Room neigh : neighbors) {
+                    if (!visited.contains(neigh))
+                        currentRooms.add(neigh);
+                    if (neigh == myExit) {
+                        found = true;
+                    }
                 }
             }
-            
-          }
-          //recursively check each path from exit to find entrance
-          //loop ends if all rooms are in visited
-          //while ()
-          //we start at users current point
+            //recursively check each path from exit to find entrance
+            //loop ends if all rooms are in visited
+            //while ()
+            //we start at users current point
         }
-          return found;
-          
-      }
-
+        return found;
+    }
+    /**
+     * getter for a specific room in the maze.
+     * @param theRow the room's row in the maze.
+     * @param theCol the room's column in the maze.
+     * @return the Room at the specified index.
+     * @throws IndexOutOfBoundsException
+     */
     public Room getRoom(final int theRow, final int theCol) throws IndexOutOfBoundsException {
         if (isValid(theRow, theCol)) {
+            //Should I defensively copy?
             return myRooms[theRow][theCol];
         } else {
             throw new IndexOutOfBoundsException();
             //return null; //Probably not a good idea.
         }
     }
+    /**
+     * Checks if indexes are in the maze.
+     * @param theRow the row index.
+     * @param theCol the column index.
+     * @return whether the position is valid.
+     */
     public boolean isValid(final int theRow, final int theCol) {
         //Should not be valid around the edges.
         return (theRow >= 1 && theRow <= myMazeSize) && (theCol >= 1 && theCol <= myMazeSize);
     }
-   
-    public void setEntrance(int theRow, int theCol) {
-      Point entrance = new Point(theRow, theCol);
-      myEntrancePoint = entrance;
-      myEntrance = myRooms[theRow][theCol];
+   /**
+    * Sets the maze's entrance.
+    * @param theRow the row index.
+    * @param theCol the column index.
+    */
+    public void setEntrance(final int theRow, final int theCol) {
+        Point entrance = new Point(theRow, theCol);
+        myEntrancePoint = entrance;
+        myEntrance = myRooms[theRow][theCol];
     }
-    public void setExit(int theRow, int theCol) {
+    /**
+     * Sets the maze's exit.
+     * @param theRow the row index.
+     * @param theCol the column index.
+     */
+    public void setExit(final int theRow, final int theCol) {
       Point exit = new Point(theRow, theCol);
       myExitPoint = exit;
       myExit = myRooms[theRow][theCol];
     }
-    //Since he implemented equals.
-    //I'm not sure what the point of this is.
-    //I changed it to use equals()
-    public boolean isGoal(Room theRoom) {
+    /**
+     * Checks if the room is the exit.
+     * @param theRoom the room being checked.
+     * @return whether the room is the exit.
+     */
+    public boolean isGoal(final Room theRoom) {
       return myExit.equals(theRoom);
     }
-    //I changed it to ignore the border.
     /**
      * Displays Maze in text for testing as well as future console gameplay potential.
      */
@@ -185,7 +228,6 @@ public class Maze implements Serializable {
       StringBuilder maze = new StringBuilder();
       for (int i = 0; i <= myMazeSize + 1; i++) {
         for (int j = 0; j <= myMazeSize + 1; j++) {
-            //int rand = new Random().nextInt(4);
           Room current = null;
           if (isValid(i,j)) {
              current = getRoom(i, j);
@@ -211,54 +253,59 @@ public class Maze implements Serializable {
     }
       return maze.toString();
     }
-    //What does this do?
-    //Sets status of a door by its direction.
-    public void setDoor(int theRow, int theCol, DoorDirection theDir, DoorStatus theStat) {
-      Room current = myRooms[theRow][theCol];
-      RealDoor oneSide = current.getDoor(theDir);
-      
-    }
-    //This is his method. What does it do?
-    //It returns the room across the door and sets the opposite's status.
-    //We don't move anywhere, just get the room.
-    //row and col had wrong directions.
-    //What happends if peek is null?
-    public Room openDoor(DoorDirection theDir, int theRow, int theCol, DoorStatus theStat) {
-      Room peek = null;
-      //The changes in index were wrong.
+    //public void setDoor(int theRow, int theCol, DoorDirection theDir, DoorStatus theStat) {
+    //  Room current = myRooms[theRow][theCol];
+    //  RealDoor oneSide = current.getDoor(theDir); 
+    //}
+    
+    /**
+     * Returns the room across the door and sets the opposite's status.
+     * @param theDir the door's DoorDirection.
+     * @param theRow the row index.
+     * @param theCol the column index.
+     * @param theStat the door's DoorStatus.
+     * @return the Room being peeked at.
+     */
+    public Room openDoor(final DoorDirection theDir, 
+            final int theRow, final int theCol, final DoorStatus theStat) {
+        Room peek = null;
+        //The changes in index were wrong.
         if (theDir == DoorDirection.NORTH && isValid(theRow - 1, theCol)) {
-          peek = getRoom(theRow - 1, theCol);
-          peek.getMySouthDoor().setMyDoorStatus(theStat);
-        } 
-        else if (theDir == DoorDirection.EAST && isValid(theRow, theCol + 1)) {
-          peek = getRoom(theRow, theCol + 1);
-          peek.getMyWestDoor().setMyDoorStatus(theStat);
-        }
-        else if (theDir == DoorDirection.SOUTH && isValid(theRow + 1, theCol)) {
-          peek = getRoom(theRow + 1, theCol);
-          peek.getMyNorthDoor().setMyDoorStatus(theStat);
-        } else if (isValid(theRow, theCol - 1)) {
+            peek = getRoom(theRow - 1, theCol);
+            peek.getMySouthDoor().setMyDoorStatus(theStat);
+        } else if (theDir == DoorDirection.EAST && isValid(theRow, theCol + 1)) {
+            peek = getRoom(theRow, theCol + 1);
+            peek.getMyWestDoor().setMyDoorStatus(theStat);
+        } else if (theDir == DoorDirection.SOUTH && isValid(theRow + 1, theCol)) {
+            peek = getRoom(theRow + 1, theCol);
+            peek.getMyNorthDoor().setMyDoorStatus(theStat);
+        } else if (theDir == DoorDirection.WEST && isValid(theRow, theCol - 1)) {
           peek = getRoom(theRow, theCol - 1);
           peek.getMyEastDoor().setMyDoorStatus(theStat);
         }
-      return peek;  
+        //peek can be null if conditions not met.
+        return peek;  
     }
-    //Another new method from Taylor.
-    public List<Room> getValidNeighbors(Room theRoom) {
+    /**
+     * Gets the valid neighbors of a room.
+     * @param theRoom the room who's neighbors we want.
+     * @return the list of valid naighbors.
+     */
+    public List<Room> getValidNeighbors(final Room theRoom) {
         List<Room> rooms = new ArrayList<Room>();
         Set<RealDoor> doors = theRoom.getDoors();
         for(RealDoor door: doors) {
-          if (door.isPassable()) {
-            //Look into changing this into just taking a room and a direction
-              //I think it works fine. openDoor was just broken.
-              Room neighbor = openDoor(door.getMyDoorDirection(), theRoom.getMyRow(),
-                      theRoom.getMyCol(), door.getMyDoorStatus());
-              rooms.add(neighbor);
-            
-          }
+            if (door.isPassable()) {
+                //Look into changing this into just taking a room and a direction
+                //I think it works fine. openDoor was just broken.
+                Room neighbor = openDoor(door.getMyDoorDirection(), theRoom.getMyRow(),
+                        theRoom.getMyCol(), door.getMyDoorStatus());
+                rooms.add(neighbor); 
+            }
         }
         return rooms;
-      }
+    }
+    //Main method for testing maze generator.
     public static void main(String[] args) {
         MazeGenerator MG = new MazeGenerator();
         System.out.println(MG.getMaze());

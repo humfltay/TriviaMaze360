@@ -580,8 +580,11 @@ public class ActionController {
 		playerNameLabel.setText(SceneController.getPlayerName() + ":");
 		myGame = new TextController(1, 0);
 		needsQuestion = false;
+		mainTextArea.setWrapText(true);
         mainTextArea.setText("Welcome to my Trivia Maze, " + SceneController.getPlayerName() + "\n");
         mainTextArea.appendText("You are here: " + myGame.getMyUser().getMyRoom() + "\n");
+        
+
 		//sets the initial volume to 100% and calls the music player method
 		vSlider.setValue(mp.getVolume()*100);
 		musicPlayer();

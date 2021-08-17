@@ -42,8 +42,6 @@ public class QuestionBase {
           //sq.getQuestionsHarderThan(1);
           // System.out.println();
           //sq.getQuestionsOfDifficulty(2);
-          RealDoor d = new RealDoor(DoorDirection.EAST);//Pretty sure this is useless.
-          System.out.println(DoorDirection.EAST == d.getMyDoorDirection());//Did I write them?
           Maze m = null;
           MazeGenerator mazeGen = new MazeGenerator();
           m = mazeGen.getMaze();
