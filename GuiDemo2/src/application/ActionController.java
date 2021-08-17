@@ -3,8 +3,14 @@ package application;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
@@ -21,11 +27,18 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class ActionController {
 	
@@ -136,6 +149,47 @@ public class ActionController {
      */
     @FXML
     private Button exitBtn;
+    
+    @FXML
+    private Rectangle roomViewBackground;
+    
+    @FXML
+    private ImageView northDoor;
+    
+    @FXML
+    private ImageView southDoor;
+    
+    @FXML
+    private ImageView eastDoor;
+    
+    @FXML
+    private ImageView westDoor;
+    
+    Image lockedDoor = new Image("file:lockIcon.png");
+    
+    Image closedDoor = new Image("file:doorIcon.png");
+    
+    Image openDoor = new Image("file:openDoor.png");
+    
+    @FXML
+    private ImageView sprite;
+    
+    //currently unneeded
+    Image spriteFacingRight = new Image("file:guyTransparent.png");
+    
+    Image rightAnimation = new Image("file:2FramePikselGuyFacingRight.gif");
+    
+    //currently unneeded
+    Image spriteFacingLeft = new Image("file:guyFacingLeft.png");
+    
+    Image leftAnimation = new Image("file:GuyFacingLeft.gif");
+    
+    String spriteCurrentDirection;
+    
+    String spriteOppositeDirection;
+    
+    @FXML
+    private AnchorPane roomView;
     
     /**
      * All dPad directions are invisible buttons overlaid on top of dPad.png.
@@ -303,12 +357,32 @@ public class ActionController {
     }
     
     /**
+     * Submits the user's answers and displays results.
+     * @param event where "submit" button is pressed.
+     */
+    @FXML
+    boolean submit(ActionEvent event) {
+    	if(mc.getSelectedToggle() == choiceB) {
+    		lastPressedLabel.setText("Correct! +10");
+    		mainTextArea.setVisible(false);
+    		buildRoom("closedDoor", "locked", "locked", "locked");
+    		animateSprite2(-250,0,1,spriteCurrentDirection,false,false);
+    		return true;
+    	} else {
+    		lastPressedLabel.setText("Wow Your Stupid! -10");
+    		animateSprite2(250,0,-1,spriteOppositeDirection,false,false);
+    		return false;
+    	}
+    }
+    
+    /**
      * @param event when dPadUp is pressed
      */
     @FXML
     void up(ActionEvent event) {
     	lastPressedLabel.setText("Last Pressed: dPadUp");
     	setMultipleChoiceInput();
+    	animateSprite2(0,0,80,"north",false,true);
     }
     
     /**
@@ -319,6 +393,7 @@ public class ActionController {
     	lastPressedLabel.setText("Last Pressed: dPadDown");
     	setMCOpacity(0);
     	setShortAnswerInput();
+    	animateSprite2(0,0,80,"south",false,true);
     }
 
     /**
@@ -326,8 +401,10 @@ public class ActionController {
      */
     @FXML
     void left(ActionEvent event) {
-    	lastPressedLabel.setText("Last Pressed: dPadLeft");
-    	mainTextArea.setText("You cannot travel in this direction");
+    	//sample locked door scenario
+    	lastPressedLabel.setText("The door is locked you cannot enter");
+    	animateSprite2(0,0,250,"west",true,false);
+    	
     }
 
     /**
@@ -335,9 +412,141 @@ public class ActionController {
      */
     @FXML
     void right(ActionEvent event) {
-    	lastPressedLabel.setText("Last Pressed: dPadRight");
-    	setTrueFalseInput();
+    	animateSprite2(0,0,250,"east",false,true);
     }
+    
+    void buildRoom(String northDoorImg, String southDoorImg, String eastDoorImg, String westDoorImg) {
+    	// create object of Random class
+    	Random obj = new Random();
+    	int rand_num = obj.nextInt(0xffffff + 1);
+    	// format it as hexadecimal string and print
+    	String colorCode = String.format("#%06x", rand_num);
+    	roomViewBackground.setFill(Color.web(colorCode));
+    	
+    	if (northDoorImg.equals("openDoor")) {
+    		northDoor.setImage(openDoor);
+    	} else if (northDoorImg.equals("locked")) {
+    		northDoor.setImage(lockedDoor);
+    	} else if (northDoorImg.equals("closedDoor")) {
+    		northDoor.setImage(closedDoor);
+    	}
+    }
+    
+    void setSpriteDirection(String direction) {
+    	spriteCurrentDirection = direction;
+    	if (direction.equals("north")) {
+    		spriteOppositeDirection = "south";
+    	} else if (direction.equals("south")) {
+    		spriteOppositeDirection = "north";
+    	} else if (direction.equals("east")) {
+    		spriteOppositeDirection = "west";
+    	} else if (direction.equals("west")) {
+    		spriteOppositeDirection = "east";
+    	} else {
+    		System.out.println("sprite direction was not updated properly");
+    	}
+    }
+    
+    void animateSprite2(int startPositionX, int startPositionY, int distance, String direction, boolean reverse, boolean textAreaTransition) {
+    	
+    	//set sprite direction
+    	setSpriteDirection(direction);
+    	
+    	//disable all buttons for duration of animation
+    	dPadUp.setDisable(true);
+    	dPadDown.setDisable(true);
+    	dPadLeft.setDisable(true);
+    	dPadRight.setDisable(true);
+    	
+    	//get rid of text area to show room view
+    	mainTextArea.setVisible(false);
+    	
+    	//load in the correct gif to have the sprite facing the proper direction
+    	if (direction.equals("north") || direction.equals("south")|| direction.equals("east")) {
+    		sprite.setImage(rightAnimation);
+    	} else {
+    		sprite.setImage(leftAnimation);
+    	}
+    	
+    	//set the starting position of the sprite
+    	sprite.setTranslateX(startPositionX);
+    	sprite.setTranslateY(startPositionY);
+    	sprite.setVisible(true);
+    	
+    	TranslateTransition spriteMovement = new TranslateTransition();
+    	spriteMovement.setDuration(Duration.seconds(2));
+    	if (direction.equals("east")) {
+    		spriteMovement.setToX(distance);
+    	} else if (direction.equals("west")) {
+    		spriteMovement.setToX(-distance);
+    	} else if(direction.equals("north")) {
+    		spriteMovement.setToY(-distance);
+    	} else if (direction.equals("south")) {
+    		spriteMovement.setToY(distance);
+    	}
+    	
+    	if (reverse) {
+    		spriteMovement.setAutoReverse(true);
+        	spriteMovement.setCycleCount(2);
+    	}
+    	
+    	spriteMovement.setNode(sprite);
+    	spriteMovement.play();
+    	
+    	if (textAreaTransition) {
+    		spriteMovement.setOnFinished(e -> {
+	    		
+	    		//sprite disappears into the door
+	    		sprite.setVisible(false);
+	    		
+	    		//shows transition only in the roomView pane
+	    		Rectangle rect = new Rectangle(526, 221);
+	    		roomView.setClip(rect);
+	    		
+	    		//animates sliding into the text area from the proper direction
+	    		Timeline tl = new Timeline();
+	    		
+	    		//prepare text area for transition and set direction to interpolate
+	    		KeyValue kv = null;
+	    		if (direction.equals("east")) {
+	    			mainTextArea.translateXProperty().set(roomView.getWidth());
+	    			kv = new KeyValue(mainTextArea.translateXProperty(), 0, Interpolator.LINEAR);
+	    		} else if (direction.equals("south")) {
+	    			mainTextArea.translateYProperty().set(roomView.getHeight());
+	    			kv = new KeyValue(mainTextArea.translateYProperty(), 0, Interpolator.LINEAR);
+	    		} else if (direction.equals("west")) {
+	    			mainTextArea.translateXProperty().set(-roomView.getWidth());
+	    			kv = new KeyValue(mainTextArea.translateXProperty(), 0, Interpolator.LINEAR);
+	    		} else if (direction.equals("north")) {
+	    			mainTextArea.translateYProperty().set(-roomView.getHeight());
+	    			kv = new KeyValue(mainTextArea.translateYProperty(), 0, Interpolator.LINEAR);
+	    		} else {
+	    			System.out.println("there is an issure with the direction you passed to animateSprite()");
+	    		}
+	    		
+	    		
+	    		KeyFrame kf = new KeyFrame(Duration.seconds(1), kv);
+	    		tl.getKeyFrames().add(kf);
+	    		mainTextArea.setVisible(true);
+	    		tl.setOnFinished(event -> {
+	    			dPadUp.setDisable(false);
+	    	    	dPadDown.setDisable(false);
+	    	    	dPadLeft.setDisable(false);
+	    	    	dPadRight.setDisable(false);
+	    		});
+	    		tl.play();
+	    	});
+    	} else {
+    		spriteMovement.setOnFinished(e ->{
+    			dPadUp.setDisable(false);
+    	    	dPadDown.setDisable(false);
+    	    	dPadLeft.setDisable(false);
+    	    	dPadRight.setDisable(false);
+    		});
+    	}
+    }
+    
+    
     
     /**
      * Limits input choices to those needed for multiple choice questions.
@@ -426,6 +635,10 @@ public class ActionController {
 	 */
 	@FXML
 	public void initialize() {
+		
+		mainTextArea.setEditable(false);
+		mainTextArea.setStyle("-fx-text-fill: #ffffff");
+    	mainTextArea.setWrapText(true);
 		
 		//sets player name label
 		playerNameLabel.setText(SceneController.getPlayerName() + ":");
