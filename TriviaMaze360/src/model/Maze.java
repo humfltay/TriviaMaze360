@@ -266,22 +266,27 @@ public class Maze implements Serializable {
      * @param theStat the door's DoorStatus.
      * @return the Room being peeked at.
      */
-    public Room openDoor(final DoorDirection theDir, 
-            final int theRow, final int theCol, final DoorStatus theStat) {
+    public Room openDoor(final DoorDirection theDir, final Room theRoom) {
         Room peek = null;
+        
+        int col = theRoom.getMyCol();
+        int row = theRoom.getMyRow();
+        
+        DoorStatus status = theRoom.getDoor(theDir).getMyDoorStatus();
+        
         //The changes in index were wrong.
-        if (theDir == DoorDirection.NORTH && isValid(theRow - 1, theCol)) {
-            peek = getRoom(theRow - 1, theCol);
-            peek.getMySouthDoor().setMyDoorStatus(theStat);
-        } else if (theDir == DoorDirection.EAST && isValid(theRow, theCol + 1)) {
-            peek = getRoom(theRow, theCol + 1);
-            peek.getMyWestDoor().setMyDoorStatus(theStat);
-        } else if (theDir == DoorDirection.SOUTH && isValid(theRow + 1, theCol)) {
-            peek = getRoom(theRow + 1, theCol);
-            peek.getMyNorthDoor().setMyDoorStatus(theStat);
-        } else if (theDir == DoorDirection.WEST && isValid(theRow, theCol - 1)) {
-          peek = getRoom(theRow, theCol - 1);
-          peek.getMyEastDoor().setMyDoorStatus(theStat);
+        if (theDir == DoorDirection.NORTH && isValid(row - 1, col)) {
+            peek = getRoom(row - 1, col);
+            peek.getMySouthDoor().setMyDoorStatus(status);
+        } else if (theDir == DoorDirection.EAST && isValid(row, col + 1)) {
+            peek = getRoom(row, col + 1);
+            peek.getMyWestDoor().setMyDoorStatus(status);
+        } else if (theDir == DoorDirection.SOUTH && isValid(row + 1, col)) {
+            peek = getRoom(row + 1, col);
+            peek.getMyNorthDoor().setMyDoorStatus(status);
+        } else if (theDir == DoorDirection.WEST && isValid(row, col - 1)) {
+          peek = getRoom(row, col - 1);
+          peek.getMyEastDoor().setMyDoorStatus(status);
         }
         //peek can be null if conditions not met.
         return peek;  
@@ -298,8 +303,7 @@ public class Maze implements Serializable {
             if (door.isPassable()) {
                 //Look into changing this into just taking a room and a direction
                 //I think it works fine. openDoor was just broken.
-                Room neighbor = openDoor(door.getMyDoorDirection(), theRoom.getMyRow(),
-                        theRoom.getMyCol(), door.getMyDoorStatus());
+                Room neighbor = openDoor(door.getMyDoorDirection(), theRoom);
                 rooms.add(neighbor); 
             }
         }

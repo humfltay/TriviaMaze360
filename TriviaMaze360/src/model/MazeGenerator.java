@@ -176,23 +176,20 @@ public class MazeGenerator {
                     //closed for asking questions???
                     door.setMyDoorStatus(DoorStatus.CLOSED);
                     pathTo = myMaze.openDoor(direction, 
-                            theRoom.getMyRow(), theRoom.getMyCol(),
-                            theRoom.getDoor(direction).getMyDoorStatus());
+                            theRoom);
                     break;
                 } else if (door.getMyDoorDirection() == left && (ran = Math.random()) < 0.3) {
           
                     //go that direction 
                     pathNotFound = false;
                     door.setMyDoorStatus(DoorStatus.CLOSED);
-                    pathTo = myMaze.openDoor(left, theRoom.getMyRow(), 
-                            theRoom.getMyCol(),theRoom.getDoor(left).getMyDoorStatus());
+                    pathTo = myMaze.openDoor(left, theRoom);
                     break;
                 } else if (door.getMyDoorDirection() == right && (ran = Math.random()) > 0.4 ) {
                     System.out.println("right");
                     pathNotFound = false;
                     door.setMyDoorStatus(DoorStatus.CLOSED);
-                    pathTo = myMaze.openDoor(right, theRoom.getMyRow(), 
-                            theRoom.getMyCol(),theRoom.getDoor(right).getMyDoorStatus());
+                    pathTo = myMaze.openDoor(right, theRoom);
                     break;
                     //go that direction 
                 } else if (loopCnt > 3) {//CHECK THIS
@@ -201,8 +198,7 @@ public class MazeGenerator {
                         System.out.println("back");
                         pathNotFound = false;
                         door.setMyDoorStatus(DoorStatus.CLOSED);
-                        pathTo = myMaze.openDoor(back, theRoom.getMyRow(), 
-                                theRoom.getMyCol(),theRoom.getDoor(back).getMyDoorStatus()); 
+                        pathTo = myMaze.openDoor(back, theRoom); 
                         break;
                     }
                 }
@@ -217,32 +213,42 @@ public class MazeGenerator {
      * @return
      */
     private DoorDirection getDirect(Room theRoom) {
-        Point entrPoint = new Point(theRoom.getMyRow(), theRoom.getMyCol());
-        Point exitPoint = myMaze.getMyExitPoint();
-        //positive = right, negative = left, equal ignore
-        double diffInX = exitPoint.getX() - entrPoint.getX();
-        //positive = up, negative = down, equal ignore
-        double diffInY = exitPoint.getY() - entrPoint.getY();
-        //none if diagonal is optimal direction ie combo of lefts and rights
-        DoorDirection direct = null;
+      return getDirect(theRoom, myMaze.getMyExit());
 
-        if (Math.abs(diffInX) > Math.abs(diffInY)) {
-            //focus on X
-            if (diffInX >= 0) {
-                direct = DoorDirection.SOUTH;
-            } else {
-                direct = DoorDirection.NORTH;
-            }
-        } else if (Math.abs(diffInX) <= Math.abs(diffInY)){
-            //focus on y
-            if (diffInY >= 0) {
-                direct = DoorDirection.EAST;
-            } else {
-                direct = DoorDirection.WEST;
-            }
+    }
+    /**
+     * 
+     * @param theSearcher
+     * @param theFind
+     * @return
+     */
+    public DoorDirection getDirect(Room theSearcher, Room theFind) {
+      Point entrPoint = new Point(theSearcher.getMyRow(), theSearcher.getMyCol());
+      Point exitPoint = new Point(theFind.getMyRow(), theFind.getMyCol());;
+    //positive = right, negative = left, equal ignore
+      double diffInX = exitPoint.getX() - entrPoint.getX();
+      //positive = up, negative = down, equal ignore
+      double diffInY = exitPoint.getY() - entrPoint.getY();
+      //none if diagonal is optimal direction ie combo of lefts and rights
+      DoorDirection direct = null;
+
+      if (Math.abs(diffInX) > Math.abs(diffInY)) {
+        //focus on X
+        if (diffInX >= 0) {
+          direct = DoorDirection.SOUTH;
+        } else {
+          direct = DoorDirection.NORTH;
         }
-        return direct;
-        
+      } else if (Math.abs(diffInX) <= Math.abs(diffInY)){
+        //focus on y
+        if (diffInY >= 0) {
+          direct = DoorDirection.EAST;
+        } else {
+          direct = DoorDirection.WEST;
+        }
+      }
+      return direct;
+      
     }
     /**
      * 

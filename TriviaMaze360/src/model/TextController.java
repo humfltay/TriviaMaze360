@@ -21,6 +21,7 @@ public class TextController implements Serializable {
     
     static Scanner input = new Scanner(System.in);
     private User myUser;
+    private Monster myMonster;
     private RealDoor myDoor;
     private Question myQuestion;
     private ArrayList<String> myChoices;
@@ -33,6 +34,7 @@ public class TextController implements Serializable {
         myDifficulty = theDifficulty;
         myUser = new User(new Maze(myDifficulty + 3, myDifficulty, DoorStatus.CLOSED));
         myScore = theScore;
+        myMonster = new Monster(myUser, 0 + myUser.getMyMaze().getMyMazeSize() / 2, "Question Man");
         
     }
     
@@ -208,6 +210,7 @@ public class TextController implements Serializable {
             String action = input.nextLine();
             //ask a question for the door.
             Room newRoom = text.getMyUser().getMyRoom();
+            //
             switch(action.toLowerCase()) {
                 case "up":
                 case "north":
@@ -307,6 +310,7 @@ public class TextController implements Serializable {
                         break;
                 }
             }
+        monsterHandler(text); 
         }
     }
     
@@ -354,5 +358,16 @@ public class TextController implements Serializable {
     public void setMyDifficulty(final int theDifficulty) {
         // TODO Auto-generated method stub
         myDifficulty = theDifficulty;
+    }
+    public static void monsterHandler(TextController theText) {
+      Monster mons = theText.myMonster;
+      mons.move();
+      if (mons.isUserInRoom()) {
+        //kill user
+        theText.myUser.getMyRoom().setDoors(DoorStatus.INACTIVE);
+        //play gif
+      } else if (mons.isWithinTwoRooms()){
+        System.out.println("You sense a danger to your " + mons.whereIsMonster());
+      }
     }
 }
