@@ -42,14 +42,7 @@ public class MazeGenerator {
     createEntranceAndExit();
     Point start = myMaze.getMyEntrancePoint();
     Point exit = myMaze.getMyExitPoint();
-    System.out.print("Start: ");
-    System.out.print(start.x);
-    System.out.print("\t");
-    System.out.print(start.y + "\n");
-    System.out.print("Exit: ");
-    System.out.print(exit.x);
-    System.out.print("\t");
-    System.out.print(exit.y + "\n");
+    
     for (int i = 0; i < paths; i++) {
       createPath(builder, start.x, start.y);
     }
@@ -116,10 +109,7 @@ public class MazeGenerator {
     Room current = theMaze.getMyRooms()[theRow][theColumn];
     while (hasPath(current) && !theMaze.isGoal(current)) {
       //the thing to debug
-      System.out.print(current.getMyCol());
-      System.out.print("\t");
-      System.out.println(current.getMyRow());
-      System.out.println(current);
+      
       current = getPath(current);
     }
         
@@ -138,8 +128,6 @@ public class MazeGenerator {
     Set<RealDoor> rooms = theRoom.getDoors();
     
     for (RealDoor room : rooms) {
-      //System.out.print("DOOR STATUS BEING CHECKED::::");
-      //System.out.print(room.getMyDoorStatus());
       if (room.getMyDoorStatus() == DoorStatus.INACTIVE || room.getMyDoorStatus() == DoorStatus.CLOSED) {
         check = true;
       }
@@ -167,7 +155,6 @@ public class MazeGenerator {
         DoorDirection left = goLeft(direction);
         DoorDirection right = goRight(direction);
         if (door.getMyDoorDirection() == direction && ran > 0.7) {
-          System.out.println("straight");
           //go that direction right???
           pathNotFound = false;
           //closed for asking questions???
@@ -178,8 +165,6 @@ public class MazeGenerator {
         } 
         
         else if (door.getMyDoorDirection() == left && (ran = Math.random()) < 0.3) {
-          
-          System.out.println("left");
           //go that direction 
           pathNotFound = false;
           door.setMyDoorStatus(DoorStatus.CLOSED);
@@ -187,7 +172,6 @@ public class MazeGenerator {
           break;
         }
         else if (door.getMyDoorDirection() == right && (ran = Math.random()) > 0.4 ) {
-          System.out.println("right");
           pathNotFound = false;
           door.setMyDoorStatus(DoorStatus.CLOSED);
           pathTo = myMaze.openDoor(right, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(right).getMyDoorStatus());
@@ -198,7 +182,6 @@ public class MazeGenerator {
         else if (loopCnt > 3) {
           DoorDirection back = goRight(goRight(direction));
           if (door.getMyDoorDirection() == back) {
-            System.out.println("back");
             pathNotFound = false;
             door.setMyDoorStatus(DoorStatus.CLOSED);
             pathTo = myMaze.openDoor(back, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(back).getMyDoorStatus()); 
@@ -207,9 +190,6 @@ public class MazeGenerator {
         }
         loopCnt++;
       }
-    }
-    if (pathTo == null) {
-      System.out.println("Should not be here1");
     }
     return pathTo;
   }

@@ -146,10 +146,6 @@ public class Maze {
     public boolean isValid(final int theRow, final int theCol) {
         return (theRow >= 1 && theRow <= myMazeSize) && (theCol >= 1 && theCol <= myMazeSize);
     }
-    
-    public static void main(final String[] theArgs) {
-        System.out.println("It runs.");
-    }
    
     public void setEntrance(int theI, int theJ) {
       Point entrance = new Point(theI, theJ);

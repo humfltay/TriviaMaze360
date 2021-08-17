@@ -21,18 +21,18 @@ class MazeTests {
     genMaze = m.getMaze();
   }
 
-//  @Test
-//  void testIsWinnable() {
-//    
-//    for (int i = 1; i < 10; i++) {
-//      MazeGenerator m = new MazeGenerator();
-//      genMaze = m.getMaze();
-//      boolean win = genMaze.isWinnable();
-//      assertTrue(win,"Checking to see if newly generated maze is winnable");
-//    }
-//    boolean lose = tester.isWinnable();
-//    assertFalse(lose, "Checking to see if empty maze will fail");
-//  }
+  @Test
+  void testIsWinnable() {
+    
+    for (int i = 1; i < 15; i++) {
+      MazeGenerator m = new MazeGenerator();
+      genMaze = m.getMaze();
+      boolean win = genMaze.isWinnable();
+      assertTrue(win,"Checking to see if newly generated maze is winnable");
+    }
+    boolean lose = tester.isWinnable();
+    assertFalse(lose, "Checking to see if empty maze will fail");
+  }
   @Test
   void testOpenDoors() {
     Maze m = new Maze(3);
