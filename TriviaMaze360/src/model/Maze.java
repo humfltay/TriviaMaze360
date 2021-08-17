@@ -25,30 +25,29 @@ public class Maze implements Serializable {
     private int myMazeSize;
     private Room myEntrance;
     private Room myExit;
-    private boolean myWinnable;
-    private int myTheme;
+    //private int myTheme;
     //Not sure what the Points are for.
     private Point myEntrancePoint;
     private Point myExitPoint;
+    private int myDifficulty;
     
     public Maze() {
         myMazeSize = 4; //myMazeSize needs to be initialized first.
         myRooms = new Room[myMazeSize+2][myMazeSize+2];
         createSimpleMaze();
-        myWinnable = true;
     }
-    public Maze(int theSize, int theTheme) {
+    public Maze(final int theSize, final int theDifficulty) {
       myMazeSize = theSize;
       myRooms = new Room[myMazeSize + 2][myMazeSize + 2];
-      myTheme = theTheme;
+      myDifficulty = theDifficulty;
       myEntrancePoint = new Point(1,1);
       myExitPoint = new Point(myMazeSize + 1, myMazeSize + 1);
       createSimpleMaze();
     }
-    public Maze(int theSize) {
+    public Maze(final int theSize) {
         myMazeSize = theSize;
         myRooms = new Room[theSize + 2][myMazeSize + 2];
-        myTheme = Themes.valueOf("DEFAULT").ordinal();
+        //myTheme = Themes.valueOf("DEFAULT").ordinal();
         myEntrancePoint = new Point(1,1);
         myExitPoint = new Point(myMazeSize + 1, myMazeSize + 1);
         createSimpleMaze();
@@ -57,14 +56,12 @@ public class Maze implements Serializable {
     private void createSimpleMaze() {
         for (int i = 1; i <= myMazeSize; i++) {
             for (int j = 1; j <= myMazeSize; j++) {
-                //int rand = new Random().nextInt(4);
                 //I changed it to include CLOSED
                 //The default sets it to INACTIVE
-                myRooms[i][j] = new Room(i, j, DoorStatus.CLOSED);
+                myRooms[i][j] = new Room(i, j, DoorStatus.CLOSED, myDifficulty);
                 
             }
         }
-        //I changed the index to ignore the outer rooms.
         for (int i = 1; i <= myMazeSize; i++) {
             //myRooms[i][0] = new Room(i, 0, false); //this doesn't seem to do anything.
             //He sets his status to FAKE
@@ -108,8 +105,7 @@ public class Maze implements Serializable {
         return myExit;
     }
     //He implemented isWinnable, but it doesn't work.
-    //getValidNeighbors broke because openDoor broke.
-    //fixed getValidNeighbors but this still doesn't work.
+    //Should go off a room.
     public boolean isWinnable(Room theRoom) {
         //makes use of breadth first search
         //Taylor's favorite algorithm :)
@@ -136,7 +132,7 @@ public class Maze implements Serializable {
             for (Room neigh : neighbors) {
               if (!visited.contains(neigh))
                 currentRooms.add(neigh);
-                if (neigh == myEntrance) {
+                if (neigh == myExit) {
                   found = true;
                 }
             }
@@ -156,6 +152,7 @@ public class Maze implements Serializable {
             return myRooms[theRow][theCol];
         } else {
             throw new IndexOutOfBoundsException();
+            //return null; //Probably not a good idea.
         }
     }
     public boolean isValid(final int theRow, final int theCol) {

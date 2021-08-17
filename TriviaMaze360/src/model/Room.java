@@ -23,6 +23,7 @@ public class Room implements Serializable {
     private int myCol;
     private boolean myAccessable;
     private boolean myVisited;
+    private int myDifficulty;
 
     public Room(final int theRow, final int theCol) {
         myRow = theRow;
@@ -37,13 +38,14 @@ public class Room implements Serializable {
     //Added a constructor because the default uses the door's default status.
     //He set the door's default status to INACTIVE
     //This method should replace his other one for FAKE rooms.
-    public Room(final int theRow, final int theCol, DoorStatus theStatus) {
+    public Room(final int theRow, final int theCol, DoorStatus theStatus, final int theDifficulty) {
         myRow = theRow;
         myCol = theCol;
-        myNorthDoor = new RealDoor(DoorDirection.NORTH, theStatus);
-        myEastDoor = new RealDoor(DoorDirection.EAST, theStatus);
-        mySouthDoor = new RealDoor(DoorDirection.SOUTH, theStatus);
-        myWestDoor = new RealDoor(DoorDirection.WEST, theStatus);
+        myDifficulty = theDifficulty;
+        myNorthDoor = new RealDoor(DoorDirection.NORTH, theStatus, myDifficulty);
+        myEastDoor = new RealDoor(DoorDirection.EAST, theStatus, myDifficulty);
+        mySouthDoor = new RealDoor(DoorDirection.SOUTH, theStatus, myDifficulty);
+        myWestDoor = new RealDoor(DoorDirection.WEST, theStatus, myDifficulty);
         myAccessable = true;
         myVisited = false;
         if (theStatus == DoorStatus.FAKE) {
@@ -54,10 +56,10 @@ public class Room implements Serializable {
     public Room(final int theRow, final int theCol, boolean theAccess) {
       myRow = theRow;
       myCol = theCol;
-      myNorthDoor = new RealDoor(DoorDirection.NORTH, DoorStatus.FAKE);
-      myEastDoor = new RealDoor(DoorDirection.EAST, DoorStatus.FAKE);
-      mySouthDoor = new RealDoor(DoorDirection.SOUTH, DoorStatus.FAKE);
-      myWestDoor = new RealDoor(DoorDirection.WEST, DoorStatus.FAKE);
+      myNorthDoor = new RealDoor(DoorDirection.NORTH, DoorStatus.FAKE, myDifficulty);
+      myEastDoor = new RealDoor(DoorDirection.EAST, DoorStatus.FAKE, myDifficulty);
+      mySouthDoor = new RealDoor(DoorDirection.SOUTH, DoorStatus.FAKE, myDifficulty);
+      myWestDoor = new RealDoor(DoorDirection.WEST, DoorStatus.FAKE, myDifficulty);
       myAccessable = theAccess;
     }
 

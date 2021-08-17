@@ -16,7 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -119,6 +119,9 @@ public class ActionController {
     @FXML
     private Button SetttingsBtn;
     
+    @FXML
+    private Label mazeLabel;
+    
     /**
      * Displays the player's name.
      */
@@ -195,25 +198,25 @@ public class ActionController {
     private Label lastPressedLabel;
     
     /**
-     * All toggle buttons belong to the toggle group mc.
+     * All radio buttons belong to the toggle group mc.
      */
     @FXML
     private ToggleGroup mc;
     
     @FXML
-    private ToggleButton choiceA;
+    private RadioButton choiceA;
     
     @FXML
-    private ToggleButton choiceB;
+    private RadioButton choiceB;
 
     @FXML
-    private ToggleButton choiceC;
+    private RadioButton choiceC;
 
     @FXML
-    private ToggleButton choiceD;
+    private RadioButton choiceD;
 
     /**
-     * All label choices sit to the left of a toggle button and denote which choice the payer is making.
+     * All label choices sit to the left of a radio button and denote which choice the payer is making.
      * Note: for True/False questions labelChoiceA/B are changed to say "True" & "False".
      */
     @FXML
@@ -299,7 +302,7 @@ public class ActionController {
     }
 
     /**
-     * Sets the opacity for all multiple Choice Toggle Buttons.
+     * Sets the opacity for all multiple Choice Radio Buttons.
      * 
      * @param o opacity
      */
@@ -322,16 +325,15 @@ public class ActionController {
      */
     @FXML
     void submit(ActionEvent event) {
-        if (needsQuestion) {
+        if (needsQuestion && myGame.getMyQuestion() != null) {
             if (choiceA.isSelected()) {
                 if (myGame.choiceA()) {
                     bottomLabel.setText("Correct. The door opened.");
                     mainTextArea.appendText("You moved to " + myGame.getMyUser().getMyRoom() + "\n");
                 } else {
-                    bottomLabel.setText("Wrong. The door locked.");
+                    bottomLabel.setText("Wrong. The door became locked.");
                     mainTextArea.appendText("You are still at " + myGame.getMyUser().getMyRoom() + "\n");
                 }
-                needsQuestion = false;
             } else if (choiceB.isSelected()) {
                 if (myGame.choiceB()) {
                     bottomLabel.setText("Correct. The door opened.");
@@ -340,7 +342,6 @@ public class ActionController {
                     bottomLabel.setText("Wrong. The door became locked.");
                     mainTextArea.appendText("You are still at " + myGame.getMyUser().getMyRoom() + "\n");
                 }
-                needsQuestion = false;
             } else if (choiceC.isSelected()) {
                 if (myGame.choiceC()) {
                     bottomLabel.setText("Correct. The door opened.");
@@ -349,7 +350,6 @@ public class ActionController {
                     bottomLabel.setText("Wrong. The door became locked.");
                     mainTextArea.appendText("You are still at " + myGame.getMyUser().getMyRoom() + "\n");
                 }
-                needsQuestion = false;
             } else if (choiceD.isSelected()) {
                 if (myGame.choiceD()) {
                     bottomLabel.setText("Correct. The door opened.");
@@ -358,7 +358,6 @@ public class ActionController {
                     bottomLabel.setText("Wrong. The door became locked.");
                     mainTextArea.appendText("You are still at " + myGame.getMyUser().getMyRoom() + "\n");
                 }
-                needsQuestion = false;
             } else if (shortAnswerField.getText() != null && !shortAnswerField.getText().isEmpty()) {
                 if (myGame.answerQuestion(Answer.SHORT, shortAnswerField.getText())) {
                     bottomLabel.setText("Correct. The door opened.");
@@ -367,11 +366,11 @@ public class ActionController {
                     bottomLabel.setText("Wrong. The door became locked.");
                     mainTextArea.appendText("You are still at " + myGame.getMyUser().getMyRoom() + "\n");
                 }
-                needsQuestion = false;
             }
+            playerScoreLabel.setText("Score: " + myGame.getMyScore());
+            checkWin();
+            mc.selectToggle(null);
         }
-        checkWin();
-        mc.selectToggle(null);
     }
     /**
      * Helper method that checks if the game has been won.
@@ -379,7 +378,19 @@ public class ActionController {
     private void checkWin() {
         if (myGame.getMyUser().getMyMaze().isGoal(myGame.getMyUser().getMyRoom())) {
             mainTextArea.appendText("Congratulations! You win!");
-            needsQuestion = true;
+            myGame.setMyScore(myGame.getMyScore() + 10*myGame.getMyDifficulty());
+            playerScoreLabel.setText("Score: " + myGame.getMyScore());
+            myGame.setMyDifficulty(myGame.getMyDifficulty() + 1);
+            myGame = new TextController(myGame.getMyDifficulty(), myGame.getMyScore());
+            mainTextArea.setText("Welcome to level " + myGame.getMyDifficulty() + ", "
+            + SceneController.getPlayerName() + "\n");
+            mainTextArea.appendText("You are here: " + myGame.getMyUser().getMyRoom() + "\n");
+            needsQuestion = false;
+            mazeLabel.setText("Maze " + myGame.getMyDifficulty() + ":");
+        } else if (!myGame.getMyUser().getMyMaze().isWinnable(myGame.getMyUser().getMyRoom())) {
+            mainTextArea.appendText("Oh no! You lost!");
+        } else {
+            needsQuestion = false;
         }
     }
     /**
@@ -389,7 +400,7 @@ public class ActionController {
         if (needsQuestion) {
             mainTextArea.appendText(myGame.getMyQuestion().getMyQuestion()+ "\n");
             bottomLabel.setText("You must answer a question to open the door.");
-            ToggleButton[] choiceButtons = {choiceA, choiceB, choiceC, choiceD};
+            RadioButton[] choiceButtons = {choiceA, choiceB, choiceC, choiceD};
 
             if (myGame.getMyQuestion().getMyQuestionNature() == QuestionNature.TRUE) {
                 setTrueFalseInput();
@@ -567,7 +578,7 @@ public class ActionController {
 		
 		//sets player name label
 		playerNameLabel.setText(SceneController.getPlayerName() + ":");
-		myGame = new TextController();
+		myGame = new TextController(1, 0);
 		needsQuestion = false;
         mainTextArea.setText("Welcome to my Trivia Maze, " + SceneController.getPlayerName() + "\n");
         mainTextArea.appendText("You are here: " + myGame.getMyUser().getMyRoom() + "\n");

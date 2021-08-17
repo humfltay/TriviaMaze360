@@ -3,7 +3,7 @@ package model;
 import java.util.List;
 import java.util.Random;
 
-import modelTay.SelectQuestions;
+import model.SelectQuestions;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,9 +14,9 @@ public class Question implements Serializable {
      * 
      */
     private static final long serialVersionUID = 2300715034378187712L;
-    public enum QuestionNature{MULTIPLE, TRUE, SHORT}
+    public enum QuestionNature{MULTIPLE, TRUE, SHORT, ALL}
     //I set Question fields to private.
-    private String myQuestion;
+    private String myQuestionText;
     private String myCorrectAnswer;
     private String myType;
     private QuestionNature myQuestionNature;
@@ -33,6 +33,9 @@ public class Question implements Serializable {
       List<String> contents = sq.getQuestionOfType(theType);
       setUpQuestion(contents);
     }
+    public Question(final int theDifficulty) {
+        setQuestionOfDifficulty(theDifficulty);
+    }
     public Question() {
         setRandomQuestion();
     }
@@ -45,6 +48,11 @@ public class Question implements Serializable {
         //setting up the question fields
         setUpQuestion(contents);
         
+    }
+    private void setQuestionOfDifficulty(final int theDifficulty) {
+        SelectQuestions sq = new SelectQuestions();
+        List<String> contents = sq.getQuestionOfDifficulty(theDifficulty);
+        setUpQuestion(contents);
     }
     /**
      * Sets up the question for the door.
@@ -60,7 +68,7 @@ public class Question implements Serializable {
             wrongAnswers[i - 3] = questions[i];
         }
         //By default it is multiple choice.
-        myQuestion = questions[0];
+        myQuestionText = questions[0];
         myCorrectAnswer = questions[1];
         myWrongAnswers = wrongAnswers;
         
@@ -77,11 +85,11 @@ public class Question implements Serializable {
             rand = new Random().nextInt(2);
             if (rand == 0) {
                 myCorrectAnswer = "true";
-                myQuestion = "True or False: " + questions[0] + "? Is it " + questions[1] + "?";
+                myQuestionText = "True or False: " + questions[0] + "? Is it " + questions[1] + "?";
             } else {
                 myCorrectAnswer = "false";
                 rand = new Random().nextInt(wrongAnswers.length);
-                myQuestion = "True or False: " + questions[0] + "? Is it " + wrongAnswers[rand] + "?";
+                myQuestionText = "True or False: " + questions[0] + "? Is it " + wrongAnswers[rand] + "?";
             }
         }
     }
@@ -117,6 +125,6 @@ public class Question implements Serializable {
         return myQuestionNature;
     }
     public String getMyQuestion() {
-        return myQuestion;
+        return myQuestionText;
     }
 }

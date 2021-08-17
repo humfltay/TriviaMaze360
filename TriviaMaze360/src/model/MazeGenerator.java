@@ -9,6 +9,7 @@ import java.util.Set;
 
 import model.RealDoor.DoorDirection;
 import model.RealDoor.DoorStatus;
+import model.Room;
 
 /**
  * @author Taylor Humfleet
@@ -60,7 +61,7 @@ public class MazeGenerator {
     int side = ran.nextInt(4) + 1;
     int i = ran.nextInt(mySize) + 1;
     int j = ran.nextInt(mySize) + 1;
-    Room entrance = null;
+    Room entrance = null; //What' the point of this??
     switch(side) {
     case 1:
       //top i j = 0
@@ -113,21 +114,15 @@ public class MazeGenerator {
 
   private void createPath(Maze theMaze, int theRow, int theColumn) {
     // TODO Auto-generated method stub
-    Room current = theMaze.getMyRooms()[theRow][theColumn];
-    Room end = theMaze.getMyExit();
-    int row = theRow;
-    int col = theColumn;
-    Random ran = new Random();
-    int pick = ran.nextInt(4);
-    while (hasPath(current) && !theMaze.isGoal(current)) {
-      //the thing to debug
-      System.out.print(current.getMyCol());
-      System.out.print("\t");
-      System.out.println(current.getMyRow());
-      System.out.println(current);
-      current = getPath(current);
-    }
-        
+      Room current = theMaze.getMyRooms()[theRow][theColumn];
+      while (hasPath(current) && !theMaze.isGoal(current)) {
+        //the thing to debug
+        System.out.print(current.getMyCol());
+        System.out.print("\t");
+        System.out.println(current.getMyRow());
+        System.out.println(current);
+        current = getPath(current);
+      }
   }
 
   /**
@@ -172,13 +167,15 @@ public class MazeGenerator {
       for (RealDoor door: doors) {
         DoorDirection left = goLeft(direction);
         DoorDirection right = goRight(direction);
-        if (door.getMyDoorDirection() == direction && ran > 0.3) {
+        //he increased it from .3 to .7
+        if (door.getMyDoorDirection() == direction && ran > 0.7) {
           System.out.println("straight");
           //go that direction right???
           pathNotFound = false;
           //closed for asking questions???
           door.setMyDoorStatus(DoorStatus.CLOSED);
-          pathTo = myMaze.openDoor(direction, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(direction).getMyDoorStatus());
+          pathTo = myMaze.openDoor(direction, theRoom.getMyRow(), 
+                  theRoom.getMyCol(),theRoom.getDoor(direction).getMyDoorStatus());
 
         } 
         
@@ -204,10 +201,15 @@ public class MazeGenerator {
           if (door.getMyDoorDirection() == back) {
             System.out.println("back");
             pathNotFound = false;
+            door.setMyDoorStatus(DoorStatus.CLOSED);
             pathTo = myMaze.openDoor(back, theRoom.getMyRow(), theRoom.getMyCol(),theRoom.getDoor(back).getMyDoorStatus()); 
+            break;
           }
         }
         loopCnt++;
+      }
+      if (pathTo == null) {
+          System.out.println("Should not be here1");
       }
     }
     return pathTo;
@@ -225,16 +227,16 @@ public class MazeGenerator {
     if (Math.abs(diffInX) > Math.abs(diffInY)) {
       //focus on X
       if (diffInX >= 0) {
-        direct = DoorDirection.EAST;
+        direct = DoorDirection.SOUTH;
       } else {
-        direct = DoorDirection.WEST;
+        direct = DoorDirection.NORTH;
       }
     } else if (Math.abs(diffInX) <= Math.abs(diffInY)){
       //focus on y
       if (diffInY >= 0) {
-        direct = DoorDirection.SOUTH;
+        direct = DoorDirection.EAST;
       } else {
-        direct = DoorDirection.NORTH;
+        direct = DoorDirection.WEST;
       }
     }
     return direct;
@@ -261,18 +263,18 @@ public class MazeGenerator {
   public Room lookInDirection(DoorDirection theDir, int theRow, int theCol) {
     Room peek = null;
     if (theDir == DoorDirection.NORTH) {
-      peek = myMaze.getRoom(theRow, theCol - 1);
+      peek = myMaze.getRoom(theRow - 1, theCol);
       peek.getMySouthDoor().setMyDoorStatus(DoorStatus.CLOSED);
     } 
     else if (theDir == DoorDirection.EAST) {
-      peek = myMaze.getRoom(theRow + 1, theCol);
+      peek = myMaze.getRoom(theRow, theCol + 1);
       peek.getMyWestDoor().setMyDoorStatus(DoorStatus.CLOSED);
     }
     else if (theDir == DoorDirection.SOUTH) {
-      peek = myMaze.getRoom(theRow, theCol + 1);
+      peek = myMaze.getRoom(theRow + 1, theCol);
       peek.getMyNorthDoor().setMyDoorStatus(DoorStatus.CLOSED);
     } else {
-      peek = myMaze.getRoom(theRow - 1, theCol);
+      peek = myMaze.getRoom(theRow, theCol - 1);
       peek.getMyEastDoor().setMyDoorStatus(DoorStatus.CLOSED);
     }
     return peek;  

@@ -2,7 +2,7 @@ package model;
 import java.sql.*;
 
 import model.RealDoor.DoorDirection;
-import modelTay.Question;
+import model.Question;
 
 /**
  * QuestionBase acts as a local database using SQLite in order to hold questions for a Trivia Maze

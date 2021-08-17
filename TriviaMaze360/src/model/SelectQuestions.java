@@ -80,10 +80,15 @@ public class SelectQuestions {
              System.out.println(e.getMessage());
          }
     }
-    public void getQuestionsOfDifficulty(int theDifficulty){
+    //It was named getQuestionsOfDifficulty instead of getQuestionOfDifficulty
+    //It didn't return anything.
+    public List<String> getQuestionOfDifficulty(final int theDifficulty){
+        ArrayList<List<String>> questions = new ArrayList<List<String>>();
+        ArrayList<String> question = null;
+        Random ran = new Random();
         String sql = "SELECT questionIndex, difficulty, questionType, questions "
                    + "FROM questions WHERE difficulty = ?";
-         try (Connection conn = this.connect();
+        try (Connection conn = this.connect();
               PreparedStatement pstmt  = conn.prepareStatement(sql)){
              
              // set the value
@@ -93,14 +98,16 @@ public class SelectQuestions {
              
              // loop through the result set
              while (rs.next()) {
-                 System.out.println(rs.getInt("questionIndex") +  "\t" + 
-                                    rs.getInt("difficulty") +  "\t" +
-                                    rs.getString("questionType") + "\t" +
-                                    rs.getString("questions"));
+                 question = new ArrayList<String>();
+                 question.add(rs.getInt("difficulty") + "");
+                 question.add(rs.getString("questionType"));
+                 question.add(rs.getString("questions") + "");
+                 questions.add(question);
              }
          } catch (SQLException e) {
              System.out.println(e.getMessage());
          }
+        return questions.get(ran.nextInt(questions.size()));
     }
     //This is a new method he just wrote.
     public List<String> getQuestionOfType(String theType){

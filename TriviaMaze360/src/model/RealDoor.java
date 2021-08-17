@@ -20,19 +20,20 @@ public class RealDoor implements Serializable {
     private DoorStatus myDoorStatus;
     private Question myQuestion;
     private ArrayList<String> myChoices;
+    private int myDifficulty;
     
     //I guess doors by default start out locked.
-    public RealDoor(DoorDirection theDoorDirection) {
+    public RealDoor(final DoorDirection theDoorDirection) {
         //myDoorStatus = DoorStatus.INACTIVE;
         //myDoorDirection = theDoorDirection;
         //generateQuestion(); //This was missing. It's needed for initializing door's questions.
-        this(theDoorDirection, DoorStatus.INACTIVE); //I should have made all my constructors like this.
+        this(theDoorDirection, DoorStatus.INACTIVE, 1); //I should have made all my constructors like this.
     }
     //I added a constructor for other statuses.
-    public RealDoor(DoorDirection theDoorDirection, DoorStatus theDoorStatus) {
+    public RealDoor(final DoorDirection theDoorDirection, final DoorStatus theDoorStatus, final int theDifficulty) {
         myDoorDirection = theDoorDirection;
         myDoorStatus = theDoorStatus;
-        generateQuestion();
+        generateQuestion(theDifficulty);
     }
     /**
      * A check used by maze used to determine if door can 
@@ -78,10 +79,10 @@ public class RealDoor implements Serializable {
         default: throw new IllegalArgumentException(); //shouldn't be a thing.
         }
     }
-    private void generateQuestion() {
+    private void generateQuestion(final int theDifficulty) {
         //Does this do anything?
         SelectQuestions sq = new SelectQuestions();
-        myQuestion = new Question();
+        myQuestion = new Question(theDifficulty);
         //System.out.println(q.myQuestion);
         myChoices = new ArrayList<String>();
         myChoices.add(myQuestion.getMyCorrectAnswer());

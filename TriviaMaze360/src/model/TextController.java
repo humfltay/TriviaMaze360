@@ -24,11 +24,16 @@ public class TextController implements Serializable {
     private RealDoor myDoor;
     private Question myQuestion;
     private ArrayList<String> myChoices;
+    private int myScore;
+    private int myDifficulty;
     
-    public TextController() {
+    public TextController(final int theDifficulty, final int theScore) {
         //MazeGenerator MG = new MazeGenerator();
         //myUser = new User(MG.getMaze());
-        myUser = new User();
+        myDifficulty = theDifficulty;
+        myUser = new User(new Maze(myDifficulty + 3, myDifficulty));
+        myScore = theScore;
+        
     }
     
 
@@ -46,7 +51,6 @@ public class TextController implements Serializable {
         if (myQuestion != null) {
             if (myQuestion.getMyQuestionNature() == QuestionNature.TRUE) {
                 Boolean answer = Boolean.valueOf(myQuestion.getMyCorrectAnswer());
-                System.out.println(myQuestion.getMyCorrectAnswer() + answer);
                 if (theAnswer == Answer.A) result = answer.equals(true);
                 else result = answer.equals(false);
             } else if (myQuestion.getMyQuestionNature() == QuestionNature.SHORT) {
@@ -58,15 +62,18 @@ public class TextController implements Serializable {
                 myUser.move(myDoor);
                 myDoor.setMyDoorStatus(DoorStatus.OPEN);
                 myUser.getMyRoom().getDoor(myDoor.getOppositeDirection()).setMyDoorStatus(DoorStatus.OPEN);
+                setMyScore(getMyScore() + 1);
             } else {
                 myDoor.setMyDoorStatus(DoorStatus.INACTIVE);
                 myUser.moveHelper(myDoor).getDoor(myDoor.getOppositeDirection()).setMyDoorStatus(DoorStatus.INACTIVE);
+                setMyScore(getMyScore() - 1);
             }
             //Probably not a good idea.
             //This parses the same as false to my program.
             //It won't lock the door, but the text will say it did.
             //Shouldn't matter to my gui though.
             myQuestion = null;
+            
         }
         return result;
     }
@@ -173,6 +180,11 @@ public class TextController implements Serializable {
             System.out.println(text.getMyUser().getMyMaze());
             if (text.getMyUser().getMyMaze().isGoal(theRoom)) {
                 System.out.println("Congratulations! You win!");
+                text.myScore = text.myScore + 10*text.myDifficulty;
+                text.myDifficulty++;
+                System.out.println("Moving to level " + text.myDifficulty);
+                text = new TextController(text.myDifficulty, text.myScore);
+                start(text);
                 break;
             }
             if (!text.getMyUser().getMyMaze().isWinnable(theRoom)) {
@@ -279,12 +291,17 @@ public class TextController implements Serializable {
                         break loop;
                     default:
                         //Allow short answer in here.
-                        if (text.answerQuestion(Answer.SHORT, answer)) {
-                            System.out.println("Correct. The door opened and you moved.");
+                        //Need to make sure it's only for shorts.
+                        if (text.myQuestion.getMyQuestionNature() == QuestionNature.SHORT) { 
+                            if (text.answerQuestion(Answer.SHORT, answer)) {
+                                System.out.println("Correct. The door opened and you moved.");
+                            } else {
+                                System.out.println("Wrong. The door locked and you failed to move.");
+                            }
+                            needAnswer = false;
                         } else {
-                            System.out.println("Wrong. The door locked and you failed to move.");
+                            System.out.println("Invalid input. Please try again.");
                         }
-                        needAnswer = false;
                         
                         //System.out.println("Invalid input. Please try again.");
                         break;
@@ -296,7 +313,7 @@ public class TextController implements Serializable {
     public static void main(String[] args) {
       //reroutes print statements to minesweeper_input.txt
         
-        TextController text = new TextController();
+        TextController text = new TextController(1, 0);
         start(text);
     }
 
@@ -316,5 +333,26 @@ public class TextController implements Serializable {
 
     public ArrayList<String> getMyChoices() {
         return myChoices;
+    }
+
+
+    public int getMyScore() {
+        return myScore;
+    }
+
+
+    public void setMyScore(int myScore) {
+        this.myScore = myScore;
+    }
+
+    public int getMyDifficulty() {
+        // TODO Auto-generated method stub
+        return myDifficulty;
+    }
+
+
+    public void setMyDifficulty(final int theDifficulty) {
+        // TODO Auto-generated method stub
+        myDifficulty = theDifficulty;
     }
 }
