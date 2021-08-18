@@ -3,8 +3,14 @@ package application;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
@@ -21,20 +27,34 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.TextController;
 import model.Answer;
 import model.Question.QuestionNature;
+import model.RealDoor.DoorDirection;
 import model.RealDoor.DoorStatus;
+import model.Room;
 
 public class ActionController {
-	/**
-	 * A connection to the model.
-	 */
+    /**
+     * 
+     */
+    private boolean pause;
+    /**
+     * A connection to the model.
+     */
     private TextController myGame;
     /**
      * A field for whether the game needs a question.
@@ -117,7 +137,7 @@ public class ActionController {
      * Switches the scene to the settings screen.
      */
     @FXML
-    private Button SetttingsBtn;
+    private Button settingsBtn;
     
     @FXML
     private Label mazeLabel;
@@ -151,6 +171,78 @@ public class ActionController {
      */
     @FXML
     private Button exitBtn;
+    
+    /**
+     * Rectangle that spans the roomView pane.
+     * Used to change the color of the roomView pane.
+     */
+    @FXML
+    private Rectangle roomViewBackground;
+    
+    /**
+     * ImageView to hold the door type of the north door.
+     */
+    @FXML
+    private ImageView northDoor;
+    
+    /**
+     * ImageView to hold the door type of the south door.
+     */
+    @FXML
+    private ImageView southDoor;
+    
+    /**
+     * ImageView to hold the door type of the east door.
+     */
+    @FXML
+    private ImageView eastDoor;
+    
+    /**
+     * ImageView to hold the door type of the west door.
+     */
+    @FXML
+    private ImageView westDoor;
+    
+    Image lockedDoor = new Image("file:lockIcon.png");
+    
+    Image closedDoor = new Image("file:doorIcon.png");
+    
+    Image openDoor = new Image("file:openDoor.png");
+    
+    @FXML
+    private ImageView sprite;
+    
+    //currently unneeded
+    Image spriteFacingRight = new Image("file:guyTransparent.png");
+    
+    Image rightAnimation = new Image("file:2FramePikselGuyFacingRight.gif");
+    
+    //currently unneeded
+    Image spriteFacingLeft = new Image("file:guyFacingLeft.png");
+    
+    Image leftAnimation = new Image("file:GuyFacingLeft.gif");
+    
+    /**
+     * keeps track of the last direction traveled by the sprite.
+     */
+    DoorDirection spriteCurrentDirection;
+    
+    /**
+     * reports the opposite direction of the last direction traveled by the sprite.
+     */
+    DoorDirection spriteOppositeDirection;
+    
+    /**
+     * Rectangle that surrounds the input options.
+     */
+    @FXML
+    private Rectangle answerRectangle;
+    
+    /**
+     * holds the roomView and all of its assets
+     */
+    @FXML
+    private AnchorPane roomView;
     
     /**
      * All dPad directions are invisible buttons overlaid on top of dPad.png.
@@ -303,22 +395,27 @@ public class ActionController {
 
     /**
      * Sets the opacity for all multiple Choice Radio Buttons.
-     * 
      * @param o opacity
+     * @param disable should it disable.
      */
-    void setMCOpacity(int o) {
+    void setMCOpacity(int o, boolean disable) {
     	choiceA.setOpacity(o);
+    	choiceA.setDisable(disable);
     	labelChoiceA.setOpacity(o);
     	
     	choiceB.setOpacity(o);
+    	choiceB.setDisable(disable);
     	labelChoiceB.setOpacity(o);
     	
     	choiceC.setOpacity(o);
+    	choiceC.setDisable(disable);
     	labelChoiceC.setOpacity(o);
     	
     	choiceD.setOpacity(o);
+    	choiceD.setDisable(disable);
     	labelChoiceD.setOpacity(o);
     }
+    
     /**
      * Submits the user's answers and displays results.
      * @param event where "submit" button is pressed.
@@ -327,68 +424,68 @@ public class ActionController {
     void submit(ActionEvent event) {
         if (needsQuestion && myGame.getMyQuestion() != null) {
             if (choiceA.isSelected()) {
-                if (myGame.choiceA()) {
-                    bottomLabel.setText("Correct. The door opened.");
-                    mainTextArea.appendText("You moved to " + myGame.getMyUser().getMyRoom() + "\n");
-                } else {
-                    bottomLabel.setText("Wrong. The door became locked.");
-                    mainTextArea.appendText("You are still at " + myGame.getMyUser().getMyRoom() + "\n");
-                }
+                display(myGame.choiceA());
             } else if (choiceB.isSelected()) {
-                if (myGame.choiceB()) {
-                    bottomLabel.setText("Correct. The door opened.");
-                    mainTextArea.appendText("You moved to " + myGame.getMyUser().getMyRoom() + "\n");
-                } else {
-                    bottomLabel.setText("Wrong. The door became locked.");
-                    mainTextArea.appendText("You are still at " + myGame.getMyUser().getMyRoom() + "\n");
-                }
+                display(myGame.choiceB());
             } else if (choiceC.isSelected()) {
-                if (myGame.choiceC()) {
-                    bottomLabel.setText("Correct. The door opened.");
-                    mainTextArea.appendText("You moved to " + myGame.getMyUser().getMyRoom() + "\n");
-                } else {
-                    bottomLabel.setText("Wrong. The door became locked.");
-                    mainTextArea.appendText("You are still at " + myGame.getMyUser().getMyRoom() + "\n");
-                }
+                display(myGame.choiceC());
             } else if (choiceD.isSelected()) {
-                if (myGame.choiceD()) {
-                    bottomLabel.setText("Correct. The door opened.");
-                    mainTextArea.appendText("You moved to " + myGame.getMyUser().getMyRoom() + "\n");
-                } else {
-                    bottomLabel.setText("Wrong. The door became locked.");
-                    mainTextArea.appendText("You are still at " + myGame.getMyUser().getMyRoom() + "\n");
-                }
+                display(myGame.choiceD());
             } else if (shortAnswerField.getText() != null && !shortAnswerField.getText().isEmpty()) {
-                if (myGame.answerQuestion(Answer.SHORT, shortAnswerField.getText())) {
-                    bottomLabel.setText("Correct. The door opened.");
-                    mainTextArea.appendText("You moved to " + myGame.getMyUser().getMyRoom() + "\n");
-                } else {
-                    bottomLabel.setText("Wrong. The door became locked.");
-                    mainTextArea.appendText("You are still at " + myGame.getMyUser().getMyRoom() + "\n");
-                }
+                display(myGame.answerQuestion(Answer.SHORT, shortAnswerField.getText()));
             }
             playerScoreLabel.setText("Score: " + myGame.getMyScore());
             checkWin();
             mc.selectToggle(null);
         }
     }
+    private void display(final boolean theResult) {
+        if (theResult) {
+            lastPressedLabel.setText("Current Room: " + myGame.getMyUser().getMyRoom());
+            mainTextArea.setVisible(false);
+            bottomLabel.setText("Correct. The door opened.");
+            buildRoom(myGame.getMyUser().getMyRoom());
+            if (spriteCurrentDirection == DoorDirection.EAST)
+                animateSprite2(-250, 0, 1, spriteCurrentDirection, false, false);
+            if (spriteCurrentDirection == DoorDirection.WEST)
+                animateSprite2(250, 0, 1, spriteCurrentDirection, false, false);
+            if (spriteCurrentDirection == DoorDirection.NORTH)
+                animateSprite2(0, 80, 1, spriteCurrentDirection, false, false);
+            if (spriteCurrentDirection == DoorDirection.SOUTH)
+                animateSprite2(0, -80, 1, spriteCurrentDirection, false, false);
+        } else {
+            bottomLabel.setText("Wrong. The door became locked.");
+            buildRoom(myGame.getMyUser().getMyRoom());
+            if (spriteCurrentDirection == DoorDirection.EAST)
+                animateSprite2(-250, 0, -1, spriteOppositeDirection, false, false);
+            if (spriteCurrentDirection == DoorDirection.WEST)
+                animateSprite2(250, 0, -1, spriteOppositeDirection, false, false);
+            if (spriteCurrentDirection == DoorDirection.NORTH)
+                animateSprite2(0, -80, -1, spriteOppositeDirection, false, false);
+            if (spriteCurrentDirection == DoorDirection.SOUTH)
+                animateSprite2(0, 80, -1, spriteOppositeDirection, false, false);
+            
+        }
+    }
+    
+
     /**
      * Helper method that checks if the game has been won.
      */
     private void checkWin() {
         if (myGame.getMyUser().getMyMaze().isGoal(myGame.getMyUser().getMyRoom())) {
-            mainTextArea.appendText("Congratulations! You win!");
+            mainTextArea.setText("Congratulations! You win!");
             myGame.setMyScore(myGame.getMyScore() + 10*myGame.getMyDifficulty());
             playerScoreLabel.setText("Score: " + myGame.getMyScore());
             myGame.setMyDifficulty(myGame.getMyDifficulty() + 1);
             myGame = new TextController(myGame.getMyDifficulty(), myGame.getMyScore());
             mainTextArea.setText("Welcome to level " + myGame.getMyDifficulty() + ", "
             + SceneController.getPlayerName() + "\n");
-            mainTextArea.appendText("You are here: " + myGame.getMyUser().getMyRoom() + "\n");
+            lastPressedLabel.setText("You are here: " + myGame.getMyUser().getMyRoom() + "\n");
             needsQuestion = false;
             mazeLabel.setText("Maze " + myGame.getMyDifficulty() + ":");
         } else if (!myGame.getMyUser().getMyMaze().isWinnable(myGame.getMyUser().getMyRoom())) {
-            mainTextArea.appendText("Oh no! You lost!");
+            mainTextArea.setText("Oh no! You lost!");
         } else {
             needsQuestion = false;
         }
@@ -396,87 +493,347 @@ public class ActionController {
     /**
      * Helper method 
      */
-    private void moveHelper() {
+    private void askQuestion() {
         if (needsQuestion) {
-            mainTextArea.appendText(myGame.getMyQuestion().getMyQuestion()+ "\n");
-            bottomLabel.setText("You must answer a question to open the door.");
-            RadioButton[] choiceButtons = {choiceA, choiceB, choiceC, choiceD};
-
-            if (myGame.getMyQuestion().getMyQuestionNature() == QuestionNature.TRUE) {
-                setTrueFalseInput();
-                //choiceButtons[2].setDisable(true);
-                //choiceButtons[2].setText("");
-                //choiceButtons[3].setDisable(true);
-                //choiceButtons[3].setText("");
-            } else if (myGame.getMyQuestion().getMyQuestionNature() == QuestionNature.SHORT) {
-                setShortAnswerInput();
-                //for (int i = 0; i < 3; i++) {
-                 //   choiceButtons[i].setDisable(true);
-               //    choiceButtons[i].setText("");
-               // }
-            } else {
-                setMultipleChoiceInput();
-                for (int i = 0; i < choiceButtons.length; i++) {
-                    if (i < myGame.getMyChoices().size()) {
-                        choiceButtons[i].setText(myGame.getMyChoices().get(i));
-                        choiceButtons[i].setOpacity(100);
-                    } else {
-                        choiceButtons[i].setOpacity(0);
-                    }
-                }
-            }
+            mainTextArea.setText(myGame.getMyQuestion().getMyQuestion()+ "\n");
+            //bottomLabel.setText("A question needs to be answered.");
+            setChoiceInputs();
         } else {
             if (myGame.getMyDoor().getMyDoorStatus().equals(DoorStatus.OPEN)) {
-                bottomLabel.setText("The door was already open.");
-                mainTextArea.appendText("You moved to " + myGame.getMyUser().getMyRoom() + "\n");
+                //bottomLabel.setText("The door was already open.");
+                lastPressedLabel.setText("Current Room: " + myGame.getMyUser().getMyRoom());
             } else {
-                bottomLabel.setText("The door could not be opened.");
-                mainTextArea.appendText("You are still at " + myGame.getMyUser().getMyRoom() + "\n");
+                //bottomLabel.setText("The door was locked!");
             }
         }
     }
+    private void setChoiceInputs() {
+        RadioButton[] choiceButtons = {choiceA, choiceB, choiceC, choiceD};
+
+        if (myGame.getMyQuestion().getMyQuestionNature() == QuestionNature.TRUE) {
+            setTrueFalseInput();
+        } else if (myGame.getMyQuestion().getMyQuestionNature() == QuestionNature.SHORT) {
+            setShortAnswerInput();
+        } else {
+            setMultipleChoiceInput();
+            for (int i = 0; i < choiceButtons.length; i++) {
+                if (i < myGame.getMyChoices().size()) {
+                    choiceButtons[i].setText(myGame.getMyChoices().get(i));
+                    choiceButtons[i].setOpacity(100);
+                } else {
+                    choiceButtons[i].setOpacity(0);
+                }
+            }
+        }
+    }
+    /**
+     * @param event when dPadUp is pressed
+     */
     @FXML
     void up(ActionEvent event) {
         if (!needsQuestion) {
-            lastPressedLabel.setText("Last Pressed: dPadUp");
             needsQuestion = myGame.up();
-            moveHelper();
-        }
-    }
-    
-    @FXML
-    void down(ActionEvent event) {
-        if (!needsQuestion) {
-            lastPressedLabel.setText("Last Pressed: dPadDown");
-            needsQuestion = myGame.down();
-            moveHelper();
-        }
-    }
-    
-    @FXML
-    void left(ActionEvent event) {
-        if (!needsQuestion) {
-            lastPressedLabel.setText("Last Pressed: dPadLeft");
-            needsQuestion = myGame.left();
-            moveHelper();
-        }
-    }
-
-    @FXML
-    void right(ActionEvent event) {
-        if (!needsQuestion) {
-            lastPressedLabel.setText("Last Pressed: dPadRight");
-            needsQuestion = myGame.right();
-            moveHelper();
+            if (myGame.getMyDoor().getMyDoorStatus() == DoorStatus.OPEN) {
+                pause = true;
+                animateSprite2(0, 0, 80, DoorDirection.NORTH, false, false);
+            } else if (myGame.getMyDoor().getMyDoorStatus() == DoorStatus.CLOSED) {
+                animateSprite2(0, 0, 80, DoorDirection.NORTH, false, true);
+                bottomLabel.setText("You must answer the question.");
+            } else {
+                animateSprite2(0, 0, 80, DoorDirection.NORTH, true, false);
+                bottomLabel.setText("The door was locked!");
+            }
         }
     }
     
     /**
+     * @param event when dPadDown is pressed
+     */
+    @FXML
+    void down(ActionEvent event) {
+        if (!needsQuestion) {
+            needsQuestion = myGame.down();
+            if (myGame.getMyDoor().getMyDoorStatus() == DoorStatus.OPEN) {
+                pause = true;
+                animateSprite2(0, 0, 80, DoorDirection.SOUTH, false, false);
+            } else if (myGame.getMyDoor().getMyDoorStatus() == DoorStatus.CLOSED) {
+                animateSprite2(0, 0, 80, DoorDirection.SOUTH, false, true);
+                bottomLabel.setText("You must answer the question.");
+            } else {
+                animateSprite2(0, 0, 80, DoorDirection.SOUTH, true, false);
+                bottomLabel.setText("The door was locked!");
+            }
+        }
+    }
+
+    /**
+     * @param event when dPadLeft is pressed
+     */
+    @FXML
+    void left(ActionEvent event) {
+        if (!needsQuestion) {
+            needsQuestion = myGame.left();
+            if (myGame.getMyDoor().getMyDoorStatus() == DoorStatus.OPEN) {
+                pause = true;
+                animateSprite2(0, 0, 250, DoorDirection.WEST, false, false);
+            } else if (myGame.getMyDoor().getMyDoorStatus() == DoorStatus.CLOSED) {
+                animateSprite2(0, 0, 250, DoorDirection.WEST, false, true);
+                bottomLabel.setText("You must answer the question.");
+            } else {
+                animateSprite2(0, 0, 250, DoorDirection.WEST, true, false);
+                bottomLabel.setText("The door was locked!");
+            }
+        }
+    }
+
+    /**
+     * @param event when dPadRight is pressed
+     */
+    @FXML
+    void right(ActionEvent event) {
+        if (!needsQuestion) {
+            needsQuestion = myGame.right();
+            if (myGame.getMyDoor().getMyDoorStatus() == DoorStatus.OPEN) {
+                pause = true;
+                animateSprite2(0, 0, 250, DoorDirection.EAST, false, false);
+            } else if (myGame.getMyDoor().getMyDoorStatus() == DoorStatus.CLOSED) {
+                animateSprite2(0, 0, 250, DoorDirection.EAST, false, true);
+                bottomLabel.setText("You must answer the question.");
+            } else {
+                animateSprite2(0, 0, 250, DoorDirection.EAST, true, false);
+                bottomLabel.setText("The door was locked!");
+            }
+        }
+    }
+    
+    //don't know how to get this working where it only displays for a couple seconds
+    void showLockedDoorLabel() {
+    	
+    }
+    
+    /**
+     * Updates the roomView with a new randomized background color and sets the door types.
+     * 
+     * @param northDoorImg door type for the north door
+     * @param southDoorImg door type for the south door
+     * @param eastDoorImg door type for the east door
+     * @param westDoorImg door type for the west door
+     */
+    void buildRoom(final Room theRoom) {
+    	// create object of Random class
+    	Random obj = new Random();
+    	int rand_num = obj.nextInt(0xffffff + 1);
+    	// format it as hexadecimal string and print
+    	String colorCode = String.format("#%06x", rand_num);
+    	roomViewBackground.setFill(Color.web(colorCode));
+    	
+    	//set north door
+    	if (theRoom.getMyNorthDoor().getMyDoorStatus() == DoorStatus.OPEN) {
+    		northDoor.setImage(openDoor);
+    	} else if (theRoom.getMyNorthDoor().getMyDoorStatus() == DoorStatus.INACTIVE 
+    	        || theRoom.getMyNorthDoor().getMyDoorStatus() == DoorStatus.FAKE) {
+    		northDoor.setImage(lockedDoor);
+    	} else if (theRoom.getMyNorthDoor().getMyDoorStatus() == DoorStatus.CLOSED) {
+    		northDoor.setImage(closedDoor);
+    	}
+    	
+    	//set south door
+    	if (theRoom.getMySouthDoor().getMyDoorStatus() == DoorStatus.OPEN) {
+            southDoor.setImage(openDoor);
+        } else if (theRoom.getMySouthDoor().getMyDoorStatus() == DoorStatus.INACTIVE 
+                || theRoom.getMySouthDoor().getMyDoorStatus() == DoorStatus.FAKE) {
+            southDoor.setImage(lockedDoor);
+        } else if (theRoom.getMySouthDoor().getMyDoorStatus() == DoorStatus.CLOSED) {
+            southDoor.setImage(closedDoor);
+        }
+    	
+    	//set east door
+    	if (theRoom.getMyEastDoor().getMyDoorStatus() == DoorStatus.OPEN) {
+            eastDoor.setImage(openDoor);
+        } else if (theRoom.getMyEastDoor().getMyDoorStatus() == DoorStatus.INACTIVE 
+                || theRoom.getMyEastDoor().getMyDoorStatus() == DoorStatus.FAKE) {
+            eastDoor.setImage(lockedDoor);
+        } else if (theRoom.getMyEastDoor().getMyDoorStatus() == DoorStatus.CLOSED) {
+            eastDoor.setImage(closedDoor);
+        }
+    	
+    	//set west door
+    	if (theRoom.getMyWestDoor().getMyDoorStatus() == DoorStatus.OPEN) {
+            westDoor.setImage(openDoor);
+        } else if (theRoom.getMyWestDoor().getMyDoorStatus() == DoorStatus.INACTIVE 
+                || theRoom.getMyWestDoor().getMyDoorStatus() == DoorStatus.FAKE) {
+            westDoor.setImage(lockedDoor);
+        } else if (theRoom.getMyWestDoor().getMyDoorStatus() == DoorStatus.CLOSED) {
+            westDoor.setImage(closedDoor);
+        }
+    }
+    
+    /**
+     * used to update spriteCurrentDirection and spriteOppositeDirection.
+     * useful for automating animation directions
+     * 
+     * @param theDirection the most recent movement direction of the sprite
+     */
+    void setSpriteDirection(DoorDirection theDirection) {
+    	spriteCurrentDirection = theDirection;
+    	if (theDirection == DoorDirection.NORTH) {
+    		spriteOppositeDirection = DoorDirection.SOUTH;
+    	} else if (theDirection == DoorDirection.SOUTH) {
+    		spriteOppositeDirection = DoorDirection.NORTH;
+    	} else if (theDirection == DoorDirection.EAST) {
+    		spriteOppositeDirection = DoorDirection.WEST;
+    	} else if (theDirection == DoorDirection.WEST) {
+    		spriteOppositeDirection = DoorDirection.EAST;
+    	} else {
+    		System.out.println("sprite direction was not updated properly");
+    	}
+    }
+    
+    /**
+     * Animates sprite movement.
+     * 
+     * @param startPositionX the x position the sprite should start at
+     * @param startPositionY the y position the sprite should start at
+     * @param distance the distance the sprite should travel
+     * @param direction the direction the sprite should travel
+     * @param reverse whether or not you want the animation to play in reverse upon completion
+     * @param textAreaTransition whether or not you wish to transition to the textArea view
+     */
+    void animateSprite2(int startPositionX, int startPositionY, int distance, DoorDirection theDirection, boolean reverse, boolean textAreaTransition) {
+    	
+    	//set sprite direction
+    	setSpriteDirection(theDirection);
+    	
+    	//disable all buttons for duration of animation
+    	dPadUp.setDisable(true);
+    	dPadDown.setDisable(true);
+    	dPadLeft.setDisable(true);
+    	dPadRight.setDisable(true);
+    	removeInputOptions();
+    	
+    	//get rid of text area to show room view
+    	mainTextArea.setVisible(false);
+    	
+    	//load in the correct gif to have the sprite facing the proper direction
+    	if (theDirection == DoorDirection.NORTH || theDirection == DoorDirection.SOUTH
+    	        || theDirection == DoorDirection.EAST) {
+    		sprite.setImage(rightAnimation);
+    	} else {
+    		sprite.setImage(leftAnimation);
+    	}
+    	
+    	//set the starting position of the sprite
+    	sprite.setTranslateX(startPositionX);
+    	sprite.setTranslateY(startPositionY);
+    	sprite.setVisible(true);
+    	
+    	TranslateTransition spriteMovement = new TranslateTransition();
+    	spriteMovement.setDuration(Duration.seconds(2));
+    	if (theDirection == DoorDirection.EAST) {
+    		spriteMovement.setToX(distance);
+    	} else if (theDirection == DoorDirection.WEST) {
+    		spriteMovement.setToX(-distance);
+    	} else if(theDirection == DoorDirection.NORTH) {
+    		spriteMovement.setToY(-distance);
+    	} else if (theDirection == DoorDirection.SOUTH) {
+    		spriteMovement.setToY(distance);
+    	}
+    	
+    	if (reverse) {
+    		spriteMovement.setAutoReverse(true);
+        	spriteMovement.setCycleCount(2);
+    	}
+    	
+    	spriteMovement.setNode(sprite);
+    	spriteMovement.play();
+    	
+    	if (textAreaTransition) {
+    		spriteMovement.setOnFinished(e -> {
+	    		
+	    		//sprite disappears into the door
+	    		sprite.setVisible(false);
+	    		
+	    		//shows transition only in the roomView pane
+	    		Rectangle rect = new Rectangle(526, 221);
+	    		roomView.setClip(rect);
+	    		
+	    		//animates sliding into the text area from the proper direction
+	    		Timeline tl = new Timeline();
+	    		
+	    		//prepare text area for transition and set direction to interpolate
+	    		KeyValue kv = null;
+	    		askQuestion();
+	    		if (theDirection == DoorDirection.EAST) {
+	    			mainTextArea.translateXProperty().set(roomView.getWidth());
+	    			kv = new KeyValue(mainTextArea.translateXProperty(), 0, Interpolator.LINEAR);
+	    		} else if (theDirection == DoorDirection.SOUTH) {
+	    			mainTextArea.translateYProperty().set(roomView.getHeight());
+	    			kv = new KeyValue(mainTextArea.translateYProperty(), 0, Interpolator.LINEAR);
+	    		} else if (theDirection == DoorDirection.WEST) {
+	    			mainTextArea.translateXProperty().set(-roomView.getWidth());
+	    			kv = new KeyValue(mainTextArea.translateXProperty(), 0, Interpolator.LINEAR);
+	    		} else if (theDirection == DoorDirection.NORTH) {
+	    			mainTextArea.translateYProperty().set(-roomView.getHeight());
+	    			kv = new KeyValue(mainTextArea.translateYProperty(), 0, Interpolator.LINEAR);
+	    		} else {
+	    			System.out.println("there is an issure with the direction you passed to animateSprite()");
+	    		}
+	    		
+	    		
+	    		KeyFrame kf = new KeyFrame(Duration.seconds(1), kv);
+	    		tl.getKeyFrames().add(kf);
+	    		mainTextArea.setVisible(true);
+	    		//tl.setOnFinished(event -> {
+	    		//	dPadUp.setDisable(false);
+	    	    //	dPadDown.setDisable(false);
+	    	    //	dPadLeft.setDisable(false);
+	    	    //	dPadRight.setDisable(false);
+	    		//});
+	    		tl.play();
+	    	});
+    	} else {
+    		spriteMovement.setOnFinished(e ->{
+    		    if (pause) {
+    		        buildRoom(myGame.getMyUser().getMyRoom());
+    		        bottomLabel.setText("The door was already open.");
+    		        pause = false;
+    		        if (theDirection == DoorDirection.NORTH)
+    		            animateSprite2(0, 80, 1, DoorDirection.NORTH, false, false);
+    		        if (theDirection == DoorDirection.EAST)
+    		            animateSprite2(-250, 0, 1, DoorDirection.EAST, false, false);
+    		        if (theDirection == DoorDirection.SOUTH)
+    		            animateSprite2(0, -80, 1, DoorDirection.SOUTH, false, false);
+    		        if (theDirection == DoorDirection.WEST)
+    		            animateSprite2(250, 0, 1, DoorDirection.WEST, false, false);
+    		    }
+    			dPadUp.setDisable(false);
+    	    	dPadDown.setDisable(false);
+    	    	dPadLeft.setDisable(false);
+    	    	dPadRight.setDisable(false);
+    		});
+    	}
+    }
+    
+    
+    void removeInputOptions() {
+    	setMCOpacity(0, true);
+    	shortAnswerField.setOpacity(0);
+    	shortAnswerField.setDisable(true);
+    	submitBtn.setOpacity(0);
+    	submitBtn.setDisable(true);
+    	//answerRectangle.setEffect(new GaussianBlur(40));
+    }
+    /**
      * Limits input choices to those needed for multiple choice questions.
      */
     void setMultipleChoiceInput() {
-    	setMCOpacity(100);
-    	//mainTextArea.setText("Sample multiple choice queston...");
+    	
+    	submitBtn.setOpacity(100);
+    	submitBtn.setDisable(false);
+    	
+    	setMCOpacity(100, false);
+    	//mainTextArea.setText("Sample multiple choice question");
+    	shortAnswerField.setDisable(true);
     	shortAnswerField.setOpacity(0);
     	//choiceA.setText("Sample answer for A");
     	//choiceB.setText("Sample answer for B");
@@ -486,12 +843,19 @@ public class ActionController {
      * Limits input choices to those needed for True/False questions.
      */
     void setTrueFalseInput() {
-    	setMCOpacity(0);
-    	//mainTextArea.setText("Sample True/False question...");
+    	
+    	submitBtn.setOpacity(100);
+    	submitBtn.setDisable(false);
+    	
+    	setMCOpacity(0, true);
+    	//mainTextArea.setText("Sample True/False question");
     	shortAnswerField.setOpacity(0);
+    	shortAnswerField.setDisable(true);
     	choiceA.setOpacity(100);
+    	choiceA.setDisable(false);
     	choiceA.setText("True");
     	choiceB.setOpacity(100);
+    	choiceB.setDisable(false);
     	choiceB.setText("False");
     }
     
@@ -499,10 +863,15 @@ public class ActionController {
      * Limits input choices to those needed for short answer questions.
      */
     void setShortAnswerInput() {
+    	
+    	submitBtn.setOpacity(100);
+    	submitBtn.setDisable(false);
+    	
+    	setMCOpacity(0, true);
     	shortAnswerField.setOpacity(100);
+    	shortAnswerField.setDisable(false);
     	shortAnswerField.setText("");
-    	setMCOpacity(0);
-    	//mainTextArea.setText("Sample short answer queston...");
+    	//mainTextArea.setText("Sample short answer question...");
     }
     /**
      * Saves the game under the username.
@@ -510,13 +879,10 @@ public class ActionController {
      */
     @FXML
     void saveGame(ActionEvent event) {
-        mainTextArea.appendText("Game has been saved under " + SceneController.getPlayerName());
+        //mainTextArea.setText("Game has been saved under " + SceneController.getPlayerName());
         //choiceText.setPromptText("What name do you want to save under?");
         myGame.save(SceneController.getPlayerName());
     }
-    
-    
-    
     /**
      * Shows the main screen of the game.
      * 
@@ -554,8 +920,9 @@ public class ActionController {
     }
     public void load(String theName) {
         myGame.load(theName);
-        mainTextArea.setText("Welcome back to the Trivia Maze, " + SceneController.getPlayerName() + "\n");
-        mainTextArea.appendText("You are here: " + myGame.getMyUser().getMyRoom() + "\n");
+        //mainTextArea.setText("Welcome back to the Trivia Maze, " + SceneController.getPlayerName() + "\n");
+        lastPressedLabel.setText("Current Room: " + myGame.getMyUser().getMyRoom());
+        playerScoreLabel.setText("Score: " + myGame.getMyScore());
     }
     /**
      * Switches the scene to the settings screen.
@@ -576,17 +943,24 @@ public class ActionController {
 	@FXML
 	public void initialize() {
 		
+		//set the properties of the main text area
+		mainTextArea.setEditable(false);
+		mainTextArea.setStyle("-fx-text-fill: #ffffff");
+    	mainTextArea.setWrapText(true);
+    	myGame = new TextController(1, 0);
+        needsQuestion = false;
+        buildRoom(myGame.getMyUser().getMyRoom());
+        //mainTextArea.setText("Welcome to my Trivia Maze, " + SceneController.getPlayerName() + "\n");
+        lastPressedLabel.setText("Current Room: " + myGame.getMyUser().getMyRoom());
+    	//remove input option until a question is asked
+    	removeInputOptions();
+    	
 		//sets player name label
 		playerNameLabel.setText(SceneController.getPlayerName() + ":");
-		myGame = new TextController(1, 0);
-		needsQuestion = false;
-		mainTextArea.setWrapText(true);
-        mainTextArea.setText("Welcome to my Trivia Maze, " + SceneController.getPlayerName() + "\n");
-        mainTextArea.appendText("You are here: " + myGame.getMyUser().getMyRoom() + "\n");
-        
+        playerScoreLabel.setText("Score: " + myGame.getMyScore());
 
-		//sets the initial volume to 100% and calls the music player method
-		vSlider.setValue(mp.getVolume()*100);
+		//sets the initial volume to 20% and calls the music player method
+		vSlider.setValue(mp.getVolume()*20);
 		musicPlayer();
 		
 	}

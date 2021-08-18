@@ -194,15 +194,15 @@ public class Room implements Serializable {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        s.append(myRow + ", " + myCol + "\n");
-        s.append("North " + myNorthDoor.getMyDoorStatus());
-        s.append("\n");
-        s.append("East " + myEastDoor.getMyDoorStatus());
-        s.append("\n");
-        s.append("South " + mySouthDoor.getMyDoorStatus());
-        s.append("\n");
-        s.append("West " + myWestDoor.getMyDoorStatus());
-        s.append("\n");
+        s.append(myRow + ", " + myCol);// + "\n");
+        //s.append("North " + myNorthDoor.getMyDoorStatus());
+        //s.append("\n");
+        //s.append("East " + myEastDoor.getMyDoorStatus());
+        //s.append("\n");
+       // s.append("South " + mySouthDoor.getMyDoorStatus());
+       // s.append("\n");
+       // s.append("West " + myWestDoor.getMyDoorStatus());
+       // s.append("\n");
         return s.toString();
     }
     // Implementation of equals and hashcode.

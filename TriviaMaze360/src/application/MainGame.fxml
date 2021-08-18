@@ -21,7 +21,40 @@
    <children>
       <AnchorPane fx:id="anchor" layoutX="151.0" prefHeight="600.0" prefWidth="750.0" style="-fx-background-color: #6ca2d9;">
          <children>
-            <TextArea fx:id="mainTextArea" layoutX="100.0" layoutY="38.0" prefHeight="221.0" prefWidth="520.0" text="Maze VIew:&#10;&#10;Ight so Im thinking for testing purposes that we can run the game right here in textbased&#10;mode to test functionaliy with the gui" />
+            <AnchorPane fx:id="roomView" layoutX="95.0" layoutY="38.0" prefHeight="221.0" prefWidth="526.0">
+               <children>
+                  <Rectangle fx:id="roomViewBackground" arcHeight="5.0" arcWidth="5.0" fill="#2a971d" height="221.0" stroke="BLACK" strokeType="INSIDE" width="526.0" />
+                  <ImageView fx:id="sprite" fitHeight="56.0" fitWidth="53.0" layoutX="242.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../guyTransparent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="southDoor" fitHeight="56.0" fitWidth="50.0" layoutX="238.0" layoutY="171.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../doorIcon.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="eastDoor" fitHeight="56.0" fitWidth="50.0" layoutX="476.0" layoutY="86.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../doorIcon.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="westDoor" fitHeight="83.0" fitWidth="53.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../lockIcon.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="northDoor" fitHeight="83.0" fitWidth="53.0" layoutX="236.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../lockIcon.png" />
+                     </image>
+                  </ImageView>
+                  <TextArea fx:id="mainTextArea" prefHeight="221.0" prefWidth="526.0" styleClass="text-area" stylesheets="@playScreen.css" text="questions will be displayed here" visible="false">
+                     <font>
+                        <Font name="Copperplate Gothic Light" size="26.0" />
+                     </font></TextArea>
+               </children>
+            </AnchorPane>
             <ImageView fitHeight="171.0" fitWidth="174.0" layoutX="65.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../dPad.png" />
@@ -43,13 +76,16 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Label fx:id="lastPressedLabel" layoutX="59.0" layoutY="287.0" prefHeight="26.0" prefWidth="603.0" text="Last Pressed: Gives a default action for each button handler by setting this text" textFill="WHITE">
+            <Label fx:id="lastPressedLabel" layoutX="59.0" layoutY="287.0" prefHeight="26.0" prefWidth="603.0" text="Current Room: (0,0)" textFill="WHITE">
                <font>
                   <Font size="17.0" />
                </font>
             </Label>
-            <Label fx:id="bottomLabel" layoutX="65.0" layoutY="547.0" prefHeight="26.0" prefWidth="403.0" text="This label is planned to appear to notifiy the player that a door is locked" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="221.0" layoutX="247.0" layoutY="319.0" stroke="BLACK" strokeType="INSIDE" width="437.0" />
+            <Label fx:id="bottomLabel" layoutX="65.0" layoutY="547.0" prefHeight="26.0" prefWidth="403.0" text="That Door is Locked! You Cannot Enter">
+               <font>
+                  <Font name="Copperplate Gothic Light" size="18.0" />
+               </font></Label>
+            <Rectangle fx:id="answerRectangle" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="221.0" layoutX="247.0" layoutY="319.0" stroke="BLACK" strokeType="INSIDE" width="437.0" />
             <RadioButton fx:id="choiceA" layoutX="288.0" layoutY="336.0" mnemonicParsing="false" text="Sample answer for A">
                <toggleGroup>
                   <ToggleGroup fx:id="mc" />
@@ -57,13 +93,13 @@
             <RadioButton fx:id="choiceB" layoutX="288.0" layoutY="369.0" mnemonicParsing="false" text="Sample answer for B" toggleGroup="$mc" />
             <RadioButton fx:id="choiceC" layoutX="288.0" layoutY="409.0" mnemonicParsing="false" text="Sample answer for C" toggleGroup="$mc" />
             <RadioButton fx:id="choiceD" layoutX="288.0" layoutY="450.0" mnemonicParsing="false" text="Sample answer for D" toggleGroup="$mc" />
-            <TextField fx:id="shortAnswerField" layoutX="261.0" layoutY="492.0" prefHeight="25.0" prefWidth="324.0" />
+            <TextField fx:id="shortAnswerField" layoutX="261.0" layoutY="492.0" prefHeight="25.0" prefWidth="324.0" text="textField can appear for certain questions" />
             <Label fx:id="labelChoiceA" layoutX="261.0" layoutY="336.0" text="A)" />
             <Label fx:id="labelChoiceB" layoutX="261.0" layoutY="369.0" text="B)" />
             <Label fx:id="labelChoiceC" layoutX="261.0" layoutY="409.0" text="C)" />
             <Label fx:id="labelChoiceD" layoutX="261.0" layoutY="450.0" text="D)" />
             <Button fx:id="submitBtn" layoutX="594.0" layoutY="492.0" mnemonicParsing="false" onAction="#submit" text="submit" />
-            <Button fx:id="saveBtn" layoutX="43.0" layoutY="101.0" mnemonicParsing="false" onAction="#saveGame" stylesheets="@playScreen.css">
+            <Button fx:id="saveBtn" layoutX="43.0" layoutY="101.0" mnemonicParsing="false" stylesheets="@playScreen.css">
                <graphic>
                   <ImageView fitHeight="29.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -226,7 +262,7 @@
                   <Insets left="25.0" />
                </padding>
             </Button>
-            <Button fx:id="SetttingsBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#switchToSettings" prefHeight="56.0" prefWidth="174.0" stylesheets="@menu.css" text="Settings">
+            <Button fx:id="settingsBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#switchToSettings" prefHeight="56.0" prefWidth="174.0" stylesheets="@menu.css" text="Settings">
                <padding>
                   <Insets left="25.0" />
                </padding>

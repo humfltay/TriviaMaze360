@@ -144,7 +144,7 @@ public class SceneController {
      * @throws IOException
      */
     @FXML
-    void loadGame(ActionEvent event) throws IOException {
+    void LoadGame(ActionEvent event) throws IOException {
     	root = FXMLLoader.load(getClass().getResource("LoadGame.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
@@ -182,34 +182,17 @@ public class SceneController {
      * is focused in the ListView is saved in a string.
      * 
      * @param event when the "choose file" button is pressed
-     * @throws IOException 
      */
     @FXML
-    void selectFile(ActionEvent event) throws IOException {
+    void selectFile(ActionEvent event) {
     	
     	//gets file path by appending the name of the selected file in the ListView to SavedGames folder
     	//currently untested
-    	//String fileNameAndPath = "SavedGames/" + listview.getFocusModel().getFocusedItem();
-    	//File toLoad = new File(fileNameAndPath);
+    	String fileNameAndPath = "SavedGames/" + listview.getFocusModel().getFocusedItem();
+    	File toLoad = new File(fileNameAndPath);
     	
     	//prints the file path of the selected item in the ListView which we can use to load the save
-    	//System.out.println(toLoad.getAbsolutePath());
-        String fileName = listview.getFocusModel().getFocusedItem();
-        fileName = fileName.substring(0, fileName.length() - 4);
-        playerName = fileName;
-        //File toLoad = new File(fileNameAndPath);
-        
-        //prints the file path of the selected item in the ListView which we can use to load the save
-        //System.out.println(toLoad.getAbsolutePath());  
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("MainGame.fxml"));
-        root = loader.load();
-        ActionController AC = (ActionController) loader.getController();
-        AC.load(fileName);
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-        
+    	System.out.println(toLoad.getAbsolutePath());
     }
     
     @FXML
