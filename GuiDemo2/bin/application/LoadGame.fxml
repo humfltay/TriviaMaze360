@@ -12,7 +12,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SceneController">
    <children>
-      <AnchorPane fx:id="anchor" layoutX="151.0" prefHeight="600.0" prefWidth="750.0" style="-fx-background-color: #6ca2d9;" styleClass="anchor" stylesheets="@menu.css">
+      <AnchorPane fx:id="backPane" layoutX="151.0" prefHeight="600.0" prefWidth="750.0" style="-fx-background-color: #6ca2d9;" styleClass="anchor2" stylesheets="@menu.css">
          <children>
             <Button fx:id="chooseFile" layoutX="241.0" layoutY="494.0" mnemonicParsing="false" onAction="#selectFile" prefHeight="37.0" prefWidth="242.0" stylesheets="@playScreen.css" text="Choose File" />
             <ListView fx:id="listview" layoutX="258.0" layoutY="249.0" prefHeight="234.0" prefWidth="208.0" />

@@ -151,6 +151,14 @@ public class ActionController {
     @FXML
     private Button exitBtn;
     
+    @FXML
+    private ImageView gifView;
+    
+    Image gameOver = new Image("file:gameOver.gif");
+    
+    Image gameOverV2 = new Image("file:gameOverV2.gif");
+    
+    Image mazeComplete = new Image("file:mazeCompleted.gif");
     /**
      * Rectangle that spans the roomView pane.
      * Used to change the color of the roomView pane.
@@ -400,16 +408,14 @@ public class ActionController {
      * @param event where "submit" button is pressed.
      */
     @FXML
-    boolean submit(ActionEvent event) {
+    void submit(ActionEvent event) {
     	if(mc.getSelectedToggle() == choiceB) {
     		lastPressedLabel.setText("Current Room: (1,0)");
     		mainTextArea.setVisible(false);
     		buildRoom("locked", "closedDoor", "closedDoor", "openDoor");
     		animateSprite2(-250,0,1,spriteCurrentDirection,false,false);
-    		return true;
     	} else {
     		animateSprite2(250,0,-1,spriteOppositeDirection,false,false);
-    		return false;
     	}
     }
     
@@ -418,6 +424,8 @@ public class ActionController {
      */
     @FXML
     void up(ActionEvent event) {
+    	
+    	showGif(mazeComplete);
     	lastPressedLabel.setText("Last Pressed: dPadUp");
     	setTrueFalseInput();
     	animateSprite2(0,0,80,"north",false,true);
@@ -467,11 +475,17 @@ public class ActionController {
      * @param westDoorImg door type for the west door
      */
     void buildRoom(String northDoorImg, String southDoorImg, String eastDoorImg, String westDoorImg) {
+    	
+    	//make sure roomView is visible
+    	gifView.setVisible(false);
+    	roomView.setVisible(true);
+    	
     	// create object of Random class
     	Random obj = new Random();
     	int rand_num = obj.nextInt(0xffffff + 1);
     	// format it as hexadecimal string and print
     	String colorCode = String.format("#%06x", rand_num);
+    	//set the room color to what has just been randomly generated
     	roomViewBackground.setFill(Color.web(colorCode));
     	
     	//set north door
@@ -642,6 +656,9 @@ public class ActionController {
     }
     
     
+    /**
+     * removes all input options.
+     */
     void removeInputOptions() {
     	setMCOpacity(0, true);
     	shortAnswerField.setOpacity(0);
@@ -822,5 +839,17 @@ public class ActionController {
 			mp3.stop();
 			musicPlayer();
 		});
+	}
+	
+	@FXML
+	void showGif(Image toShow) {
+		roomView.setVisible(false);
+		gifView.setVisible(true);
+		gifView.setImage(toShow);
+	}
+	
+	@FXML
+	void saveGame() throws IOException {
+		SaveTool.popUp("Save Your Game", "Select a file to overwrite it or choose to save it as a new file");
 	}
 }

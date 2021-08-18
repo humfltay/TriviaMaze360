@@ -55,6 +55,7 @@
                      </font></TextArea>
                </children>
             </AnchorPane>
+            <ImageView fx:id="gifView" fitHeight="208.0" fitWidth="455.0" layoutX="167.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true" visible="false" />
             <ImageView fitHeight="171.0" fitWidth="174.0" layoutX="65.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../dPad.png" />
@@ -99,7 +100,7 @@
             <Label fx:id="labelChoiceC" layoutX="261.0" layoutY="409.0" text="C)" />
             <Label fx:id="labelChoiceD" layoutX="261.0" layoutY="450.0" text="D)" />
             <Button fx:id="submitBtn" layoutX="594.0" layoutY="492.0" mnemonicParsing="false" onAction="#submit" text="submit" />
-            <Button fx:id="saveBtn" layoutX="43.0" layoutY="101.0" mnemonicParsing="false" stylesheets="@playScreen.css">
+            <Button fx:id="saveBtn" layoutX="43.0" layoutY="101.0" mnemonicParsing="false" onAction="#saveGame" stylesheets="@playScreen.css">
                <graphic>
                   <ImageView fitHeight="29.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
                      <image>
