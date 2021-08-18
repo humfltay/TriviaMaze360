@@ -1,9 +1,15 @@
 package model;
 
+import java.io.Serializable;
+
 import model.RealDoor.DoorDirection;
 
-public class Monster {
-  private final User myUser;
+public class Monster implements Serializable {
+  /**
+     * 
+     */
+    private static final long serialVersionUID = -3112742568400543980L;
+    private final User myUser;
   private int myWaitTurns;
   private Room myRoom;
   private final String myName;
@@ -39,6 +45,7 @@ public class Monster {
         //we have moved
         myRoom = newRoom;
       }
+      myWaitTurns++;
     } else {
       myWaitTurns--;
     }
@@ -52,7 +59,7 @@ public class Monster {
    */
   public boolean isUserInRoom() {
     boolean check = false;
-    if (myRoom == myUser.getMyRoom()) {
+    if (myWaitTurns <= 0 && myRoom == myUser.getMyRoom()) {
       check = true;
     }
     return check;
@@ -79,4 +86,11 @@ public class Monster {
     
     return toMonster;
   }
+    public Room getMyRoom() {
+        // TODO Auto-generated method stub
+        return myRoom;
+    }
+    public int getMyWaitTurns() {
+        return myWaitTurns;
+    }
 }

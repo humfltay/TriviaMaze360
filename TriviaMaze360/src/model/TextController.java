@@ -25,8 +25,8 @@ public class TextController implements Serializable {
     private RealDoor myDoor;
     private Question myQuestion;
     private ArrayList<String> myChoices;
-    private int myScore;
-    private int myDifficulty;
+    private Integer myScore;
+    private Integer myDifficulty;
     
     public TextController(final int theDifficulty, final int theScore) {
         //MazeGenerator MG = new MazeGenerator();
@@ -44,7 +44,15 @@ public class TextController implements Serializable {
         myDoor = theState.myDoor;
         myQuestion = theState.getMyQuestion();
         myChoices = theState.getMyChoices();
+        myScore = theState.getMyScore();
+        myDifficulty = theState.getMyDifficulty();
+        myMonster = theState.getMyMonster();
     }
+
+    public Monster getMyMonster() {
+        return myMonster;
+    }
+
 
     //returns false if try to input invalid answer;
     public Boolean answerQuestion(Answer theAnswer, String theShortAnswer) {
@@ -77,6 +85,7 @@ public class TextController implements Serializable {
             myQuestion = null;
             
         }
+        System.out.println(this);
         return result;
     }
     //Maybe this should be part of the door class.
@@ -136,7 +145,7 @@ public class TextController implements Serializable {
     //}
     //Copied from the example serializable.
     public void save(String theName) {
-        String filename = "SavedGames" + File.separator + theName + ".sav"; 
+        String filename = "SavedGames" + File.separator + theName; //+ ".sav"; 
      // Serialization 
         try { 
             // Saving of object in a file 
@@ -179,7 +188,7 @@ public class TextController implements Serializable {
             Room theRoom = text.getMyUser().getMyRoom();
             System.out.println("You are here: " + theRoom);
             //This is where I would have printed myUser.
-            System.out.println(text.getMyUser().getMyMaze());
+            System.out.println(text);
             if (text.getMyUser().getMyMaze().isGoal(theRoom)) {
                 System.out.println("Congratulations! You win!");
                 text.myScore = text.myScore + 10*text.myDifficulty;
@@ -310,7 +319,7 @@ public class TextController implements Serializable {
                         break;
                 }
             }
-        monsterHandler(text); 
+        text.monsterHandler(); 
         }
     }
     
@@ -359,15 +368,46 @@ public class TextController implements Serializable {
         // TODO Auto-generated method stub
         myDifficulty = theDifficulty;
     }
-    public static void monsterHandler(TextController theText) {
-      Monster mons = theText.myMonster;
-      mons.move();
-      if (mons.isUserInRoom()) {
+    public boolean monsterHandler() {
+        boolean kill = false;
+        myMonster.move();
+        kill = myMonster.isUserInRoom();
         //kill user
-        theText.myUser.getMyRoom().setDoors(DoorStatus.INACTIVE);
         //play gif
-      } else if (mons.isWithinTwoRooms()){
-        System.out.println("You sense a danger to your " + mons.whereIsMonster());
-      }
+        if (kill) {
+            System.out.println("The monster killed you.");
+        } else if (myMonster.isWithinTwoRooms()){
+              System.out.println("You sense a danger to your " + myMonster.whereIsMonster());
+        }
+        return kill;
+    }
+    
+    @Override
+    public String toString() {
+      StringBuilder maze = new StringBuilder();
+      for (int i = 1; i <= myUser.getMyMaze().getMyMazeSize(); i++) {
+        for (int j = 1; j <= myUser.getMyMaze().getMyMazeSize(); j++) {
+            //int rand = new Random().nextInt(4);
+          Room current = myUser.getMyMaze().getRoom(i, j);
+            //not accessible
+            if (current == null) {
+              maze.append(".");
+            } else if (current.equals(myUser.getMyRoom())) {
+                maze.append("U");
+            } else if (current.equals(myMonster.getMyRoom())) {
+                maze.append("M");
+            }else if (current.equals(myUser.getMyMaze().getMyEntrance())) {
+                maze.append("E");
+            } else if (current.equals(myUser.getMyMaze().getMyExit())) {
+                maze.append("X");
+            } else if (current.getMyVisited()) {
+                maze.append("*");
+            } else {
+              maze.append("?");
+            }
+        }
+        maze.append("\n");
+    }
+      return maze.toString();
     }
 }

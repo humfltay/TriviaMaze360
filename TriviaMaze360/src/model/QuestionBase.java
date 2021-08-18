@@ -17,35 +17,32 @@ public class QuestionBase {
           createTable();
           System.out.println("made it here");
           InsertQuestion iq = new InsertQuestion();
-//          iq.insert(1, "Geography", "What is the capitol of Washington,Olympia,Tacoma,Westchester,Miami,Seattle,Everett,Portland");
-//          iq.insert(3, "History", "What is the year the Civil war ended,1865,1920,1843,1390,1200BC,Its still going,2003,2030");
-//          iq.insert(1, "Comedy", "What object was used by the Greeks to trick their adversaries into letting down their defenses"
-//              + ",Trojan Horse,Hidey Spidey,Public nudity,Cannabis,Worm hole,Ancient Mermaid energy");
-//          iq.insert(2, "Comedy", "Dude, Where's My ...?,Car,Rare fedora,Magic Powder,Million dollar scholar,Yoyo championship trophy");
-//          iq.insert(2, "TV", "Which popular handy man spent several years airing on popular kids network the Disney Channel", 
-//              "Handy Mandy,GaryFixAFlat,Paublo,Sam Builder,Mickey McFixStuff");
-//          iq.insert(4, "Comedy","Actor famous for playing popular children's entertainment show Barney now holds is employed as...,"
-//              + "Sex Specialist,Local Politician,FBI plant,Champion Bowler,Charity Worker,Warehouse Manager");
-//          iq.insert(4, "Comedy","Local crazy person / conspiracy theorist Alex Jones is known for saying which phrase,"
-//              + "The water is turning the frigging frogs gay,5G is the path to controlling WEAK MINDS,"
-//              + "Amazon is building robots to replace us GODDAMIT");
-//          iq.insert(3, "Comedy","What is the name of the Tomato in popular children's show Veggie Tales,"
-//              + "Bob,Big Red,Rosy O'Donald");
+        iq.insert(1, "Comics","Which city exists in the popular series Batman,Gotham,Bangladale,BravelDavel,Wildamite,Duberville,Lorry,Bat City");
+        iq.insert(1, "Comics","What is supermans biggest weakness,Kryptonite, Amusement park lines,Vehicles,The Duchess of London,Dan Dan slayer of man,Gustavo");
+        iq.insert(1, "Comics","Which hero is known for his small stature,Ant Man, Bugs Bunny,Kung Fu Panda,Superman,Charles Barkley,Santa Claus");
+
+        iq.insert(2, "Gaming","What is the greatest selling game console of all time,PlayStation 2, Xbox 360,The friends we made along the way,Sega Dreamcast,Nintendo WII,Gameboy Advance");
+        iq.insert(2, "Gaming","Which FPS title is known for it's simple yet addictive gameplay,Golden Eye,Tim Duncan Hunting,GTA V,Martha Stewart  Online,Paper Mario,Project Storm");
+        iq.insert(2, "Gaming","Which game holds the title of being incredibly difficult for first time players,Dark Souls,Halo 4,Ricks Dodgeball Stadium,Mario Party 8,Pokemon Red,Fusion Frenzy");
+
+        iq.insert(3, "Geography", "What is the capitol of Washington,Olympia,Tacoma,Westchester,Miami,Seattle,Everett,Portland");
+        iq.insert(3, "Geography", "Washington is the … state,42nd,1st,47th,39th,46th,51st,Not a real state");
+        iq.insert(3, "Geography", "What is the country directly to the north of the United States,Canada,South Vietnam,North United States,North America,North North America,Narnia,North Korea,Oregon,The Moon,Saturn");
           SelectQuestions sq = new SelectQuestions();
-          Question q = new Question();
-          System.out.println(q);
+          //Question q = new Question();
+          //System.out.println(q);
           //He set it up to ask by type.
-          Question query = new Question("Comedy");
-          System.out.println(query);
+          //Question query = new Question("Comedy");
+          //System.out.println(query);
           //sq.selectAll();
           //System.out.println();
           //sq.getQuestionsHarderThan(1);
           // System.out.println();
           //sq.getQuestionsOfDifficulty(2);
-          Maze m = null;
-          MazeGenerator mazeGen = new MazeGenerator();
-          m = mazeGen.getMaze();
-          System.out.println(m);
+          ///Maze m = null;
+          // mazeGen = new MazeGenerator();
+          //m = mazeGen.getMaze();
+          //System.out.println(m);
        
     }
     public static void createTable() {

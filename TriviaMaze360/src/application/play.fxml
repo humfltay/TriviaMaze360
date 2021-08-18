@@ -14,7 +14,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SceneController">
    <children>
-      <AnchorPane fx:id="backPane" layoutX="151.0" prefHeight="600.0" prefWidth="750.0" styleClass="anchor" stylesheets="@menu.css">
+      <AnchorPane fx:id="backPane" layoutX="151.0" prefHeight="600.0" prefWidth="750.0">
          <children>
             <AnchorPane fx:id="frontPane" prefHeight="600.0" prefWidth="750.0" />
             <VBox layoutX="267.0" layoutY="217.0" prefHeight="324.0" prefWidth="182.0" spacing="20.0">
