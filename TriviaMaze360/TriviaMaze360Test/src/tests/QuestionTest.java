@@ -17,6 +17,7 @@ import model.Question;
 class QuestionTest {
     private static Question questionDifficulty;
     private static Question questionRandom;
+    private static Question questionOfType;
     /**
      * @throws java.lang.Exception
      */
@@ -24,6 +25,7 @@ class QuestionTest {
     static void setUpBeforeClass() throws Exception {
         questionRandom = new Question();
         questionDifficulty = new Question(2);
+        questionOfType = new Question("Gaming");
     }
 
     /**
@@ -31,7 +33,7 @@ class QuestionTest {
      */
     @Test
     void testToString() {
-        //fail("Not yet implemented");
+        assertNotNull(questionRandom.toString(), "Checking if toString returns correctly");
     }
 
     /**
