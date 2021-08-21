@@ -17,8 +17,8 @@ import model.RealDoor.DoorStatus;
 import model.User;
 
 /**
+ * Completed tests for User class.
  * @author Cordel
- *
  */
 class UserTest {
     User user1;

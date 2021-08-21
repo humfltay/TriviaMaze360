@@ -14,14 +14,17 @@ import model.Room;
 /**
  * @author Taylor Humfleet
  * @author Mason Hanson
- * @author Cordell Hampshire
+ * @author Cordel Hampshire
  */
 public class MazeGenerator {
     /** current size of maze */
     private int mySize;
     /** instance of maze we are building */
     private Maze myMaze;
-    /** Default maze generator. */
+    /** Default maze generator. 
+     * @param k 
+     * @param j 
+     * @param i */
     public MazeGenerator() {
         //default values may likely change
         this(3, 8, 5, 1); //new Point(0, 0), new Point (4,4));
@@ -175,7 +178,7 @@ public class MazeGenerator {
                     pathNotFound = false;
                     //closed for asking questions???
                     door.setMyDoorStatus(DoorStatus.CLOSED);
-                    pathTo = myMaze.openDoor(direction, 
+                    pathTo = myMaze.setOppositeDoorToSame(direction, 
                             theRoom);
                     break;
                 } else if (door.getMyDoorDirection() == left && (ran = Math.random()) < 0.3) {
@@ -183,13 +186,13 @@ public class MazeGenerator {
                     //go that direction 
                     pathNotFound = false;
                     door.setMyDoorStatus(DoorStatus.CLOSED);
-                    pathTo = myMaze.openDoor(left, theRoom);
+                    pathTo = myMaze.setOppositeDoorToSame(left, theRoom);
                     break;
                 } else if (door.getMyDoorDirection() == right && (ran = Math.random()) > 0.4 ) {
                     System.out.println("right");
                     pathNotFound = false;
                     door.setMyDoorStatus(DoorStatus.CLOSED);
-                    pathTo = myMaze.openDoor(right, theRoom);
+                    pathTo = myMaze.setOppositeDoorToSame(right, theRoom);
                     break;
                     //go that direction 
                 } else if (loopCnt > 3) {//CHECK THIS
@@ -198,7 +201,7 @@ public class MazeGenerator {
                         System.out.println("back");
                         pathNotFound = false;
                         door.setMyDoorStatus(DoorStatus.CLOSED);
-                        pathTo = myMaze.openDoor(back, theRoom); 
+                        pathTo = myMaze.setOppositeDoorToSame(back, theRoom); 
                         break;
                     }
                 }
@@ -212,7 +215,7 @@ public class MazeGenerator {
      * @param theRoom
      * @return
      */
-    private DoorDirection getDirect(Room theRoom) {
+    public DoorDirection getDirect(Room theRoom) {
       return getDirect(theRoom, myMaze.getMyExit());
 
     }
@@ -278,26 +281,6 @@ public class MazeGenerator {
         theDir = DoorDirection.values()[directIndex];
         return theDir;
     }
-    /*
-    public Room lookInDirection(DoorDirection theDir, int theRow, int theCol) {
-        Room peek = null;
-        if (theDir == DoorDirection.NORTH) {
-            peek = myMaze.getRoom(theRow - 1, theCol);
-            peek.getMySouthDoor().setMyDoorStatus(DoorStatus.CLOSED);
-        } 
-        else if (theDir == DoorDirection.EAST) {
-            peek = myMaze.getRoom(theRow, theCol + 1);
-            peek.getMyWestDoor().setMyDoorStatus(DoorStatus.CLOSED);
-        }
-        else if (theDir == DoorDirection.SOUTH) {
-            peek = myMaze.getRoom(theRow + 1, theCol);
-            peek.getMyNorthDoor().setMyDoorStatus(DoorStatus.CLOSED);
-        } else {
-            peek = myMaze.getRoom(theRow, theCol - 1);
-            peek.getMyEastDoor().setMyDoorStatus(DoorStatus.CLOSED);
-        }
-        return peek;  
-    }*/
     /**
      * Getter for the maze being generated.
      * @return the maze being generated.

@@ -19,11 +19,9 @@ import model.RealDoor.DoorStatus;
  *
  */
 public class TextController implements Serializable {
-    /**
-     * 
-     */
+    /** Automatically generated serial id.*/
     private static final long serialVersionUID = -5681079897156868288L;
-    
+    /**  */
     static Scanner input = new Scanner(System.in);
     private User myUser;
     private Monster myMonster;
@@ -43,7 +41,6 @@ public class TextController implements Serializable {
         
     }
     
-
     public void setState(TextController theState) {
         myUser = theState.getMyUser();
         myDoor = theState.myDoor;
@@ -471,6 +468,7 @@ public class TextController implements Serializable {
             } else if (current.equals(myUser.getMyMaze().getMyExit())) {
                 maze.append("X");
             } else if (current.getMyVisited()) {
+                
                 maze.append("*");
             } else {
               maze.append("?");

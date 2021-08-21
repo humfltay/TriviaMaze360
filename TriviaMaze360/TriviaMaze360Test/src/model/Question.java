@@ -24,10 +24,11 @@ public class Question implements Serializable {
     private int myDifficulty;
     private static final int MAXDIFFICULTY = 4;
     private static final int SHORTLENGTH = 12;
-    //He uses type in a different context than me.
-    //QuestionType doesn't actually do anything.
-    //myTopic used to be myType.
-    public Question(String theType) {
+    /**
+     * 
+     * @param theType
+     */
+    private Question(String theType) {
         setQuestionOfType(theType);
     }
     private void setQuestionOfType(String theType) {
@@ -81,10 +82,10 @@ public class Question implements Serializable {
         myDifficulty = Integer.valueOf(theContents.get(0));
         myType = theContents.get(1);
         String[] questions = theContents.get(2).split(",");
-
-        String[] wrongAnswers = new String[questions.length - 3];
-        for (int i = 3; i < questions.length; i ++) {
-            wrongAnswers[i - 3] = questions[i];
+        //Start at 2 for wrong answers.
+        String[] wrongAnswers = new String[questions.length - 2];
+        for (int i = 2; i < questions.length; i ++) {
+            wrongAnswers[i - 2] = questions[i];
         }
         //By default it is multiple choice.
         myQuestionText = questions[0];

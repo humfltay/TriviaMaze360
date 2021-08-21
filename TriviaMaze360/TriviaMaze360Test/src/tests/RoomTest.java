@@ -18,22 +18,15 @@ import model.Room;
 import model.User;
 
 /**
+ * Completed tests for Room class.
  * @author Cordel
- *
  */
 class RoomTest {
-    Room roomInactive;
-    Room roomOpen;
-    Room roomClosed;
-    Room roomFake;
-    Maze maze;
-    /**
-     * @throws java.lang.Exception
-     */
-    @BeforeAll
-    static void setUpBeforeClass() throws Exception {
-    }
-
+    private Room roomInactive;
+    private Room roomOpen;
+    private Room roomClosed;
+    private Room roomFake;
+    private Maze maze;
     /**
      * @throws java.lang.Exception
      */

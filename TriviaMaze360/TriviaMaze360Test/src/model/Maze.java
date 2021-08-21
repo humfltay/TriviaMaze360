@@ -21,11 +21,8 @@ import model.Room;
 public class Maze implements Serializable {
     /** Automatically generated serial number. */
     private static final long serialVersionUID = 1352517377178546983L;
-    /**
-     * Themes were planned but not implemented.
-     * @author Cordel, Mason, Taylor
-     */
-    private enum Themes {DEFAULT, POKEMON, SPOOKY, COMEDY, HISTORY};
+    //Themes were planned but never implemented.
+    //private enum Themes {DEFAULT, POKEMON, SPOOKY, COMEDY, HISTORY};
     /** Backing arrays for the maze. */
     private Room[][] myRooms;
     /** The size of the maze rows and columns. */
@@ -257,20 +254,14 @@ public class Maze implements Serializable {
     }
       return maze.toString();
     }
-    //public void setDoor(int theRow, int theCol, DoorDirection theDir, DoorStatus theStat) {
-    //  Room current = myRooms[theRow][theCol];
-    //  RealDoor oneSide = current.getDoor(theDir); 
-    //}
     
     /**
      * Returns the room across the door and sets the opposite's status.
      * @param theDir the door's DoorDirection.
-     * @param theRow the row index.
-     * @param theCol the column index.
-     * @param theStat the door's DoorStatus.
+     * @param theRoom The current room.
      * @return the Room being peeked at.
      */
-    Room openDoor(final DoorDirection theDir, final Room theRoom) {
+    public Room setOppositeDoorToSame(final DoorDirection theDir, final Room theRoom) {
         Room peek = null;
         
         int col = theRoom.getMyCol();
@@ -278,7 +269,6 @@ public class Maze implements Serializable {
         
         DoorStatus status = theRoom.getMyDoor(theDir).getMyDoorStatus();
         
-        //The changes in index were wrong.
         if (theDir == DoorDirection.NORTH && isValid(row - 1, col)) {
             peek = getRoom(row - 1, col);
             peek.getMySouthDoor().setMyDoorStatus(status);
@@ -307,7 +297,7 @@ public class Maze implements Serializable {
             if (door.isPassable()) {
                 //Look into changing this into just taking a room and a direction
                 //I think it works fine. openDoor was just broken.
-                Room neighbor = openDoor(door.getMyDoorDirection(), theRoom);
+                Room neighbor = setOppositeDoorToSame(door.getMyDoorDirection(), theRoom);
                 rooms.add(neighbor); 
             }
         }

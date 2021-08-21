@@ -14,8 +14,8 @@ import model.RealDoor.DoorDirection;
 import model.RealDoor.DoorStatus;
 
 /**
+ * Completed tests for Door class.
  * @author Cordel
- *
  */
 class RealDoorTest {
     RealDoor doorOpen;
