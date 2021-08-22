@@ -41,7 +41,14 @@ class QuestionTest {
      */
     @Test
     void testGetMyWrongAnswers() {
-        //assertEquals()
+        String[] wrongans = questionRandom.getMyWrongAnswers();
+        assertNotNull(wrongans, "Making sure wrong answers is not null");
+        for (int i = 0; i <= 10; i++) {
+            questionRandom = new Question();
+            wrongans = questionRandom.getMyWrongAnswers();
+            assertTrue(wrongans.length > 1, "Should always have more than one wrong answer");
+        }
+        
     }
 
     /**
@@ -49,23 +56,14 @@ class QuestionTest {
      */
     @Test
     void testGetMyCorrectAnswer() {
-        fail("Not yet implemented");
-    }
-
-    /**
-     * Test method for {@link model.Question#getMyQuestionNature()}.
-     */
-    @Test
-    void testGetMyQuestionNature() {
-        fail("Not yet implemented");
-    }
-
-    /**
-     * Test method for {@link model.Question#getMyQuestion()}.
-     */
-    @Test
-    void testGetMyQuestion() {
-        fail("Not yet implemented");
+        String rightAns = questionRandom.getMyCorrectAnswer();
+        assertNotNull(rightAns, "Making sure correct answers is not null");
+        for (int i = 0; i <= 10; i++) {
+            questionRandom = new Question();
+            rightAns = questionRandom.getMyCorrectAnswer();
+            assertTrue(!rightAns.isBlank(), "Should always not be blank");
+        }
+        
     }
 
 }
