@@ -544,6 +544,7 @@ public class ActionController {
         if (myGame.monsterHandler()) {
             showGif(gameOverV2);
             saveBtn.setOpacity(0);
+            saveBtn.setDisable(true);
             bottomLabel.setText("The monster ate you!");
             setDPadsDisable(true);
             mazeCompletedLabel.setText("The monster ate you and your game has concluded"
@@ -620,6 +621,7 @@ public class ActionController {
             bottomLabel.setText("Oh no! You lost!");
             showGif(gameOver);
             saveBtn.setOpacity(0);
+            saveBtn.setDisable(true);
             mazeCompletedLabel.setVisible(true);
             mazeCompletedLabel.setText("Your game has ended please return to the menu to try again");
         }
