@@ -15,6 +15,9 @@ import javafx.fxml.FXMLLoader;
 
 
 public class MainGui extends Application { 
+    /**
+     * Starts up application
+     */
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -47,7 +50,11 @@ public class MainGui extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Used to launch javafx
+	 * 
+	 * @param args not expected
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
