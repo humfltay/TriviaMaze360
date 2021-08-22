@@ -28,7 +28,7 @@ public class Question implements Serializable {
      * 
      * @param theType
      */
-    private Question(String theType) {
+    public Question(String theType) {
         setQuestionOfType(theType);
     }
     private void setQuestionOfType(String theType) {

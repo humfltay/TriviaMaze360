@@ -28,11 +28,6 @@ public class Monster implements Serializable {
     public void move () {
         if (myWaitTurns <= 0) {
             //we must get the player and merk them
-            int toCol = myUser.getMyCol();
-            int toRow = myUser.getMyRow();
-            //our position which we need to maximize
-            int currCol = myRoom.getMyCol();
-            int currRow = myRoom.getMyRow();
             MazeGenerator gen = new MazeGenerator(0,0,4,1);  
             //finding best path
             DoorDirection toUser = gen.getDirect(myRoom, myUser.getMyRoom());

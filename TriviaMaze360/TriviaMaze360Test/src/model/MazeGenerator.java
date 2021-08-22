@@ -44,15 +44,8 @@ public class MazeGenerator {
         myMaze = builder;
         createEntranceAndExit();
         Point start = myMaze.getMyEntrancePoint();
-        Point exit = myMaze.getMyExitPoint();
-        /*System.out.print("Start: ");
-        System.out.print(start.x);
-        System.out.print("\t");
-        System.out.print(start.y + "\n");
-        System.out.print("Exit: ");
-        System.out.print(exit.x);
-        System.out.print("\t");
-        System.out.print(exit.y + "\n");*/
+        
+        //building paths
         for (int i = 0; i < paths; i++) {
             createPath(builder, start.x, start.y);
         }
@@ -61,31 +54,33 @@ public class MazeGenerator {
      * Helper method for creating entrance and exit.
      */
     private void createEntranceAndExit() {
-        Random ran = new Random();
-        int side = ran.nextInt(4) + 1;
-        int i = ran.nextInt(mySize) + 1;
-        int j = ran.nextInt(mySize) + 1;
-        Room entrance = null; //What' the point of this??
-        switch(side) {
-        case 1:
-            //top i j = 0
-            myMaze.setEntrance(i, 1);
-            break;
-        case 2:
-            //left
-            entrance = myMaze.getRoom(1, j);
-            //entrance = myMaze.getMyRooms()[1][j];
-            myMaze.setEntrance(1, j);
-            break;
-        case 3:
-            //right
-            myMaze.setEntrance(mySize, j);
-            break;
-        case 4:
-            //bottom
-            myMaze.setEntrance(i, mySize);
-        }
-        createExit(side);
+        do  {
+            Random ran = new Random();
+            int side = ran.nextInt(4) + 1;
+            int i = ran.nextInt(mySize) + 1;
+            int j = ran.nextInt(mySize) + 1;
+            Room entrance = null; //What' the point of this??
+            switch(side) {
+            case 1:
+                //top i j = 0
+                myMaze.setEntrance(i, 1);
+                break;
+            case 2:
+                //left
+                entrance = myMaze.getRoom(1, j);
+                //entrance = myMaze.getMyRooms()[1][j];
+                myMaze.setEntrance(1, j);
+                break;
+            case 3:
+                //right
+                myMaze.setEntrance(mySize, j);
+                break;
+            case 4:
+                //bottom
+                myMaze.setEntrance(i, mySize);
+            }
+            createExit(side);
+        } while (myMaze.getMyEntrance() == myMaze.getMyExit());
     }
     /**
      * Helper method for creating the exit.

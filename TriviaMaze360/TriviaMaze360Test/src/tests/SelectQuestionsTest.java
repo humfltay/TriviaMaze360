@@ -5,28 +5,26 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import model.SelectQuestions;
 
 /**
  * @author 
  *
  */
 class SelectQuestionsTest {
-
-    /**
-     * @throws java.lang.Exception
-     */
-    @BeforeAll
-    static void setUpBeforeClass() throws Exception {
-    }
-
+    SelectQuestions sq;
     /**
      * @throws java.lang.Exception
      */
     @BeforeEach
     void setUp() throws Exception {
+        sq = new SelectQuestions();
     }
 
     /**
@@ -34,7 +32,11 @@ class SelectQuestionsTest {
      */
     @Test
     void testGetRandomQuestion() {
-        fail("Not yet implemented");
+        
+        for (int i = 1; i <= 100; i++) {
+            List<String> question = sq.getRandomQuestion();
+            assertNotNull(question, "Checking to see if database will return a null question");
+        }
     }
 
     /**
@@ -42,7 +44,18 @@ class SelectQuestionsTest {
      */
     @Test
     void testGetQuestionsHarderThan() {
-        fail("Not yet implemented");
+        for (int i = 1; i <= 10; i++) {
+            List<String> question = sq.getQuestionsHarderThan(0);
+            assertNotNull(question, "Checking to see if database will return a null question");
+        }
+        for (int i = 1; i <= 10; i++) {
+            List<String> question = sq.getQuestionsHarderThan(1);
+            assertNotNull(question, "Checking to see if database will return a null question");
+        }
+        for (int i = 1; i <= 10; i++) {
+            List<String> question = sq.getQuestionsHarderThan(2);
+            assertNotNull(question, "Checking to see if database will return a null question");
+        }
     }
 
     /**
@@ -50,7 +63,18 @@ class SelectQuestionsTest {
      */
     @Test
     void testGetQuestionOfDifficulty() {
-        fail("Not yet implemented");
+        for (int i = 1; i <= 10; i++) {
+            List<String> question = sq.getQuestionOfDifficulty(1);
+            assertNotNull(question, "Checking to see if database will return a null question");
+        }
+        for (int i = 1; i <= 10; i++) {
+            List<String> question = sq.getQuestionOfDifficulty(2);
+            assertNotNull(question, "Checking to see if database will return a null question");
+        }
+        for (int i = 1; i <= 10; i++) {
+            List<String> question = sq.getQuestionOfDifficulty(3);
+            assertNotNull(question, "Checking to see if database will return a null question");
+        }
     }
 
     /**
@@ -58,7 +82,14 @@ class SelectQuestionsTest {
      */
     @Test
     void testGetQuestionOfType() {
-        fail("Not yet implemented");
+        for (int i = 1; i <= 10; i++) {
+            List<String> question = sq.getQuestionOfType("Gaming");
+            assertNotNull(question, "Checking to see if database will return a null question");
+        }
+        for (int i = 1; i <= 10; i++) {
+            List<String> question = sq.getQuestionOfType("Comics");
+            assertNotNull(question, "Checking to see if database will return a null question");
+        }
     }
 
 }

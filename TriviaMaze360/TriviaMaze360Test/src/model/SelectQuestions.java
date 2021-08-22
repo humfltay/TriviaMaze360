@@ -11,6 +11,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 public class SelectQuestions {
+    /**
+     * Making connection to SQLite database.
+     * 
+     * @return connection by url
+     */
     private Connection connect() {
         // SQLite connection string
         String url = "jdbc:sqlite:QuestionDB.db";
@@ -25,7 +30,10 @@ public class SelectQuestions {
 
     
     /**
-     * Select all rows in the questions table
+     * Takes call to database and converts to single
+     * question.
+     * 
+     * @return random question
      */
     public List<String> getRandomQuestion(){
         ArrayList<List<String>> questions = new ArrayList<List<String>>();
@@ -38,10 +46,6 @@ public class SelectQuestions {
             
             // loop through the result set
             while (rs.next()) {
-//                System.out.println(rs.getInt("questionIndex") +  "\t" + 
-//                        rs.getInt("difficulty") +  "\t" +
-//                        rs.getString("questionType") + "\t" +
-//                        rs.getString("questions"));
                question = new ArrayList<String>();
                 question.add(rs.getInt("difficulty") + "");
                 question.add(rs.getString("questionType"));
@@ -55,7 +59,15 @@ public class SelectQuestions {
         }
         return questions.get(ran.nextInt(questions.size()));
     }
-    public void getQuestionsHarderThan(int theDifficulty){
+    /**
+     * Returns questions harder than specified difficulty
+     * 
+     * @param theDifficulty param sent to specify difficulty
+     */
+    public List<String> getQuestionsHarderThan(int theDifficulty){
+        ArrayList<List<String>> questions = new ArrayList<List<String>>();
+        ArrayList<String> question = null;
+        Random ran = new Random();
         String sql = "SELECT questionIndex, difficulty, questionType, questions "
                    + "FROM questions WHERE difficulty > ?";
          try (Connection conn = this.connect();
@@ -69,18 +81,23 @@ public class SelectQuestions {
              // loop through the result set
              
              while (rs.next()) {
-                 System.out.println(rs.getInt("questionIndex") +  "\t" + 
-                                    rs.getInt("difficulty") +  "\t" +
-                                    rs.getString("questionType") + "\t" +
-                                    rs.getString("questions"));
-                 //rs.getInt(theDifficulty);
-                 //LATER
+                 question = new ArrayList<String>();
+                 question.add(rs.getInt("difficulty") + "");
+                 question.add(rs.getString("questionType"));
+                 question.add(rs.getString("questions") + "");
+                 questions.add(question);
              }
          } catch (SQLException e) {
              System.out.println(e.getMessage());
          }
+         return questions.get(ran.nextInt(questions.size()));
     }
-
+    /**
+     * Returns a random question of specified difficulty
+     * 
+     * @param theDifficulty
+     * @return Question
+     */
     public List<String> getQuestionOfDifficulty(final int theDifficulty){
         ArrayList<List<String>> questions = new ArrayList<List<String>>();
         ArrayList<String> question = null;
@@ -113,7 +130,7 @@ public class SelectQuestions {
      * @param theType of question being grabbed.
      * @return a question of a specific type.
      */
-    List<String> getQuestionOfType(String theType){
+    public List<String> getQuestionOfType(final String theType){
         ArrayList<List<String>> questions = new ArrayList<List<String>>();
         ArrayList<String> question = null;
         Random ran = new Random();
