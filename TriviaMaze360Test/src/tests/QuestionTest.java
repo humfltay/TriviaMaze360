@@ -12,11 +12,12 @@ import org.junit.jupiter.api.Test;
 import model.Question;
 
 /**
- * @author 
+ * @author Taylor
  */
 class QuestionTest {
     private static Question questionDifficulty;
     private static Question questionRandom;
+    private static Question questionOfType;
     /**
      * @throws java.lang.Exception
      */
@@ -24,6 +25,7 @@ class QuestionTest {
     static void setUpBeforeClass() throws Exception {
         questionRandom = new Question();
         questionDifficulty = new Question(2);
+        questionOfType = new Question("Gaming");
     }
 
     /**
@@ -31,7 +33,7 @@ class QuestionTest {
      */
     @Test
     void testToString() {
-        //fail("Not yet implemented");
+        assertNotNull(questionRandom.toString(), "Checking if toString returns correctly");
     }
 
     /**
@@ -39,7 +41,14 @@ class QuestionTest {
      */
     @Test
     void testGetMyWrongAnswers() {
-        //assertEquals()
+        String[] wrongans = questionRandom.getMyWrongAnswers();
+        assertNotNull(wrongans, "Making sure wrong answers is not null");
+        for (int i = 0; i <= 10; i++) {
+            questionRandom = new Question();
+            wrongans = questionRandom.getMyWrongAnswers();
+            assertTrue(wrongans.length > 1, "Should always have more than one wrong answer");
+        }
+        
     }
 
     /**
@@ -47,23 +56,14 @@ class QuestionTest {
      */
     @Test
     void testGetMyCorrectAnswer() {
-        fail("Not yet implemented");
-    }
-
-    /**
-     * Test method for {@link model.Question#getMyQuestionNature()}.
-     */
-    @Test
-    void testGetMyQuestionNature() {
-        fail("Not yet implemented");
-    }
-
-    /**
-     * Test method for {@link model.Question#getMyQuestion()}.
-     */
-    @Test
-    void testGetMyQuestion() {
-        fail("Not yet implemented");
+        String rightAns = questionRandom.getMyCorrectAnswer();
+        assertNotNull(rightAns, "Making sure correct answers is not null");
+        for (int i = 0; i <= 10; i++) {
+            questionRandom = new Question();
+            rightAns = questionRandom.getMyCorrectAnswer();
+            assertTrue(!rightAns.isBlank(), "Should always not be blank");
+        }
+        
     }
 
 }
