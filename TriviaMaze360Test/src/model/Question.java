@@ -8,30 +8,48 @@ import model.SelectQuestions;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-
+/**
+ * Class for representing the questionl
+ * @author Cordel
+ * @author Taylor
+ *
+ */
 public class Question implements Serializable {
     /**
-     * 
+     * automatically generated UID.
      */
     private static final long serialVersionUID = 2300715034378187712L;
+    /** enums for the kind of question */
     public enum QuestionNature{MULTIPLE, TRUE, SHORT, ALL}
-    //I set Question fields to private.
+    /** The actual question. */
     private String myQuestionText;
+    /** The correct answer to the question. */
     private String myCorrectAnswer;
+    /** The topic for the question. Not actually implemented. */
     private String myType;
+    /** The kind of answer the question is asking for. */
     private QuestionNature myQuestionNature;
+    /** array with all the wrong answers. */
     private String[] myWrongAnswers;
+    /** the level of the question. */
     private int myDifficulty;
+    /** The max level of questions we have. */
     private static final int MAXDIFFICULTY = 4;
+    /** Answers above this length will never be short answer. */
     private static final int SHORTLENGTH = 12;
     /**
-     * 
-     * @param theType
+     * Constructor for the question class.
+     * Not actually used.
+     * @param theType the topic of the question.
      */
-    public Question(String theType) {
+    public Question(final String theType) {
         setQuestionOfType(theType);
     }
-    private void setQuestionOfType(String theType) {
+    /**
+     * Grabs a question with a specific type from the database.
+     * @param theType the type of question being grabbed.
+     */
+    private void setQuestionOfType(final String theType) {
       SelectQuestions sq = new SelectQuestions();
       List<String> contents = sq.getQuestionOfType(theType);
       setUpQuestion(contents);
@@ -113,6 +131,9 @@ public class Question implements Serializable {
             }
         }
     }
+    /**
+     * String representation of the question.
+     */
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -135,15 +156,31 @@ public class Question implements Serializable {
         }
         return s.toString();
     }
+    /**
+     * getter for the wrong answers.
+     * @return an array of wrong answers.
+     */
     public String[] getMyWrongAnswers() {
         return myWrongAnswers;
     }
+    /**
+     * getter for the correct answer.
+     * @return the correct answer.
+     */
     public String getMyCorrectAnswer() {
         return myCorrectAnswer;
     }
+    /**
+     * getter for the question nature.
+     * @return the question nature.
+     */
     public QuestionNature getMyQuestionNature() {
         return myQuestionNature;
     }
+    /**
+     * getter for the question's actual question.
+     * @return the question's actual question.
+     */
     public String getMyQuestion() {
         return myQuestionText;
     }

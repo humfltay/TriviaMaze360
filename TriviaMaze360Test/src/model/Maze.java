@@ -66,7 +66,8 @@ public class Maze implements Serializable {
         this(4, 1, DoorStatus.CLOSED);
     }
     /**
-     * Creates a simple maze with all paths active.
+     * Helper method for creating a simple maze with default status.
+     * @param theStatus the default status for all the rooms.
      */
     private void createSimpleMaze(final DoorStatus theStatus) {
         //Rooms at the border are null.

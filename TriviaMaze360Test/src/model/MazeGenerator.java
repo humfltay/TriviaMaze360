@@ -21,15 +21,20 @@ public class MazeGenerator {
     private int mySize;
     /** instance of maze we are building */
     private Maze myMaze;
-    /** Default maze generator. 
-     * @param k 
-     * @param j 
-     * @param i */
+    /** 
+     * Default maze generator.
+     */
     public MazeGenerator() {
         //default values may likely change
         this(3, 8, 5, 1); //new Point(0, 0), new Point (4,4));
     }
-
+    /**
+     * Constructor for the maze generator.
+     * @param theMinPaths the minimum number of paths.
+     * @param theMaxPaths the maximum number of paths.
+     * @param theSize the size of the maze.
+     * @param theDifficulty the level of the maze.
+     */
     public MazeGenerator(final int theMinPaths, final int theMaxPaths, final int theSize, final int theDifficulty) {
         // avoid cycles
         Random ran = new Random();
@@ -147,7 +152,11 @@ public class MazeGenerator {
         }
         return check;
     }
-
+    /**
+     * Getter for the path.
+     * @param theRoom the room in the path.
+     * @return the next room in the path.
+     */
     private Room getPath (Room theRoom) {
         //WHAT IS STRAIGHT :/
         //go straight 40%
@@ -206,7 +215,7 @@ public class MazeGenerator {
         return pathTo;
     }
     /**
-     * 
+     * Gets the direction of a room.
      * @param theRoom
      * @return
      */
@@ -215,9 +224,9 @@ public class MazeGenerator {
 
     }
     /**
-     * 
-     * @param theSearcher
-     * @param theFind
+     * gets the direction from one room to another.
+     * @param theSearcher the starting room.
+     * @param theFind the ending room.
      * @return
      */
     public DoorDirection getDirect(Room theSearcher, Room theFind) {
@@ -249,9 +258,9 @@ public class MazeGenerator {
       
     }
     /**
-     * 
-     * @param theDir
-     * @return
+     * Turns the direction to the left.
+     * @param theDir the previous direction.
+     * @return the new direction.
      */
     public DoorDirection goLeft (DoorDirection theDir) {
         int directIndex = theDir.ordinal() - 1;
@@ -264,9 +273,9 @@ public class MazeGenerator {
         return theDir;
     }
     /**
-     * 
-     * @param theDir
-     * @return
+     * Turns the direction to the right.
+     * @param theDir the previous direction.
+     * @return the new direction.
      */
     public DoorDirection goRight (DoorDirection theDir) {
         int directIndex = theDir.ordinal() + 1;

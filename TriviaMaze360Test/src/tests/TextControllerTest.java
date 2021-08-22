@@ -21,12 +21,12 @@ class TextControllerTest {
     private static TextController text1;
     private static TextController text2;
     /**
-     * @throws java.lang.Exception
+     * @throws Exception java.lang.Exception
      */
-    @BeforeAll
-    static void setUpBeforeClass() throws Exception {
-        text1 = new TextController(1, 0);
-        text2 = new TextController(3, 10);
+    @BeforeEach
+    void setUp() throws Exception {
+        text1 = new TextController(1, 0, false);
+        text2 = new TextController(3, 10, false);
     }
     /**
      * Test method for {@link model.TextController#setState(model.TextController)}.
@@ -50,10 +50,6 @@ class TextControllerTest {
     @Test
     void testAnswerQuestion() {
         assertFalse(text1.answerQuestion(Answer.A, ""), "answerQuestion failed.");
-    //    text1.right();
-      //  if (text1.getMyQuestion().getMyQuestionNature() == QuestionNature.TRUE) {
-       //     assertEquals((Answer.A).equals(text1.getMyQuestion().getMyCorrectAnswer()),
-         //           text1.answerQuestion(Answer.A, ""), "answerQuestion failed.");
     }
 
     /**
@@ -61,7 +57,7 @@ class TextControllerTest {
      */
     @Test
     void testAskQuestion() {
-        fail("Not yet implemented");
+        assertFalse(text1.askQuestion(text1.getMyDoor()));
     }
 
     /**
@@ -69,28 +65,31 @@ class TextControllerTest {
      */
     @Test
     void testUp() {
-        assertEquals(text1.askQuestion(text1.getMyDoor()), text1.up(), "up failed.");    }
+        assertEquals(text1.up(), text1.askQuestion(text1.getMyDoor()), "down failed.");
+        }
 
     /**
      * Test method for {@link model.TextController#down()}.
      */
     @Test
     void testDown() {
-        assertEquals(text1.askQuestion(text1.getMyDoor()), text1.down(), "down failed.");    }
+        assertEquals(text1.down(), text1.askQuestion(text1.getMyDoor()), "down failed.");
+        }
 
     /**
      * Test method for {@link model.TextController#left()}.
      */
     @Test
     void testLeft() {
-        assertEquals(text1.askQuestion(text1.getMyDoor()), text1.left(), "left failed.");    }
+        assertEquals(text1.left(), text1.askQuestion(text1.getMyDoor()), "down failed.");
+        }
 
     /**
      * Test method for {@link model.TextController#right()}.
      */
     @Test
     void testRight() {
-        assertEquals(text1.askQuestion(text1.getMyDoor()), text1.right(), "right failed.");
+        assertEquals(text1.right(), text1.askQuestion(text1.getMyDoor()), "down failed.");
     }
 
     /**

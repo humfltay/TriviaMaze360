@@ -31,7 +31,11 @@ public class TextController implements Serializable {
     private ArrayList<String> myChoices;
     private Integer myScore;
     private Integer myDifficulty;
-    
+    /**
+     * Constructor for the TextController.
+     * @param theDifficulty the level of the game.
+     * @param theScore the the score of the game.
+     */
     public TextController(final int theDifficulty, final int theScore) {
         myDifficulty = theDifficulty;
         MazeGenerator MG = new MazeGenerator(3, 8, myDifficulty + 3, myDifficulty);
@@ -41,6 +45,12 @@ public class TextController implements Serializable {
         myMonster = new Monster(myUser, 0 + myUser.getMyMaze().getMyMazeSize() / 2, "Question Man");
         
     }
+    /**
+     * Constructor for the TextController.
+     * @param theDifficulty the level of the game.
+     * @param theScore the the score of the game.
+     * @param theGenerator whether to use the mazegenerator.
+     */
     public TextController(final int theDifficulty, final int theScore, final boolean theGenerator) {
         myDifficulty = theDifficulty;
         if (theGenerator) {
@@ -52,7 +62,11 @@ public class TextController implements Serializable {
         myScore = theScore;
         myMonster = new Monster(myUser, 0 + myUser.getMyMaze().getMyMazeSize() / 2, "Question Man");
     }
-    public void setState(TextController theState) {
+    /**
+     * Sets the state for the game.
+     * @param theState the text controller.
+     */
+    public void setState(final TextController theState) {
         myUser = theState.getMyUser();
         myDoor = theState.myDoor;
         myQuestion = theState.getMyQuestion();
@@ -61,7 +75,10 @@ public class TextController implements Serializable {
         myDifficulty = theState.getMyDifficulty();
         myMonster = theState.getMyMonster();
     }
-
+    /**
+     * getter for the monster.
+     * @return the monster.
+     */
     public Monster getMyMonster() {
         return myMonster;
     }
@@ -72,8 +89,7 @@ public class TextController implements Serializable {
      * @param theShortAnswer the player's short answer.
      * @return whether the answer was correct.
      */
-    //returns false if try to input invalid answer;
-    public Boolean answerQuestion(Answer theAnswer, String theShortAnswer) {
+    public Boolean answerQuestion(final Answer theAnswer, final String theShortAnswer) {
         Boolean result = false;
         int i = theAnswer.ordinal();
         if (myQuestion != null) {
@@ -110,7 +126,7 @@ public class TextController implements Serializable {
      * @param theDoor the door for the question.
      * @return whether the question was asked.
      */
-    public boolean askQuestion(RealDoor theDoor) {
+    public boolean askQuestion(final RealDoor theDoor) {
         boolean asked = false;
         //This won't ask question if door is open.
         if (getMyUser().canMove(theDoor)) {
@@ -197,7 +213,7 @@ public class TextController implements Serializable {
      * @param theName the name of the save file.
      */
     //Copied from the example serializable.
-    public void save(String theName) {
+    public void save(final String theName) {
         String filename = "SavedGames" + File.separator + theName; //+ ".sav"; 
      // Serialization 
         try { 
@@ -218,7 +234,7 @@ public class TextController implements Serializable {
      * loads the game.
      * @param theName the name of the file being loaded.
      */
-    public void load(String theName) {
+    public void load(final String theName) {
         String filename = "SavedGames" + File.separator + theName + ".sav"; 
         try {
             // Reading the object from a file 

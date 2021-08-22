@@ -3,16 +3,30 @@ package model;
 import java.io.Serializable;
 
 import model.RealDoor.DoorDirection;
-
+/**
+ * Simulates the monster.
+ * @author Taylor
+ *
+ */
 public class Monster implements Serializable {
-  /**
-     * 
+    /**
+     * Automatically generated serial id.
      */
     private static final long serialVersionUID = -3112742568400543980L;
+    /** the user being hunted. */
     private final User myUser;
+    /** How long it delays before beginning. */
     private int myWaitTurns;
+    /** Which room it is in. */
     private Room myRoom;
+    /** The name of the monster. */
     private final String myName;
+    /**
+     * Constructor for the monster.
+     * @param theUser the user being hunted.
+     * @param theWaitTurns the number of turns to wait.
+     * @param theName the monster's name.
+     */
     public Monster(final User theUser, final int theWaitTurns, String theName) {
         myUser = theUser;
         myWaitTurns = theWaitTurns;
@@ -55,6 +69,10 @@ public class Monster implements Serializable {
         }
         return check;
     }
+    /**
+     * checks whether the monster is near the user.
+     * @return whether the monster is within two rooms of the user.
+     */
     public boolean isWithinTwoRooms() {
         boolean check = false;
         //we must get the player and mark them
@@ -69,6 +87,10 @@ public class Monster implements Serializable {
         }
         return check;
     }
+    /**
+     * Checks for the general direction of the monster.
+     * @return the general direction of the monster.
+     */
     public DoorDirection whereIsMonster() {
         
         MazeGenerator gen = new MazeGenerator(0,0,4,1);
@@ -76,6 +98,10 @@ public class Monster implements Serializable {
         
         return toMonster;
     }
+    /**
+     * getter for the room.
+     * @return the monster's room.
+     */
     public Room getMyRoom() {
         return myRoom;
     }

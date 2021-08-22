@@ -94,7 +94,6 @@ public class User implements Serializable {
      * @param theDoor the door being moved through.
      * @return Room the new room.
      */
-    //Should only call if question has been answered.
     public Room move(final RealDoor theDoor) {
         if (theDoor != null) {
             Room newRoom = moveHelper(theDoor);

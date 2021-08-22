@@ -24,8 +24,10 @@ public class InsertQuestion {
     }
 
     /**
-     * Insert a new row into the questions table
-     *
+     * Insert a new row into the questions table.
+     * @param theDifficulty the level of the question being inserted.
+     * @param theQuestionType the type of the question being inserted.
+     * @param theQuestions the different questions being inserted.
      */
     public void insert(int theDifficulty, String theQuestionType, String theQuestions) {
         String sql = "INSERT INTO questions(questionIndex,difficulty,questionType,questions) VALUES(?,?,?,?)";

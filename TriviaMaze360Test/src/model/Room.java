@@ -98,6 +98,10 @@ public class Room implements Serializable {
     public int getMyCol() {
         return myCol;
     }
+    /**
+     * getter for the room's accessible doors.
+     * @return a set of accessible doors.
+     */
     public Set<RealDoor> getAccessableDoors() {
         Set<RealDoor> doors = new HashSet<RealDoor>();
         if (myNorthDoor.isPassable())
@@ -117,7 +121,6 @@ public class Room implements Serializable {
      * 
      * @return Set of Doors that are not FAKE.
      */
-    //His code is strictly for getting not fake doors.
     public Set<RealDoor> getDoors() {
         Set<RealDoor> doors = new HashSet<RealDoor>();
         if (myNorthDoor.getMyDoorStatus() != DoorStatus.FAKE )//&& myNorthDoor.getMyDoorStatus() != DoorStatus.INACTIVE)
@@ -151,6 +154,10 @@ public class Room implements Serializable {
             doors.add(mySouthDoor);
         return doors;
     }
+    /**
+     * sets all the door's status.
+     * @param theStatus the new status.
+     */
     public void setDoors(final DoorStatus theStatus) {
         Set<RealDoor> doors = getDoors();
         for (RealDoor rd : doors) {
@@ -182,30 +189,32 @@ public class Room implements Serializable {
         }
         return check;
     }
-    //These are my methods.
+    /**
+     * Getter for myVisited.
+     * @return whether the room has been visited.
+     */
     public boolean getMyVisited() {
         return myVisited;
     }
+    /**
+     * Setter for myVisited.
+     * @param theVisited the new value of myVisited.
+     */
     public void setMyVisited(boolean theVisited) {
         myVisited = theVisited;
     }
-   
+    /**
+     * Prints the room's coordinates.
+     */
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
         s.append(myRow + ", " + myCol);// + "\n");
-        //s.append("North " + myNorthDoor.getMyDoorStatus());
-        //s.append("\n");
-        //s.append("East " + myEastDoor.getMyDoorStatus());
-        //s.append("\n");
-       // s.append("South " + mySouthDoor.getMyDoorStatus());
-       // s.append("\n");
-       // s.append("West " + myWestDoor.getMyDoorStatus());
-       // s.append("\n");
         return s.toString();
     }
-    // Implementation of equals and hashcode.
-    // I re-implemented equals and hashcode.
+    /**
+     * Determines equality based on position.
+     */
     @Override
     public boolean equals (final Object theO) {
         if (this == theO) return true; //reflexive
@@ -216,6 +225,9 @@ public class Room implements Serializable {
         return room.getMyRow() == getMyRow() 
                 && room.getMyCol() == getMyCol();
     }
+    /**
+     * Hashes based on position.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(myRow, myCol);// * getMyNorthDoor().hashCode() * getMySouthDoor().hashCode() *

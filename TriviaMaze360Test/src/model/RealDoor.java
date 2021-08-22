@@ -7,9 +7,14 @@ import java.util.Objects;
 import java.util.Random;
 
 import model.Question.QuestionNature;
-
+/**
+ * Model representation of the door
+ * @author Cordel
+ * @author Taylor
+ *
+ */
 public class RealDoor implements Serializable {
-    /** Automatically generated werial id.*/
+    /** Automatically generated serial id.*/
     private static final long serialVersionUID = -217424397279605555L;
     /** Enum for the status of a door. */
     public enum DoorStatus {OPEN, CLOSED, FAKE, INACTIVE}
@@ -25,7 +30,12 @@ public class RealDoor implements Serializable {
     private ArrayList<String> myChoices;
     /** The level of the question. */
     private int myDifficulty;
-    
+    /**
+     * Constructor for the RealDoor.
+     * @param theDoorDirection the direction of the door.
+     * @param theDoorStatus the status of the door.
+     * @param theDifficulty the level of the door.
+     */
     public RealDoor(final DoorDirection theDoorDirection, final DoorStatus theDoorStatus, final int theDifficulty) {
         myDoorDirection = Objects.requireNonNull(theDoorDirection);
         myDoorStatus = Objects.requireNonNull(theDoorStatus);
@@ -44,24 +54,45 @@ public class RealDoor implements Serializable {
       }
       return check;
     }
-    
+    /**
+     * getter for the door's status.
+     * @return the door's status.
+     */
     public DoorStatus getMyDoorStatus() {
         return myDoorStatus;
     }
+    /**
+     * getter for the door's question.
+     * @return the door's question.
+     */
     public Question getMyQuestion() {
       return myQuestion;
     }
+    /**
+     * getter for the door's choices.
+     * @return the door's choices.
+     */
     public ArrayList<String> getMyChoices() {
         return myChoices;
     }
+    /**
+     * setter for the door's status.
+     * @param theStatus the door's status.
+     */
     public void setMyDoorStatus(final DoorStatus theStatus) {
             myDoorStatus = Objects.requireNonNull(theStatus);
     }
+    /**
+     * getter for the door's direction.
+     * @return the door's direction.
+     */
     public DoorDirection getMyDoorDirection() {
         return myDoorDirection;
     }
-    //This was my method, but I'm not sure it's still relevant.
-    //He does something similar in the maze class.
+    /**
+     * Retrieves the opposite direction.
+     * @return the opposite direction.
+     */
     public DoorDirection getOppositeDirection() {
         switch (myDoorDirection) {
         case NORTH: return DoorDirection.SOUTH;
@@ -71,6 +102,10 @@ public class RealDoor implements Serializable {
         default: throw new IllegalArgumentException("bad door direction."); //shouldn't be a thing.
         }
     }
+    /**
+     * Helper method for creating questions.
+     * @param theDifficulty the level of the questions.
+     */
     private void generateQuestion(final int theDifficulty) {
         //Does this do anything?
         SelectQuestions sq = new SelectQuestions();

@@ -9,7 +9,11 @@ import java.util.List;
 import java.util.Random;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-
+/**
+ * Grabs questions from the database.
+ * @author Taylor
+ *
+ */
 public class SelectQuestions {
     /**
      * Making connection to SQLite database.

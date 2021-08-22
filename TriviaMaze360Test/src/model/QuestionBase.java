@@ -11,7 +11,10 @@ import model.Question;
  */
 public class QuestionBase {
 
-    
+    /**
+     * main method for running the class.
+     * @param args the command line arguments.
+     */
     private static void main(String args[]) {
         createTable();
         System.out.println("made it here");
@@ -44,6 +47,9 @@ public class QuestionBase {
           //System.out.println(m);
        
     }
+    /**
+     * creates the database.
+     */
     private static void createTable() {
         String url = "jdbc:sqlite:QuestionDB.db";
         StringBuilder sqlBuilder = new StringBuilder("CREATE TABLE IF NOT EXISTS questions");
